@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="inscrir" directorySegmentName="seg_0" id="436DDD13-C069-BD85-1573-695CDECF44A3">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:31:57 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<sourcePk>DE20944E-0B17-681D-1377-408539D782C2</sourcePk>
+<targetPk>0AA7633C-ACCB-37A4-4A51-4B6AC47F210A</targetPk>
+<identifying>false</identifying>
+<optionalSource>false</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>*</sourceCardinality>
+<sourceEntity>DD0803E1-C296-D7CD-0833-C15AF9D9C9CB</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>467C4118-AEDB-72BE-8164-30384691168D</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

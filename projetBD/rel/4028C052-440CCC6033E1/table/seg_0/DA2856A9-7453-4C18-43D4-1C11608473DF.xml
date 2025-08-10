@@ -1,0 +1,65 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="DA2856A9-7453-4C18-43D4-1C11608473DF" name="prereq">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>28504F5C-77D7-6770-2CFF-3C993D03725F</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="prereq_id" id="C23DDD21-38BC-3ABB-0E4A-AE985A97BE45">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>FFAA7D29-47BE-0E4D-8298-D8170B706C96</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="cours_cours_id" id="9C5767F2-9C5E-89AA-AA38-B2306913BE75">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>A985F31A-C2F4-09B5-517C-1F99EE50AD0D</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="F286FFEC-24F5-BCED-7993-2143367C476A" referredColumn="BF3DC51A-AAE6-00B7-2391-EF56F09C5857"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="74B09BD6-3158-4D98-6DAF-0D03168B0664" name="prereq_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>958D7AC2-B99E-3C0D-B73C-F8A2F0351268</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C23DDD21-38BC-3ABB-0E4A-AE985A97BE45"/>
+<colUsage columnID="9C5767F2-9C5E-89AA-AA38-B2306913BE75"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="FA559414-415C-C05B-B18D-ACAF43ABEA1D" name="prereq_cours_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>CEF33526-FBE0-E608-5585-8D9591F1F2B0</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9C5767F2-9C5E-89AA-AA38-B2306913BE75"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

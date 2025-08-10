@@ -1,0 +1,76 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="12978991-77F7-2B37-9D5A-25DAB2D5B86A" name="advior">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 16:17:40 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<ordsAlias>advior</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="instructor_ID" id="3BD65598-703B-EE2C-0D77-72290A914810">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 16:17:40 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="738CF5E5-DDA5-0678-D52B-E530C96A156A" referredColumn="AC65C180-ECE8-B7B8-5DDA-D34C7A10C801"/>
+</associations>
+</Column>
+<Column name="student_student_id" id="64B34B7B-BBB9-BFB3-6CC3-1E7560DDE530">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 16:17:40 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="68E10B3B-E8C0-A5DD-C17B-859791F31F5E" referredColumn="B8DAEFA0-D959-BE3C-1298-60913C4A8D1D"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="E35180E9-A92F-47BB-2DAE-9B34ED15BF7B" name="advior_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 16:17:40 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="3BD65598-703B-EE2C-0D77-72290A914810"/>
+<colUsage columnID="64B34B7B-BBB9-BFB3-6CC3-1E7560DDE530"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B99B0A6A-D6AE-B444-1919-DBA2563E5EAF" name="advior_instructor_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 16:17:40 UTC</createdTime>
+<generatorID>E5B7ED0E-5437-AB65-1FC0-13C9DFADB7AE</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="3BD65598-703B-EE2C-0D77-72290A914810"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="C8554752-1FC5-F6F3-E176-503C154CE8A7" name="advior_student_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 16:17:40 UTC</createdTime>
+<generatorID>E5B7ED0E-5437-AB65-1FC0-13C9DFADB7AE</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="64B34B7B-BBB9-BFB3-6CC3-1E7560DDE530"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

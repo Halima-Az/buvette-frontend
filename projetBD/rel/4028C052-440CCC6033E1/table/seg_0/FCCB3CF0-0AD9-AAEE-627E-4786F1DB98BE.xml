@@ -1,0 +1,88 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="FCCB3CF0-0AD9-AAEE-627E-4786F1DB98BE" name="time_slot">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>6E20E8F4-A771-3D8E-C129-A67318009C51</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="day" id="B7B2F299-35C1-6A00-D6F8-3814C3FA3E08">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>0CFD70EE-8688-1E44-0EAD-99F6042DDFA3</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="time_time_slot_id" id="83286488-CD2D-E760-CBAC-CEFFD981E664">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>E512A818-6DA0-3F23-64CB-1A03283DB57F</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="C4ECD3F9-770A-41BF-58E2-DB6F7B55F5F1" referredColumn="80DF7C44-EE17-8ECF-4548-DD7CF098786B"/>
+</associations>
+</Column>
+<Column name="start_time" id="F16AE012-F771-9B80-BF8F-8980DCB8B4B1">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:52:17 UTC</createdTime>
+<generatorID>7D22435C-2F25-282A-1CDD-56836EA58190</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="end_time" id="E3CAC171-26D2-325D-63B6-D5CCE9C9C925">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:52:17 UTC</createdTime>
+<generatorID>1686E76C-0E32-6BA4-B223-F9BD0EB8E11A</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="94FF84A1-0740-7DD3-FDED-EDAE16E10966" name="time_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>DB2D6204-9277-5160-F0A7-46278625075D</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B7B2F299-35C1-6A00-D6F8-3814C3FA3E08"/>
+<colUsage columnID="83286488-CD2D-E760-CBAC-CEFFD981E664"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9BD3681B-B508-B3E0-9C3E-EBEEBA603BEE" name="time_slotv2_time_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>B70CB386-D0B9-F31E-432D-0B3114C30B2E</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="83286488-CD2D-E760-CBAC-CEFFD981E664"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="deviser" directorySegmentName="seg_0" id="DD801F82-C0AF-C152-9965-681B1595A431">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:23:25 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<sourcePk>DA91665D-7B45-3CBF-C92E-6E3CA26CDDCF</sourcePk>
+<targetPk>6D3EE768-55EB-71CE-5FC8-C8A2ED088C65</targetPk>
+<identifying>true</identifying>
+<optionalSource>false</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>*</sourceCardinality>
+<sourceEntity>9220404A-07F4-213E-3503-6AA63F26D0F9</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>E5F3938C-8BF0-AFA9-26D0-AD88D905AD1E</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

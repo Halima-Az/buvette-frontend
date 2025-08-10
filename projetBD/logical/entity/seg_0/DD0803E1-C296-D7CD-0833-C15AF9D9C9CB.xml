@@ -1,0 +1,88 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="DD0803E1-C296-D7CD-0833-C15AF9D9C9CB" name="student">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 14:57:20 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="student_id" id="03CD47C8-1A55-B7BC-5959-1EA9B4E04295">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 14:57:27 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="name" id="B42147FC-E091-4FF7-3108-4F4B0B84D5CC">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 14:57:45 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="tot_cred" id="AB2E2C11-8904-3690-6D9D-F3B3BB2277C9">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 14:58:09 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="dept_name" id="5BF3ACFD-54A9-ABC3-1575-085DEEA3A381">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 16:39:22 UTC</createdTime>
+<generatorID>436DDD13-C069-BD85-1573-695CDECF44A3</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<referedAttribute>ACC76E25-B387-2019-319A-0EFE8B7199B5</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="DE20944E-0B17-681D-1377-408539D782C2" name="Key_1">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 14:58:41 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<newElementsIDs>03CD47C8-1A55-B7BC-5959-1EA9B4E04295</newElementsIDs>
+<usedAttributes>
+<attributeRef>03CD47C8-1A55-B7BC-5959-1EA9B4E04295</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

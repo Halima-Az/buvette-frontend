@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="B91E0B16-64C6-FD86-EA57-2332AD2161E9" containerWithKeyObject="944ED92A-3EC0-BBF8-33AE-BAE0907D4B11" localFKIndex="A6F29D9E-EE87-5764-1EED-5935E9E67BE3" name="section_time_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-10 17:23:56 UTC</createdTime>
+<generatorID>0DE65710-2AB0-766C-8674-EC3D95806A9A</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<referredTableLongName>time</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>88A99C8E-C457-EDC4-D902-AF8D3A3B41A2</referredTableID>
+<keyObject>A679BA19-06F0-26F7-783B-F3435D0FC2B6</keyObject>
+<referredKeyID>A679BA19-06F0-26F7-783B-F3435D0FC2B6</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>time_slot_id</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

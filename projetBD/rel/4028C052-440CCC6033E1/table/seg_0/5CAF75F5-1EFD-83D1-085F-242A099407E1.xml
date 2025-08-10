@@ -1,0 +1,75 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="5CAF75F5-1EFD-83D1-085F-242A099407E1" name="classroom">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>68F0AFBA-B753-E20C-D9B4-13A75768E3ED</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="room_number" id="5C8E559C-6043-8F86-DA50-D3A01CD13780">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>D2D29643-113B-AE6E-50BE-08B3768E225B</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="capacite" id="0E2236B8-C530-DA22-0CD8-667DDBB4750D">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>281E2AE4-9CB1-C653-AF8C-4263D82F982C</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="building_building" id="D0E591E7-7A6E-4E9A-802C-A299C81652D5">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>E5674E68-21F2-0B77-9E2B-B643B5A31248</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="258ADA82-B5AA-B0CE-7FB8-0611273921A0" referredColumn="EB4F6A37-F792-3AF7-6388-A8AFB18D9A1A"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="0645ABBD-20B9-8B46-7896-71DE44369276" name="room_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>F35A8AC6-7958-AF9C-F6C4-91E8C90C353F</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5C8E559C-6043-8F86-DA50-D3A01CD13780"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="337943DD-4AF1-C930-2F2E-304B9133E925" name="classroom_building_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>FD1F4D8C-4F54-64DE-1CB8-F695B9D68E89</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D0E591E7-7A6E-4E9A-802C-A299C81652D5"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

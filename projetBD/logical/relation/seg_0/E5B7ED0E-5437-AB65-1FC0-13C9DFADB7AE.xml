@@ -1,0 +1,18 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="advior" directorySegmentName="seg_0" id="E5B7ED0E-5437-AB65-1FC0-13C9DFADB7AE">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 16:17:08 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>*</sourceCardinality>
+<sourceEntity>80349A38-5A9D-55A8-1BEE-62F23B59D8B7</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>DD0803E1-C296-D7CD-0833-C15AF9D9C9CB</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

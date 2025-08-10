@@ -1,0 +1,76 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="CCB1D7A3-BB7F-5C68-0174-F223EA8E1B3F" name="departement">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>467C4118-AEDB-72BE-8164-30384691168D</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="dept_name" id="0D93CD3D-B685-68C7-EB10-4444B10DB466">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>ACC76E25-B387-2019-319A-0EFE8B7199B5</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="budget" id="963177AE-4D80-A719-8D6A-F70C034303FB">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>3D3BEABA-45D0-347D-0F4A-439535251E6B</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="building_building" id="31FE6434-ED3B-9648-E8BA-1FA552ACF46D">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>93A44278-1A37-8463-EEA0-91766D62FEDD</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="22A4EF6E-61F4-EE3A-5C0A-A264C8B3C974" referredColumn="EB4F6A37-F792-3AF7-6388-A8AFB18D9A1A"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="96ABB49A-B801-65FC-F27D-B8DBEB10F021" name="departement_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>0AA7633C-ACCB-37A4-4A51-4B6AC47F210A</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0D93CD3D-B685-68C7-EB10-4444B10DB466"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="AFC392B1-7C63-8CC3-432C-81FB10A3ECFF" name="departement_building_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>378E7BF1-E586-CAFF-DD48-5069C1B80A1C</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="31FE6434-ED3B-9648-E8BA-1FA552ACF46D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

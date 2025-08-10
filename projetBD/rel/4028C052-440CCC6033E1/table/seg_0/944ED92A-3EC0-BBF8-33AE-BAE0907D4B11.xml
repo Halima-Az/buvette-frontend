@@ -1,0 +1,178 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="944ED92A-3EC0-BBF8-33AE-BAE0907D4B11" name="section">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>9220404A-07F4-213E-3503-6AA63F26D0F9</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="sec_id" id="570DDF17-701B-9804-7EEA-2331A9FA9C8D">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>BA401E00-BBBB-3148-0574-28A7FE8F6397</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="sermester" id="C721437F-0290-B51D-7311-169B4884AF86">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>6D456973-40D2-F690-0C41-AE38C5F1E638</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="year" id="5A408FB0-F7EE-9961-6F4A-07C9A49CF9AB">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>F19ADD6F-6C27-6817-1D5A-E9A9E5E21F1B</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="classroom_room_number1" id="7BFFFF7C-DC02-9101-7A4B-190F4D2FA3B1">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 16:40:36 UTC</createdTime>
+<generatorID>5C2CD50D-798E-EA99-1E8B-0644AF4C8AC6</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="cours_cours_id" id="885796D2-712D-D1A7-94BB-A224488375B8">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 16:40:36 UTC</createdTime>
+<generatorID>320A9337-9962-1FE9-D638-62FC11263717</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="02D12448-BE18-F504-3402-9D825045E4F0" referredColumn="BF3DC51A-AAE6-00B7-2391-EF56F09C5857"/>
+</associations>
+</Column>
+<Column name="building_building" id="DAAB569B-0B5A-6EBD-93D7-C50EC97FDF28">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>B8DE639E-7AF5-743D-3166-219C2CA85D83</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="609FFFE0-C4BF-E8C5-C6D0-C12C7342DF7C" referredColumn="EB4F6A37-F792-3AF7-6388-A8AFB18D9A1A"/>
+</associations>
+</Column>
+<Column name="classroom_room_number" id="92D4F2B3-1996-A371-D844-C92B2F063C36">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>4F609A69-0E97-5322-E515-021E4EB956FD</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="F0551519-C31D-17C9-4E63-DAA3BD20A558" referredColumn="5C8E559C-6043-8F86-DA50-D3A01CD13780"/>
+</associations>
+</Column>
+<Column name="time_time_slot_id" id="4D58D11D-7D4C-4EA5-BE8E-62DBC924C63D">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-10 17:23:56 UTC</createdTime>
+<generatorID>630C6FA7-4280-A347-4D99-B6ADA24BA811</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="B91E0B16-64C6-FD86-EA57-2332AD2161E9" referredColumn="80DF7C44-EE17-8ECF-4548-DD7CF098786B"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="0801BEA8-5B7A-7DB2-91BD-5A3D95BB1D3E" name="section_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>DA91665D-7B45-3CBF-C92E-6E3CA26CDDCF</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="570DDF17-701B-9804-7EEA-2331A9FA9C8D"/>
+<colUsage columnID="885796D2-712D-D1A7-94BB-A224488375B8"/>
+<colUsage columnID="C721437F-0290-B51D-7311-169B4884AF86"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E51FD36C-3182-6E2B-D3DB-51CE87F3D218" name="section_cours_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 16:40:36 UTC</createdTime>
+<generatorID>DD801F82-C0AF-C152-9965-681B1595A431</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="885796D2-712D-D1A7-94BB-A224488375B8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="863944F4-978B-AE2A-7E54-88F8D7498C48" name="section_building_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>997A84A5-601B-820A-C46B-4EED221AEBB9</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DAAB569B-0B5A-6EBD-93D7-C50EC97FDF28"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DE571CE0-4A5D-5BE8-35E6-4AACD02BC519" name="section_classroom_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 21:09:45 UTC</createdTime>
+<generatorID>24AA84CF-3121-5F87-6C8C-5A065BD93581</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="92D4F2B3-1996-A371-D844-C92B2F063C36"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="A6F29D9E-EE87-5764-1EED-5935E9E67BE3" name="section_time_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-10 17:23:56 UTC</createdTime>
+<generatorID>0DE65710-2AB0-766C-8674-EC3D95806A9A</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4D58D11D-7D4C-4EA5-BE8E-62DBC924C63D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

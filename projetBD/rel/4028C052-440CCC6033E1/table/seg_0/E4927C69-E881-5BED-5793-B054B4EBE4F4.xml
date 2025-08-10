@@ -1,0 +1,89 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E4927C69-E881-5BED-5793-B054B4EBE4F4" name="cours">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>E5F3938C-8BF0-AFA9-26D0-AD88D905AD1E</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="cours_id" id="BF3DC51A-AAE6-00B7-2391-EF56F09C5857">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>9FE725E9-64E8-912B-7E3C-262983AFDBFD</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="title" id="B2EE1B22-E0B9-878B-1894-ACAC267432B7">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>D166D87F-3397-FDB6-7DA8-C2CF29338F2E</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="credits" id="7EE9C36D-B2BA-6FDF-14DD-61D016AAB4CD">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>2E781DD4-77F1-6D2B-AF89-81BA82326154</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="departement_dept_name" id="36C04B0F-89AF-41CB-8930-F648699444C1">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 16:43:14 UTC</createdTime>
+<generatorID>615D0120-E15D-1016-1DC3-D9A26888E6C0</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="CA445DD1-6E26-749D-1315-4B402A88BB06" referredColumn="0D93CD3D-B685-68C7-EB10-4444B10DB466"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="06CB1573-FCA0-26D9-89EE-1CA41D5B752A" name="cours_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>6D3EE768-55EB-71CE-5FC8-C8A2ED088C65</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BF3DC51A-AAE6-00B7-2391-EF56F09C5857"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1E99E873-9E3C-E1EE-5115-EA38F6C2EEB5" name="cours_departement_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 16:43:14 UTC</createdTime>
+<generatorID>83B2228C-510F-BE38-5654-B49B62376399</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="36C04B0F-89AF-41CB-8930-F648699444C1"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

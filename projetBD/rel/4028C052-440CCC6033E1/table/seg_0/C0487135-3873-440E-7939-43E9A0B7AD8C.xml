@@ -1,0 +1,121 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="C0487135-3873-440E-7939-43E9A0B7AD8C" name="takes">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:41:37 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<ordsAlias>takesv1</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="student_student_id" id="45A38406-277F-5F38-ED44-3FA4B0167A86">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:41:37 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="E0A11B57-C45D-7E6F-EEBE-3CAC2786E8BB" referredColumn="B8DAEFA0-D959-BE3C-1298-60913C4A8D1D"/>
+</associations>
+</Column>
+<Column name="section_sec_id" id="09A3E994-97D3-A795-C838-E9B88ED73796">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:41:37 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="BC06822D-FE69-74AF-D6B0-2C15515F781C" referredColumn="570DDF17-701B-9804-7EEA-2331A9FA9C8D"/>
+</associations>
+</Column>
+<Column name="section_cours_cours_id" id="A9AC35AE-1BF1-703A-47C5-571335A6B69F">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:41:37 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="BC06822D-FE69-74AF-D6B0-2C15515F781C" referredColumn="885796D2-712D-D1A7-94BB-A224488375B8"/>
+</associations>
+</Column>
+<Column name="grade" id="37063BC5-8549-5845-B2CC-2E257107E50F">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:41:37 UTC</createdTime>
+<generatorID>FB3C900F-DA02-0C05-F6FC-4638BFE29EC1</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<isRelationshipColumn>true</isRelationshipColumn>
+</Column>
+<Column name="section_sermester" id="BE295E1A-BDAE-9186-3FB9-723A04887E39">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:47:21 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="BC06822D-FE69-74AF-D6B0-2C15515F781C" referredColumn="C721437F-0290-B51D-7311-169B4884AF86"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="0A616B5F-F71B-E0AB-6699-5393774DDBE1" name="takesv1_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:41:37 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="45A38406-277F-5F38-ED44-3FA4B0167A86"/>
+<colUsage columnID="09A3E994-97D3-A795-C838-E9B88ED73796"/>
+<colUsage columnID="A9AC35AE-1BF1-703A-47C5-571335A6B69F"/>
+<colUsage columnID="BE295E1A-BDAE-9186-3FB9-723A04887E39"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="45CE1DEC-653E-041B-5E9A-E9D2C8CD2699" name="takesv1_student_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:41:37 UTC</createdTime>
+<generatorID>22038014-8BF7-17CD-C8D8-C4CC92013158</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="45A38406-277F-5F38-ED44-3FA4B0167A86"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B12C34BF-C026-D0AD-7282-AF94CC505C35" name="takesv1_section_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:41:37 UTC</createdTime>
+<generatorID>22038014-8BF7-17CD-C8D8-C4CC92013158</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="09A3E994-97D3-A795-C838-E9B88ED73796"/>
+<colUsage columnID="A9AC35AE-1BF1-703A-47C5-571335A6B69F"/>
+<colUsage columnID="BE295E1A-BDAE-9186-3FB9-723A04887E39"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

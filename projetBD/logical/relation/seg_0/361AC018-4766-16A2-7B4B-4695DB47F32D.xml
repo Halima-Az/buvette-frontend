@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="avoir" directorySegmentName="seg_0" id="361AC018-4766-16A2-7B4B-4695DB47F32D">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:26:23 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<sourcePk>247C664A-ED42-8714-C1DD-B36B9900829E</sourcePk>
+<targetPk>0AA7633C-ACCB-37A4-4A51-4B6AC47F210A</targetPk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>*</sourceCardinality>
+<sourceEntity>80349A38-5A9D-55A8-1BEE-62F23B59D8B7</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>467C4118-AEDB-72BE-8164-30384691168D</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

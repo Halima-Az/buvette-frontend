@@ -1,0 +1,33 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="takes" directorySegmentName="seg_0" id="22038014-8BF7-17CD-C8D8-C4CC92013158">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:34:34 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>*</sourceCardinality>
+<sourceEntity>DD0803E1-C296-D7CD-0833-C15AF9D9C9CB</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>9220404A-07F4-213E-3503-6AA63F26D0F9</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<attribute name="grade" id="FB3C900F-DA02-0C05-F6FC-4638BFE29EC1">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-11 18:34:42 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</attribute>
+</attributes>
+</Relation>

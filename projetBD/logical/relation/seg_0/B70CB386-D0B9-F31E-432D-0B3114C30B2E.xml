@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="time_selot" directorySegmentName="seg_0" id="B70CB386-D0B9-F31E-432D-0B3114C30B2E">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-09 20:57:57 UTC</createdTime>
+<ownerDesignName>projetBD</ownerDesignName>
+<engineerTo>
+<item key="4028C052-78E0-6F9E-2208-440CCC6033E1" value="true"/>
+</engineerTo>
+<sourcePk>DB2D6204-9277-5160-F0A7-46278625075D</sourcePk>
+<targetPk>5BDBEDA7-E80B-2D02-4F5B-BE0E0B15BD7F</targetPk>
+<identifying>true</identifying>
+<optionalSource>false</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>*</sourceCardinality>
+<sourceEntity>6E20E8F4-A771-3D8E-C129-A67318009C51</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>3E8DC1AB-A54B-626E-D706-59C825DCB37A</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

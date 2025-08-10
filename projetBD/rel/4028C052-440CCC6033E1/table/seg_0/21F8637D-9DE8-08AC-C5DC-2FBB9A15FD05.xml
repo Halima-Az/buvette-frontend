@@ -1,0 +1,89 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="21F8637D-9DE8-08AC-C5DC-2FBB9A15FD05" name="instructor">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>80349A38-5A9D-55A8-1BEE-62F23B59D8B7</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID" id="AC65C180-ECE8-B7B8-5DDA-D34C7A10C801">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>E8DC59F7-3492-646B-F358-CB57C00B5769</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="name" id="E87EBF8C-93F4-13B1-1F4C-55358C200BAB">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>90AB07C9-492B-EB21-F5F9-ACACBE51956D</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="salary" id="C08F62DD-EFBA-B750-5833-D01E0F9E57DC">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>2DEC8FE3-E6E7-B649-714A-7548F2380C2A</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="departement_dept_name" id="A403AE89-0D27-6D6E-F34F-2547C3F2E3E9">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 16:40:36 UTC</createdTime>
+<generatorID>67CCC66D-57BE-1251-3577-D9B5F6704018</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="866BF08B-D529-640B-FD8F-7548A25421BA" referredColumn="0D93CD3D-B685-68C7-EB10-4444B10DB466"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="DCD3DC87-4909-64BF-B537-BC470FFA922C" name="instructor_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 15:49:32 UTC</createdTime>
+<generatorID>247C664A-ED42-8714-C1DD-B36B9900829E</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="AC65C180-ECE8-B7B8-5DDA-D34C7A10C801"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0B8F2562-6075-2327-DAB6-F6AC652F34A8" name="instructor_departement_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2024-11-08 16:40:36 UTC</createdTime>
+<generatorID>361AC018-4766-16A2-7B4B-4695DB47F32D</generatorID>
+<ownerDesignName>projetBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A403AE89-0D27-6D6E-F34F-2547C3F2E3E9"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

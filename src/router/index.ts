@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Landing from '@/views/Landing.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
-
 import Menu from '@/views/Menu.vue';
 import CartPage from '@/views/CardPage.vue';
 
@@ -14,13 +12,8 @@ const router = createRouter({
     // Public pages
     {
       path: '/',
-      name: 'Landing',
-      component: Landing,
-    },
-    {
-      path: '/login',
       name: 'login',
-      component: Login,
+      component: Login, // ✅ first page is login
     },
     {
       path: '/register',

@@ -39,7 +39,7 @@ const items = ref([]);
 // Fetch items on component mount
 onMounted(async () => {
   try {
-    const res = await fetch("http://localhost:8080/api/menu"); // adjust your endpoint
+    const res = await fetch("http://localhost:8088/api/menu"); // adjust your endpoint
     items.value = await res.json();
   } catch (err) {
     console.error("Failed to fetch menu items:", err);

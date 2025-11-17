@@ -1,22 +1,38 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Landing from '@/views/Landing.vue'
-import Login from '@/views/Login.vue'
-import Register from '@/views/Register.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+
+import Login from '@/views/Login.vue';
+import Register from '@/views/Register.vue';
+import Menu from '@/views/Menu.vue';
+import CartPage from '@/views/CardPage.vue';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+
   routes: [
+    // Public pages
+    {
+      path: '/',
+      name: 'login',
+      component: Login, // ✅ first page is login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register,
+    },
+
+    // Authenticated pages
     {
       path: '/home',
-      name: 'Landing',
-      component: Landing,
+      name: 'menu',
+      component: Menu,
     },
     {
-      path:'/login',
-      name:'login',
-      component:Login
+      path: '/cart',
+      name: 'cart',
+      component: CartPage,
     },
-    {path:'/register',name:'register',component:Register}
   ],
-})
+});
 
-export default router
+export default router;

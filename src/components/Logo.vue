@@ -1,9 +1,8 @@
 <template>
-
-        <img class="image" src="/img/sanckuplogo.png" alt="Snack Up">
-
+      
+        <img class="image" src="/images/sanckuplogo.png" alt="Snack Up">
+      
 </template>
-
 <script></script>
 <style>
 .image {

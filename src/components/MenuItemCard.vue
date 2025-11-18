@@ -158,6 +158,7 @@ function decrease() {
   justify-content: space-between;
   align-items: center;
   margin-top: 4px;
+ 
 }
 
 .price-info {
@@ -165,6 +166,7 @@ function decrease() {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
 }
 
 .price {
@@ -199,6 +201,7 @@ function decrease() {
   align-items: center;
   justify-content: center;
   transition: transform 0.15s;
+ 
 }
 
 .add-btn:active {

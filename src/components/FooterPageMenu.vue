@@ -66,7 +66,7 @@ function setActive(name) {
 }
 
 .icon {
-  font-size: 26px;
+  font-size: 20px;
 }
 
 /* red notification dot */

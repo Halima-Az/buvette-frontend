@@ -23,7 +23,7 @@
             </div>
             <button type="submit" class="btn">Submit</button>
             <p class="text-center mt-3">
-                Have you already an account? <a href="/" class="link">Sign in</a>
+                Have you already an account? <a href="/login" class="link">Sign in</a>
             </p>
         </form>
     </div>
@@ -45,22 +45,18 @@ const success = ref(false)
 const AddUser = async () => {
     errors.value = {};
     success.value = false;
-     if (!user.value.username || !user.value.email || !user.value.password) {
-        errors.value = {
-            username: !user.value.username ? "username required" : "",
-            email: !user.value.email ? "email required" : "",
-            password: !user.value.password ? "password required" : "",
-        };
-        return;
-    }
+    
+    
     try {
         await axios.post('http://localhost:8088/auth/register', user.value)
         success.value = true;
+        
         setTimeout(() => {
-            router.push('/home');
+            router.push('/login');
         }, 1000);
     } catch (err) {
         if (err.response && err.response.status === 400) {
+            console.log(err.response)
             errors.value = err.response.data;
         }
     }

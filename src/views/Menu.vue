@@ -11,13 +11,8 @@
 
     <!-- GRID -->
     <div class="grid">
-      <MenuItemCard
-        v-for="item in filteredItems"
-        :key="item.id"
-        :item="item"
-        @add="increaseCount"
-        @add-preference="togglePreference"
-      />
+      <MenuItemCard v-for="item in filteredItems" :key="item.id" :item="item" @add="increaseCount"
+        @add-preference="togglePreference" />
     </div>
   </div>
 
@@ -25,6 +20,7 @@
 </template>
 
 <script setup>
+import axios from "axios"
 import { ref, computed, onMounted } from "vue";
 import MenuItemCard from "../components/MenuItemCard.vue";
 import HeaderPage from "@/components/HeaderPageMenu.vue";
@@ -39,8 +35,8 @@ const items = ref([]);
 // Fetch items on component mount
 onMounted(async () => {
   try {
-    const res = await fetch("http://localhost:8088/api/menu"); // adjust your endpoint
-    items.value = await res.json();
+    const res = await axios.get("http://localhost:8088/api/menu");
+    items.value = res.data; // Axios stocke les données dans .data
   } catch (err) {
     console.error("Failed to fetch menu items:", err);
   }
@@ -65,11 +61,32 @@ function increaseCount(item) {
 }
 
 // Toggle favorite / preference
-function togglePreference(item) {
-  preferences.value.has(item.id)
-    ? preferences.value.delete(item.id)
-    : preferences.value.add(item.id);
+async function togglePreference(item) {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    if (preferences.value.has(item.id)) {
+      await axios.post(
+        "http://localhost:8088/favorites/delete",
+        { itemId: item.id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      preferences.value.delete(item.id);
+    } else {
+      await axios.post(
+        "http://localhost:8088/favorites/add",
+        { itemId: item.id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      preferences.value.add(item.id);
+    }
+  } catch (err) {
+    console.error("Erreur lors de la mise à jour des favoris:", err);
+  }
 }
+
+ 
 </script>
 
 <style scoped>
@@ -103,7 +120,7 @@ function togglePreference(item) {
 
 .search-bar:focus-within {
   box-shadow: 0 0 0 3px rgba(56, 181, 111, 0.25),
-              0 3px 12px rgba(0, 0, 0, 0.08);
+    0 3px 12px rgba(0, 0, 0, 0.08);
 }
 
 .icon {
@@ -120,7 +137,14 @@ function togglePreference(item) {
 
 /* ANIMATION */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

@@ -50,6 +50,7 @@ const AddUser = async () => {
     try {
         await axios.post('http://localhost:8088/auth/register', user.value)
         success.value = true;
+        
         setTimeout(() => {
             router.push('/login');
         }, 1000);

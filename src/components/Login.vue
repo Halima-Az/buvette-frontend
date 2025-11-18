@@ -2,20 +2,20 @@
     <div class="formContent">
         <p class="text-center signup">Sign In</p>
         <form @submit.prevent="login">
-            
+
             <div class="mb-3">
                 <label class="form-label">Email address</label>
                 <input type="email" class="form-control" v-model="email">
-                
+
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
                 <input type="password" class="form-control" v-model="password">
-                
+
             </div>
-           <div class="mb-3">
+            <div class="mb-3">
                 <p v-if="error" class="text-danger">{{ error }}</p>
-                
+
             </div>
             <button type="submit" class="btn">Submit</button>
             <p class="text-center mt-3">
@@ -29,14 +29,12 @@
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
-
 const router = useRouter();
 const email = ref('');
 const password = ref('');
 const error = ref(null);
 
 const login = async () => {
-    // validation
     if (!email.value || !password.value) {
         error.value = "Tous les champs sont obligatoires !";
         return;
@@ -47,17 +45,23 @@ const login = async () => {
             email: email.value,
             password: password.value,
         });
-        alert("Connexion réussie !");
-        router.push('/hello');
+
+        // maintenant res est défini, tu peux l'utiliser
+        localStorage.setItem("token", res.data.token);
+        axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.token;
+        
+        router.push('/home');
+
     } catch (err) {
         if (err.response && err.response.status === 401) {
             error.value = "Email ou mot de passe incorrect.";
         } else {
             error.value = "Erreur de connexion au backend.";
-            console.error(err); // works in browser
+            console.error(err);
         }
     }
 }
+
 </script>
 
 

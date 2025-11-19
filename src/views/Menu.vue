@@ -11,7 +11,8 @@
 
     <!-- GRID -->
     <div class="grid">
-      <MenuItemCard v-for="item in filteredItems" :key="item.id" :item="item" @add="increaseCount"
+      <MenuItemCard v-for="item in filteredItems" :key="item.id" :item="item"
+        @update-count="updateCart"
         @add-preference="togglePreference" />
     </div>
   </div>
@@ -55,10 +56,6 @@ const order = ref({});
 // Favorite / preference tracking
 const preferences = ref(new Set());
 
-// Increase count of item in order
-function increaseCount(item) {
-  order.value[item.id] = (order.value[item.id] || 0) + 1;
-}
 
 // Toggle favorite / preference
 async function togglePreference(item) {
@@ -86,7 +83,26 @@ async function togglePreference(item) {
   }
 }
 
- 
+async function updateCart({ item, count }) {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    const res = await axios.post(
+      "http://localhost:8088/cart/update",
+      { itemId: item.id, quantity: count },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    // Keep frontend in sync
+    localStorage.setItem("cart", JSON.stringify(res.data));
+  } catch (err) {
+    console.error("Error updating cart:", err);
+  }
+}
+
+
+
 </script>
 
 <style scoped>
@@ -148,3 +164,4 @@ async function togglePreference(item) {
   }
 }
 </style>
+

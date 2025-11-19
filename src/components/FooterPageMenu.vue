@@ -1,6 +1,6 @@
 <template>
   <nav class="bottom-nav">
-    <router-link to="/" class="nav-item" :class="{ active: active === 'home' }" @click="setActive('home')">
+    <router-link to="/home" class="nav-item" :class="{ active: active === 'home' }" @click="setActive('home')">
       <i class="icon">🏡</i>
     </router-link>
 

@@ -26,6 +26,7 @@ import { ref, computed, onMounted } from "vue";
 import MenuItemCard from "../components/MenuItemCard.vue";
 import HeaderPage from "@/components/HeaderPageMenu.vue";
 import FooterPage from "@/components/FooterPageMenu.vue";
+import { setCartCountFromCart } from "@/store/cartStore";
 
 // Search input
 const search = ref("");
@@ -88,20 +89,33 @@ async function updateCart({ item, count }) {
   if (!token) return;
 
   try {
-    const res = await axios.post(
+    // 1️⃣ Load existing cart from backend
+    const cartRes = await axios.get("http://localhost:8088/cart", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const cart = cartRes.data;
+
+    // 2️⃣ Check if item already exists
+    const existing = cart.find(c => c.itemId === item.id);
+
+    // 3️⃣ Compute correct final quantity
+    const finalQty = existing ? existing.quantity + count : count;
+
+    // 4️⃣ Push the updated quantity
+    const updateRes = await axios.post(
       "http://localhost:8088/cart/update",
-      { itemId: item.id, quantity: count },
+      { itemId: item.id, quantity: finalQty },
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
-    // Keep frontend in sync
-    localStorage.setItem("cart", JSON.stringify(res.data));
+    // 5️⃣ Update badge
+    setCartCountFromCart(updateRes.data);
+
   } catch (err) {
     console.error("Error updating cart:", err);
   }
 }
-
-
 
 </script>
 
@@ -112,6 +126,7 @@ async function updateCart({ item, count }) {
   min-height: 100vh;
   font-family: "Inter", sans-serif;
   animation: fadeIn 0.5s ease;
+  margin-bottom: 60px;
 }
 
 /* SEARCH BAR */

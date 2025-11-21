@@ -46,3 +46,9 @@ npm run build
 ```sh
 npm run lint
 ```
+
+
+
+CartPage :
+<img width="1894" height="806" alt="image" src="https://github.com/user-attachments/assets/4bdecf01-930e-4950-9365-ed89c708d712" />
+

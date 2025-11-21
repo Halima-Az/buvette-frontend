@@ -82,6 +82,9 @@ function decrease() {
   padding: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   transition: 0.25s ease;
+  display: flex;
+  flex-direction: column;
+
 }
 
 .card:hover {
@@ -93,6 +96,7 @@ function decrease() {
   position: relative;
   overflow: hidden;
   border-radius: 14px;
+  height: 130px;
 }
 
 .img {
@@ -150,6 +154,8 @@ function decrease() {
   font-weight: 600;
   font-size: 15px;
   text-align: left;
+  height: 40px;       /* consistent name block */
+  overflow: hidden;
 }
 
 /* Price + buttons row */
@@ -157,8 +163,7 @@ function decrease() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 4px;
- 
+  margin-top: auto;
 }
 
 .price-info {
@@ -201,7 +206,7 @@ function decrease() {
   align-items: center;
   justify-content: center;
   transition: transform 0.15s;
- 
+
 }
 
 .add-btn:active {

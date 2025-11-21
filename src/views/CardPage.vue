@@ -45,8 +45,11 @@ import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import HeaderPageMenu from "@/components/HeaderPageMenu.vue";
 import FooterPageMenu from "@/components/FooterPageMenu.vue";
+import { setCartCountFromCart } from "@/store/cartStore";
+
 
 const cartItems = ref([]);
+
 
 // Load cart on mount
 onMounted(async () => {
@@ -60,6 +63,8 @@ onMounted(async () => {
     });
 
     const rawCart = cartRes.data;   // [{itemId, quantity}]
+
+    setCartCountFromCart(rawCart);
 
     // 2️⃣ Get menu items to match names, images, price
     const menuRes = await axios.get("http://localhost:8088/api/menu");
@@ -99,6 +104,10 @@ async function updateQuantity(item, newQty) {
       { itemId: item.itemId, quantity: newQty },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+
+
+    // update badge count using backend updated cart
+    setCartCountFromCart(res.data);
 
     localStorage.setItem("cart", JSON.stringify(res.data));
   } catch (err) {

@@ -53,6 +53,7 @@ const login = async () => {
         router.push('/home');
 
     } catch (err) {
+         console.error(err);
         if (err.response && err.response.status === 401) {
             error.value = "Email ou mot de passe incorrect.";
         } else {

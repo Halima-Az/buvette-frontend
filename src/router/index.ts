@@ -7,6 +7,7 @@ import CartPage from '@/views/CardPage.vue'
 import Hello from '@/views/hello.vue'
 import { isAuthenticated } from "@/stores/auth";
 import Favorites from '@/views/Favorites.vue'
+import Profile from '@/views/Profile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,12 @@ const router = createRouter({
       path: '/home',
       name: 'menu',
       component: Menu,
+       meta:{ requiresAuth: true }
+    },
+     {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
        meta:{ requiresAuth: true }
     },
     {

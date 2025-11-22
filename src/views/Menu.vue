@@ -11,8 +11,11 @@
 
     <!-- GRID -->
     <div class="grid">
-      <MenuItemCard v-for="item in filteredItems" :key="item.id" :item="item" @add="increaseCount"
-        @add-preference="togglePreference" />
+      <MenuItemCard v-for="item in filteredItems" 
+      :key="item.id" :item="item"
+      :favorite="preferences.has(item.id)"
+         @update-count="increaseCount"
+         @add-preference="togglePreference" />
     </div>
   </div>
 
@@ -26,6 +29,8 @@ import MenuItemCard from "../components/MenuItemCard.vue";
 import HeaderPage from "@/components/HeaderPageMenu.vue";
 import FooterPage from "@/components/FooterPageMenu.vue";
 
+// Favorite / preference tracking
+const preferences = ref(new Set());
 // Search input
 const search = ref("");
 
@@ -37,9 +42,13 @@ onMounted(async () => {
   try {
     const res = await axios.get("http://localhost:8088/api/menu");
     items.value = res.data; // Axios stocke les données dans .data
+ 
+    
   } catch (err) {
     console.error("Failed to fetch menu items:", err);
   }
+  
+  
 });
 
 // Filter items based on search input
@@ -52,13 +61,36 @@ const filteredItems = computed(() =>
 // Order counts
 const order = ref({});
 
-// Favorite / preference tracking
-const preferences = ref(new Set());
+
 
 // Increase count of item in order
 function increaseCount(item) {
   order.value[item.id] = (order.value[item.id] || 0) + 1;
 }
+// Fonction pour charger l'état des favoris
+async function loadFavorites() {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    const res = await axios.get("http://localhost:8088/favorites", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const favIds = res.data.map(f => f.id);
+    console.log(favIds)
+    preferences.value = new Set(favIds);
+     console.log(preferences.value)
+  } catch (err) {
+    console.error("Erreur en récupérant les favoris:", err);
+  }
+}
+
+// Charger au montage
+onMounted(() => {
+  loadFavorites();
+  
+});
 
 // Toggle favorite / preference
 async function togglePreference(item) {
@@ -66,27 +98,30 @@ async function togglePreference(item) {
   if (!token) return;
 
   try {
-    if (preferences.value.has(item.id)) {
+     if (preferences.value.has(item.id)) {
       await axios.post(
         "http://localhost:8088/favorites/delete",
         { itemId: item.id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       preferences.value.delete(item.id);
+
     } else {
       await axios.post(
         "http://localhost:8088/favorites/add",
         { itemId: item.id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      
       preferences.value.add(item.id);
+
     }
   } catch (err) {
-    console.error("Erreur lors de la mise à jour des favoris:", err);
+    console.error("Erreur toggle favorite:", err);
   }
 }
 
- 
+
 </script>
 
 <style scoped>

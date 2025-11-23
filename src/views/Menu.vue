@@ -14,7 +14,7 @@
       <MenuItemCard v-for="item in filteredItems" 
       :key="item.id" :item="item"
       :favorite="preferences.has(item.id)"
-         @update-count="increaseCount"
+         @update-count="updateCart"
          @add-preference="togglePreference" />
     </div>
   </div>

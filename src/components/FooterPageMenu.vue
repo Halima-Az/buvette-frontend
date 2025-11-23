@@ -55,7 +55,6 @@ import { useRoute } from "vue-router";
 import {ref,onMounted} from "vue";
 import axios from "axios";
 const route = useRoute();
-  import { ref } from 'vue';
 import { cartCount } from "@/store/cartStore";   // ⬅️ Import your global cart count
 
 const active = ref("home");

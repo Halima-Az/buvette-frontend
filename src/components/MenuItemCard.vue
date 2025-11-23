@@ -56,10 +56,13 @@ function togglePreference() {
 
 function increase() {
   count.value++;
+   emit("update-count", { item: props.item, count: count.value });
 }
 
 function decrease() {
-  if (count.value > 0) count.value--;
+   if (count.value > 0) {
+    count.value--;
+   emit("update-count", { item: props.item, count: count.value });}
 }
 </script>
 

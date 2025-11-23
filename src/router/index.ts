@@ -6,6 +6,7 @@ import Menu from '@/views/Menu.vue'
 import CardPage from '@/views/CardPage.vue'
 import Hello from '@/views/hello.vue'
 import Favorites from '@/views/Favorites.vue'
+import Profile from '@/views/Profile.vue'
 
 import { isAuthenticated } from "@/stores/auth";
 
@@ -36,6 +37,12 @@ const router = createRouter({
       name: 'home',
       component: Menu,
       meta: { requiresAuth: true }
+    },
+     {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
+       meta:{ requiresAuth: true }
     },
     {
       path: '/favorites',

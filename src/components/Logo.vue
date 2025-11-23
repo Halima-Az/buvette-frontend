@@ -1,6 +1,6 @@
 <template>
       
-        <img class="image" src="/images/sanckuplogo.png" alt="Snack Up">
+        <img class="image" src="/images/sanckuplogoRmbg.png" alt="Snack Up">
       
 </template>
 <script></script>

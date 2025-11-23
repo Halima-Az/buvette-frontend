@@ -3,7 +3,8 @@
     <router-link
       to="/home"
       class="nav-item"
-      :class="{ active: isActive('/home') }"
+      :class="{ active: active === 'home' }"
+      @click="setActive('home')"
     >
       <i class="fa-solid fa-house icon"></i>
     </router-link>
@@ -11,7 +12,8 @@
     <router-link
       to="/search"
       class="nav-item"
-      :class="{ active: isActive('/search') }"
+       :class="{ active: active === 'search' }"
+      @click="setActive('search')"
     >
       <i class="fa-solid fa-magnifying-glass icon"></i>
     </router-link>
@@ -19,7 +21,8 @@
     <router-link
       to="/cart"
       class="nav-item"
-      :class="{ active: isActive('/cart') }"
+       :class="{ active: active === 'cart' }"
+      @click="setActive('cart')"
     >
       <i class="fa-solid fa-cart-shopping icon"></i>
     </router-link>
@@ -27,7 +30,8 @@
     <router-link
       to="/favorites"
       class="nav-item"
-      :class="{ active: isActive('/favorites') }"
+      :class="{ active: active === 'favorites' }"
+      @click="setActive('favorites')"
     >
       <i class="fa-solid fa-heart icon"></i>
       <span v-if="favIds.length > 0" class="dot1"></span>
@@ -36,11 +40,13 @@
     <router-link
       to="/profile"
       class="nav-item profile"
-      :class="{ active: isActive('/profile') }"
+       :class="{ active: active === 'profile' }"
+      @click="setActive('profile')"
     >
       <i class="fa-solid fa-user icon"></i>
       <span class="dot"></span>
     </router-link>
+
   </nav>
 </template>
 
@@ -49,6 +55,10 @@ import { useRoute } from "vue-router";
 import {ref,onMounted} from "vue";
 import axios from "axios";
 const route = useRoute();
+  import { ref } from 'vue';
+import { cartCount } from "@/store/cartStore";   // ⬅️ Import your global cart count
+
+const active = ref("home");
 
 // Vérifie si la route actuelle correspond à l'onglet
 function isActive(path) {
@@ -72,6 +82,7 @@ async function loadFavorites() {
 
 onMounted(()=>loadFavorites())
 
+
 </script>
 
 <style scoped>
@@ -79,10 +90,8 @@ onMounted(()=>loadFavorites())
   position: fixed;
   bottom: 0;
   left: 0;
-
   width: 100%;
   height: 52px;
-
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -111,15 +120,21 @@ onMounted(()=>loadFavorites())
   font-size: 22px;
 }
 
-/* red notification dot */
-.dot {
-  width: 9px;
-  height: 9px;
-  background: #ff4d4f;
-  border-radius: 50%;
+/* BADGE STYLE */
+.badge {
   position: absolute;
-  top: -3px;
-  right: -3px;
+  top: -5px;
+  right: -10px;
+  background: #ff4d4f;
+  color: white;
+  font-size: 10px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .dot1 {
   width: 9px;

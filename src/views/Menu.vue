@@ -28,6 +28,7 @@ import { ref, computed, onMounted } from "vue";
 import MenuItemCard from "../components/MenuItemCard.vue";
 import HeaderPage from "@/components/HeaderPageMenu.vue";
 import FooterPage from "@/components/FooterPageMenu.vue";
+import { setCartCountFromCart } from "@/store/cartStore";
 
 // Favorite / preference tracking
 const preferences = ref(new Set());
@@ -121,6 +122,38 @@ async function togglePreference(item) {
   }
 }
 
+async function updateCart({ item, count }) {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    // 1️⃣ Load existing cart from backend
+    const cartRes = await axios.get("http://localhost:8088/cart", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const cart = cartRes.data;
+
+    // 2️⃣ Check if item already exists
+    const existing = cart.find(c => c.itemId === item.id);
+
+    // 3️⃣ Compute correct final quantity
+    const finalQty = existing ? existing.quantity + count : count;
+
+    // 4️⃣ Push the updated quantity
+    const updateRes = await axios.post(
+      "http://localhost:8088/cart/update",
+      { itemId: item.id, quantity: finalQty },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    // 5️⃣ Update badge
+    setCartCountFromCart(updateRes.data);
+
+  } catch (err) {
+    console.error("Error updating cart:", err);
+  }
+}
 
 </script>
 
@@ -131,6 +164,7 @@ async function togglePreference(item) {
   min-height: 100vh;
   font-family: "Inter", sans-serif;
   animation: fadeIn 0.5s ease;
+  margin-bottom: 60px;
 }
 
 /* SEARCH BAR */
@@ -183,3 +217,4 @@ async function togglePreference(item) {
   }
 }
 </style>
+

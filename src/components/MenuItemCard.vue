@@ -70,12 +70,35 @@ function decrease() {
   padding: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   transition: 0.25s ease;
+  display: flex;
+  flex-direction: column;
+
 }
 .card:hover { transform: translateY(-3px); box-shadow: 0 4px 14px rgba(0,0,0,0.14); }
 
-.img-wrapper { position: relative; overflow: hidden; border-radius: 14px; }
-.img { width: 100%; height: 130px; border-radius: 14px; object-fit: cover; transition: transform 0.3s ease; }
-.card:hover .img { transform: scale(1.05); }
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+}
+
+.img-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  height: 130px;
+}
+
+.img {
+  width: 100%;
+  height: 130px;
+  border-radius: 14px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .img {
+  transform: scale(1.05);
+}
 
 .rating {
   position: absolute; top: 10px; left: 10px; background: #cc9333;
@@ -83,14 +106,46 @@ function decrease() {
 }
 
 .heart-btn {
-  position: absolute; top: 10px; right: 10px;
-  width: 30px; height: 30px; border-radius: 50%; border: none;
-  background: rgba(255,255,255,0.7); backdrop-filter: blur(4px); color: #e04e4e;
-  font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s ease;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(4px);
+  color: #e04e4e;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.heart-btn.active {
+  background: #ffe0e0;
+  box-shadow: 0 0 8px rgba(255,0,0,0.25);
+  transform: scale(1.12);
+}
+
+/* Name */
+.name {
+  margin: 10px 0 6px;
+  font-weight: 600;
+  font-size: 15px;
+  text-align: left;
+  height: 40px;       /* consistent name block */
+  overflow: hidden;
 }
 .heart-btn.active { background: #ffe0e0; box-shadow: 0 0 8px rgba(255,0,0,0.25); transform: scale(1.12); }
 
-.name { margin: 10px 0 6px; font-weight: 600; font-size: 15px; text-align: left; }
+/* Price + buttons row */
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
 
 .row { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
 
@@ -99,9 +154,25 @@ function decrease() {
 .total-price { color: #cc9333; }
 
 .add-btn {
-  margin-left: 30px; width: 100px; height: 34px; border-radius: 10px; border: none;
-  background: #c08b3e; color: white; font-size: 22px; font-weight: bold; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; transition: transform 0.15s;
+  margin-left: 30px;
+  width: 100px; /* Wider rectangular look */
+  height: 34px;
+  border-radius: 10px;
+  border: none;
+  background: #c08b3e; /* Golden Brown */
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s;
+
+}
+
+.add-btn:active {
+  transform: scale(0.95);
 }
 .add-btn:active { transform: scale(0.95); }
 

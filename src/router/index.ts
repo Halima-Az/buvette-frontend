@@ -3,11 +3,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import Menu from '@/views/Menu.vue'
-import CartPage from '@/views/CardPage.vue'
+import CardPage from '@/views/CardPage.vue'
 import Hello from '@/views/hello.vue'
-import { isAuthenticated } from "@/stores/auth";
 import Favorites from '@/views/Favorites.vue'
 import Profile from '@/views/Profile.vue'
+
+import { isAuthenticated } from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,7 +18,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'login',
-      component: Login, // ✅ first page is login
+      component: Login,
+    },
+    {
+      path: '/login',
+      name: 'login-page',
+      component: Login,
     },
     {
       path: '/register',
@@ -28,9 +34,9 @@ const router = createRouter({
     // Authenticated pages
     {
       path: '/home',
-      name: 'menu',
+      name: 'home',
       component: Menu,
-       meta:{ requiresAuth: true }
+      meta: { requiresAuth: true }
     },
      {
       path: '/profile',
@@ -40,34 +46,33 @@ const router = createRouter({
     },
     {
       path: '/favorites',
-      name: 'avorites',
+      name: 'favorites',
       component: Favorites,
-       meta:{ requiresAuth: true }
+      meta: { requiresAuth: true }
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login,
-    },
-    { path: '/register', name: 'register', component: Register },
-    { path: '/hello', name: 'hello', component: Hello },
-    
     {
       path: '/cart',
       name: 'cart',
-      component: CartPage,
+      component: CardPage,
+      meta: { requiresAuth: true }
     },
-  ],
+
+    // Dev page
+    {
+      path: '/hello',
+      name: 'hello',
+      component: Hello,
+    }
+  ]
 })
 
-// Guard : vérifie l'authentification avant d'entrer dans une route
+// 🔒 Navigation guard
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !isAuthenticated()) {
-    next("/login"); // redirige vers login si non connecté
+    next("/login");
   } else {
-    next(); // autorise la navigation
+    next();
   }
 });
-
 
 export default router

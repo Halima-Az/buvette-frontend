@@ -109,13 +109,14 @@ onMounted(fetchFavorites);
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    width:40%;
+    margin:0 auto
 }
 
 .empty-state i {
-    font-size: 42px;
-    color: #facc15;
-    /* gold */
-    margin-bottom: 16px;
+     color: #6b7280;
+    font-size: 48px;
+    margin-bottom: 20px;
     opacity: 0.9;
 }
 
@@ -140,12 +141,15 @@ onMounted(fetchFavorites);
     animation: fadeIn 0.8s ease;
 }
 
-@media (max-width:400px) {
+@media (max-width:700px) {
     .favorites-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 30px;
         animation: fadeIn 0.8s ease;
     }
+    .empty-state {
+    width:100%
+}
 }
 </style>

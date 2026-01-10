@@ -1,12 +1,17 @@
 <template>
-  <HeaderPageMenu title=""/>
+  <HeaderPageMenu title="" />
   <div class="cart-page">
     <h2 class="title">Your Cart</h2>
 
     <!-- EMPTY CART -->
-    <div v-if="cartItems.length === 0" class="empty">
-      <p>Your cart is empty 😢</p>
+    <div v-if="cartItems.length === 0" class="empty-cart">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <p class="empty-title">Your cart is empty</p>
+      <p class="empty-text">
+        You haven’t added any items to your cart yet.
+      </p>
     </div>
+
 
     <!-- CART ITEMS -->
     <div class="cart-list">
@@ -37,7 +42,7 @@
       <button class="checkout-btn">Checkout</button>
     </div>
   </div>
-  <FooterPageMenu/>
+  <FooterPageMenu />
 </template>
 
 <script setup>
@@ -122,7 +127,7 @@ const totalPrice = computed(() =>
 
 <style scoped>
 .cart-page {
-  padding: 10px 30px 180px ; 
+  padding: 10px 30px 180px;
   background: #f8f9fa;
   min-height: 100vh;
   font-family: "Segoe UI", Roboto, sans-serif;
@@ -137,7 +142,7 @@ const totalPrice = computed(() =>
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
+  background:
     radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 80% 80%, rgba(192, 139, 62, 0.15) 0%, transparent 50%);
   pointer-events: none;
@@ -157,28 +162,64 @@ const totalPrice = computed(() =>
 }
 
 @keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.empty {
+.empty-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 80px 40px;
-  font-size: 20px;
-  color: rgba(255, 255, 255, 0.9);
-  font-style: normal;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  max-width: 500px;
-  margin: 0 auto;
-  animation: fadeIn 0.8s ease;
+
+  padding: 80px 20px;
+  margin: 40px auto;
+
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+
+  max-width: 420px;
 }
+
+.empty-cart i {
+  font-size: 48px;
+  color: #9ca3af; /* gray */
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.empty-text {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .cart-list {
@@ -211,17 +252,32 @@ const totalPrice = computed(() =>
     opacity: 0;
     transform: translateX(-50px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
   }
 }
 
-.cart-item:nth-child(1) { animation-delay: 0.1s; }
-.cart-item:nth-child(2) { animation-delay: 0.2s; }
-.cart-item:nth-child(3) { animation-delay: 0.3s; }
-.cart-item:nth-child(4) { animation-delay: 0.4s; }
-.cart-item:nth-child(5) { animation-delay: 0.5s; }
+.cart-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.cart-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.cart-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.cart-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.cart-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
 
 .cart-item:hover {
   transform: translateY(-5px) scale(1.02);
@@ -291,7 +347,7 @@ const totalPrice = computed(() =>
 .counter button:hover {
   transform: scale(1.15) rotate(5deg);
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-  background:#ce971f;
+  background: #ce971f;
 }
 
 .counter button:active {
@@ -333,11 +389,13 @@ const totalPrice = computed(() =>
   z-index: 1000;
   animation: slideUp 0.6s ease 0.5s backwards;
 }
+
 @keyframes slideUp {
   from {
     opacity: 0;
     transform: translateY(100%);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -495,5 +553,3 @@ const totalPrice = computed(() =>
   }
 }
 </style>
-
-

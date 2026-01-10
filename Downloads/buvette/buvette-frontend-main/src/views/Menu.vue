@@ -4,10 +4,7 @@
     <HeaderPage />
 
     <!-- SEARCH BAR -->
-    <div class="search-bar">
-      <i class="icon">🔍</i>
-      <input type="text" placeholder="Search food..." v-model="search" />
-    </div>
+   <SearchBar v-model="search" placeholder="search food..."/>
 
     <!-- GRID -->
     <div class="grid">
@@ -17,9 +14,10 @@
          @update-count="updateCart"
          @add-preference="togglePreference" />
     </div>
+    <FooterPageMenu />
   </div>
 
-  <FooterPage />
+  
 </template>
 
 <script setup>
@@ -27,7 +25,8 @@ import axios from "axios"
 import { ref, computed, onMounted } from "vue";
 import MenuItemCard from "../components/MenuItemCard.vue";
 import HeaderPage from "@/components/HeaderPageMenu.vue";
-import FooterPage from "@/components/FooterPageMenu.vue";
+import SearchBar from "@/components/SearchBar.vue";
+import FooterPageMenu from "@/components/FooterPageMenu.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
 
 // Favorite / preference tracking
@@ -158,51 +157,28 @@ async function updateCart({ item, count }) {
 </script>
 
 <style scoped>
+ 
 /* PAGE BASE */
 .page {
   background: #f5f8f3;
   min-height: 100vh;
   font-family: "Inter", sans-serif;
   animation: fadeIn 0.5s ease;
-  margin-bottom: 60px;
+ padding-bottom: 100px;
 }
 
-/* SEARCH BAR */
-.search-bar {
-  display: flex;
-  align-items: center;
-  background: white;
-  border-radius: 14px;
-  padding: 10px 14px;
-  margin-bottom: 20px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.25s ease;
-}
 
-.search-bar input {
-  flex: 1;
-  border: none;
-  outline: none;
-  padding-left: 6px;
-  font-size: 15px;
-}
 
-.search-bar:focus-within {
-  box-shadow: 0 0 0 3px rgba(56, 181, 111, 0.25),
-    0 3px 12px rgba(0, 0, 0, 0.08);
-}
-
-.icon {
-  font-size: 18px;
-  opacity: 0.6;
-}
 
 /* AUTO-FIT GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 16px;
+  margin: 0 10px;
+ 
 }
+
 
 /* ANIMATION */
 @keyframes fadeIn {

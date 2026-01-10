@@ -13,6 +13,10 @@
       <!-- BADGE -->
       <span v-if="cartCount > 0" class="badge">{{ cartCount }}</span>
     </div>
+    <div class="card-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+
+
+
 
   </header>
 </template>
@@ -31,7 +35,8 @@ defineProps({
   align-items: center;
   justify-content: space-between;
   padding: 6px 14px;
-  background: #FFF8EC; /* warm cream */
+  background: #FFF8EC;
+  /* warm cream */
   box-shadow: 0 2px 6px rgba(138, 86, 35, 0.10);
   margin: 0;
 }
@@ -40,8 +45,11 @@ defineProps({
   width: 50px;
   height: 50px;
   object-fit: contain;
+  border-radius: 50%;
+  border: #ce971f 2px solid;
 }
-.logo:hover{
+
+.logo:hover {
   cursor: pointer;
 }
 
@@ -72,6 +80,7 @@ defineProps({
   transition: transform 0.2s ease, background 0.2s ease;
   font-size: 20px;
   color: #A9682A;
+  margin: 0 5px
 }
 
 .card-btn:hover {

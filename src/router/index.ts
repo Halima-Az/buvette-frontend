@@ -1,0 +1,78 @@
+import { createRouter, createWebHistory } from 'vue-router'
+
+import Login from '@/views/Login.vue'
+import Register from '@/views/Register.vue'
+import Menu from '@/views/Menu.vue'
+import CardPage from '@/views/CardPage.vue'
+import Hello from '@/views/hello.vue'
+import Favorites from '@/views/Favorites.vue'
+import Profile from '@/views/Profile.vue'
+
+import { isAuthenticated } from "@/stores/auth";
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+
+  routes: [
+    // Public pages
+    {
+      path: '/',
+      name: 'login',
+      component: Login,
+    },
+    {
+      path: '/login',
+      name: 'login-page',
+      component: Login,
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register,
+    },
+
+    // Authenticated pages
+    {
+      path: '/home',
+      name: 'home',
+      component: Menu,
+      meta: { requiresAuth: true }
+    },
+     {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
+       meta:{ requiresAuth: true }
+    },
+    {
+      path: '/favorites',
+      name: 'favorites',
+      component: Favorites,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: CardPage,
+      meta: { requiresAuth: true }
+    },
+
+    // Dev page
+    {
+      path: '/hello',
+      name: 'hello',
+      component: Hello,
+    }
+  ]
+})
+
+// 🔒 Navigation guard
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    next("/login");
+  } else {
+    next();
+  }
+});
+
+export default router

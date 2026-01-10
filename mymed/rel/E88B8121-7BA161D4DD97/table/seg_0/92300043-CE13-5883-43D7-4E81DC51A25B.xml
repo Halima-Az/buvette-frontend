@@ -1,0 +1,163 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="92300043-CE13-5883-43D7-4E81DC51A25B" name="Cabinet">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:14:12 UTC</createdTime>
+<generatorID>B0D64C35-B86D-F8B4-4C35-353AFC3B2D1E</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="5D1E4C6A-0876-2454-F654-EBFB6057F6CE">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:14:12 UTC</createdTime>
+<generatorID>A9DA26C9-FCC3-AA2C-74EE-245984EDA9E3</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nom" id="A72D5E37-A1B8-DB8A-96B6-0E7996143D69">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:14:12 UTC</createdTime>
+<generatorID>84ED2D5A-11C8-F387-5233-9356A91BD3FD</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="type" id="66BCEB69-E7AE-281E-EDAE-DD0676381077">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:14:12 UTC</createdTime>
+<generatorID>B385220D-3ED6-D9C3-CBBE-D285DE090D8D</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="address" id="FD1C6578-E4DB-E123-06D5-4B8A9C3CABAB">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:14:12 UTC</createdTime>
+<generatorID>85A934CC-6204-578B-6857-FA289829BB69</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT041</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="telephone" id="65DDAE71-6CB3-A2BE-795C-CDA72F8C42E9">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:14:12 UTC</createdTime>
+<generatorID>197F83C2-7043-4F58-78F2-76838406E24C</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="email" id="5DBCF522-CE1C-5BC9-B317-D9BF31CAA296">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:14:12 UTC</createdTime>
+<generatorID>2A347F8A-6057-D2A5-5200-5242842497BB</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Demande_id" id="70D67A4C-F078-4E9F-2774-A2BEF6B56994">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-10-07 18:34:11 UTC</createdTime>
+<generatorID>4DBC9569-152F-A392-83E2-7EEED6F08217</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="BF523B75-4327-2313-6AE6-8CFCF395A9D2" referredColumn="DAA8626E-1294-680B-1379-080CC693B35F"/>
+</associations>
+</Column>
+<Column name="utilisateur_id" id="8F7DEE41-AC9C-7C94-5BE8-9DE1428A35CA">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-10-07 19:10:28 UTC</createdTime>
+<generatorID>9E215269-45AE-3301-C2C6-02BF10E51713</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="359A870E-E60E-CE04-7458-497F23F41FC8" referredColumn="4A00BEDE-B07F-3985-2C7C-00F87E1B67B0"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="2E10EB32-DAE6-11D3-C437-E42F93AC7EF5" name="Cabinet_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>51FA6F8E-E5B3-7559-DB1F-D302A42371B7</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5D1E4C6A-0876-2454-F654-EBFB6057F6CE"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="6B9573E1-9547-0AA2-AD33-A482A4B163A2" name="Cabinet_id_UN">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:14:12 UTC</createdTime>
+<generatorID>CC92E53A-11FF-3C36-6E25-596DE2365A4D</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5D1E4C6A-0876-2454-F654-EBFB6057F6CE"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="98A6A5ED-CAB8-CD08-81C8-0D77348AF125" name="Cabinet_Demande_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-10-07 18:34:11 UTC</createdTime>
+<generatorID>8ADECC39-15D8-1BBE-726B-9DEB33371CD7</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="70D67A4C-F078-4E9F-2774-A2BEF6B56994"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5FA1D261-72EC-4D37-2589-B15830C33121" name="Cabinet_utilisateur_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-10-07 19:10:28 UTC</createdTime>
+<generatorID>CD07F3D4-6EC5-1B2F-3788-DFEBE91C8EE8</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8F7DEE41-AC9C-7C94-5BE8-9DE1428A35CA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

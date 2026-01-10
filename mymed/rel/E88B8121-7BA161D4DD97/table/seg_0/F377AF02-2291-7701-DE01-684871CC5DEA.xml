@@ -1,0 +1,127 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="F377AF02-2291-7701-DE01-684871CC5DEA" name="Ordonnance">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>4B9DBE65-068D-A05C-468E-07B617D16EF1</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="7BE246CC-AE44-EC46-2AED-18CE6F090D27">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>9DD50255-4236-66AE-1353-2FA21C7B2D16</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="date_creation" id="6717FE97-3D23-D70A-DBC9-0BAC0359F8AA">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>247C0B8D-F9AE-9BAF-77DD-BF6FB10571AB</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Medecin_id" id="26BFB23D-1656-5191-BE46-5A600C2AEE0E">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:31 UTC</createdTime>
+<generatorID>C20C17CB-91F5-5337-6DBD-FE772E964F2D</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="6501FC07-EB86-DF7F-6BC6-0EFEDD5918B0" referredColumn="51E54D03-0844-F428-FC57-9DF1D91958D4"/>
+</associations>
+</Column>
+<Column name="Cabinet_id" id="FF125E63-7C6C-57BD-C314-04A47BBEC980">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:31 UTC</createdTime>
+<generatorID>AC40B222-C765-ED03-800C-5F950B2C1B5C</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="29EC9482-3E8D-BC37-9208-0EF90A585E38" referredColumn="5D1E4C6A-0876-2454-F654-EBFB6057F6CE"/>
+</associations>
+</Column>
+<Column name="Patient_id" id="D41EB95B-84DC-2A8A-7CBC-15272E7D5178">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:31 UTC</createdTime>
+<generatorID>86D6B76F-A151-AFB7-0685-87EBCA0CA7B0</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="5DEF2DDD-090B-6A02-A107-6F35DA0DB378" referredColumn="9FCF2098-AAAF-2469-950C-64C578620894"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="A5F4BC85-D109-FD0D-A191-41B3719B8B9B" name="Ordonnance_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>6537B902-8785-23F9-9ECF-934E3D5435D4</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="7BE246CC-AE44-EC46-2AED-18CE6F090D27"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="7B7C81AA-46BA-9FB7-68B8-738ABA29F1E6" name="Ordonnance_Cabinet_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:31 UTC</createdTime>
+<generatorID>FEF62CC7-992B-683F-E8EA-DD69F5EB4A85</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FF125E63-7C6C-57BD-C314-04A47BBEC980"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B91013B8-2C39-6924-3A70-DD619FF4081E" name="Ordonnance_Medecin_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:31 UTC</createdTime>
+<generatorID>69F7DD53-62D3-2179-FAB0-60A91497DE63</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="26BFB23D-1656-5191-BE46-5A600C2AEE0E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="2E264F13-D1AC-75A6-9D34-07D95DD982D5" name="Ordonnance_Patient_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:31 UTC</createdTime>
+<generatorID>EB861D21-3753-1214-80B2-B3A6F45CF2BF</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D41EB95B-84DC-2A8A-7CBC-15272E7D5178"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

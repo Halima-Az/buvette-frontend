@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="suivrepatient" directorySegmentName="seg_0" id="83CF72B6-F78D-D19B-BDF5-43CEAE0FAE3C">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:18:54 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<sourcePk>A66CC97A-ADBE-ADCD-D5AE-C79E157B931A</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>6932A492-7D17-4A76-EB26-6C7107579742</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>5751A2B6-B70E-4B5C-FD66-9D20AECD9881</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

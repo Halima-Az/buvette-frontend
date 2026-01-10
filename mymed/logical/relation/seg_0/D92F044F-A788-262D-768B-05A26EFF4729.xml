@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="cat_medicament" directorySegmentName="seg_0" id="D92F044F-A788-262D-768B-05A26EFF4729">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-10-07 14:52:41 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<sourcePk>C2421D1D-017C-1C2B-626E-0B5955F4277D</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>C703360F-D1FD-CD07-F4DF-FFD0DF1610A9</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>2C299C12-48BC-4FD8-3180-FE2E1E4CB568</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="patientordonnance" directorySegmentName="seg_0" id="EB861D21-3753-1214-80B2-B3A6F45CF2BF">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:16:26 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<sourcePk>FDBDA03E-37AE-C417-57E8-23F0E781C6AA</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>5751A2B6-B70E-4B5C-FD66-9D20AECD9881</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>4B9DBE65-068D-A05C-468E-07B617D16EF1</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

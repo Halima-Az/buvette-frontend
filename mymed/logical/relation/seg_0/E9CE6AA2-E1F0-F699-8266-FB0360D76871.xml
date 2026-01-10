@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="seancepaiement" directorySegmentName="seg_0" id="E9CE6AA2-E1F0-F699-8266-FB0360D76871">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:17:53 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<sourcePk>B843E9B0-8029-4A7E-1580-A0A2D5E63A4C</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>512EC8F4-0C06-4746-4443-15E8433E7C76</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>174AAC56-D833-C268-A2E8-A1014EBCD9E7</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

@@ -1,0 +1,140 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="D2EF9994-80D1-37E0-86E4-B0083CA87276" name="Patient">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>5751A2B6-B70E-4B5C-FD66-9D20AECD9881</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="9FCF2098-AAAF-2469-950C-64C578620894">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>36CB39BD-6E6F-30CF-C1A0-F268905A85A5</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nom" id="47A947BF-487C-0CC3-EA0D-2DCC47795328">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>5B4ECA2F-3B7B-33EA-81B8-06C231472C80</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="prenom" id="C199FFBB-26D4-7179-B473-EBE6AF7BF455">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>F605C9DB-61BA-9052-773F-459C17A4BBC6</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="cin" id="60DDE57D-765C-41AB-2D44-CDDF67FEB20E">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>8EA61BD7-9B9E-F2F2-AA51-3ECD4CCDF780</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="telephone" id="8B660143-2576-DE70-3B4E-F3B378210E21">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>481FAA9C-1C21-10F4-03A6-CD942AFBB40D</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="profession" id="A7D376A4-EFEC-BE44-6082-8EF323492D7C">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>415F9CBD-6E7C-2A4A-193D-7EA545DD15E1</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="age" id="143017FC-6D19-91B9-8245-85FD7BEF68C0">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>868ECF17-38DD-2ABE-9073-74FCF013A840</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Medecin_id" id="4741484E-AC32-F60B-3E9B-FEF8F4F72368">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:31 UTC</createdTime>
+<generatorID>71491C71-907C-4B1B-B037-7248FA0BD11B</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="C1494F5C-0D8D-97B2-A34B-73860F963128" referredColumn="51E54D03-0844-F428-FC57-9DF1D91958D4"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="8CFE9BF2-8F26-0350-AE53-9EDD79538F95" name="Patient_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>FDBDA03E-37AE-C417-57E8-23F0E781C6AA</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9FCF2098-AAAF-2469-950C-64C578620894"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="D5CFE447-29EF-0BEC-90AA-0BB354AD68B6" name="Patient_Medecin_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:31 UTC</createdTime>
+<generatorID>83CF72B6-F78D-D19B-BDF5-43CEAE0FAE3C</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4741484E-AC32-F60B-3E9B-FEF8F4F72368"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

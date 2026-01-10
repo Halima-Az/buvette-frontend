@@ -1,0 +1,101 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="4B9DBE65-068D-A05C-468E-07B617D16EF1" name="Ordonnance">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:59:19 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="9DD50255-4236-66AE-1353-2FA21C7B2D16">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:59:28 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="date_creation" id="247C0B8D-F9AE-9BAF-77DD-BF6FB10571AB">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:59:38 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id1" id="C20C17CB-91F5-5337-6DBD-FE772E964F2D">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:15:50 UTC</createdTime>
+<generatorID>69F7DD53-62D3-2179-FAB0-60A91497DE63</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<referedAttribute>C9F086C7-E753-5DAD-AE3D-B5DE059A0D04</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id2" id="AC40B222-C765-ED03-800C-5F950B2C1B5C">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:16:10 UTC</createdTime>
+<generatorID>FEF62CC7-992B-683F-E8EA-DD69F5EB4A85</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<referedAttribute>A9DA26C9-FCC3-AA2C-74EE-245984EDA9E3</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id3" id="86D6B76F-A151-AFB7-0685-87EBCA0CA7B0">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:16:26 UTC</createdTime>
+<generatorID>EB861D21-3753-1214-80B2-B3A6F45CF2BF</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<referedAttribute>36CB39BD-6E6F-30CF-C1A0-F268905A85A5</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="6537B902-8785-23F9-9ECF-934E3D5435D4" name="Ordonnance PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:59:37 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>9DD50255-4236-66AE-1353-2FA21C7B2D16</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

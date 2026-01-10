@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="appointmentsession" directorySegmentName="seg_0" id="E323F825-AEE8-5070-5F64-93546CE4CB60">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:21:19 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<sourcePk>F088D4F7-C210-A7A0-5171-0E1386FC5F24</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>1C187650-F293-53E8-3463-67DCE9A308BD</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>512EC8F4-0C06-4746-4443-15E8433E7C76</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

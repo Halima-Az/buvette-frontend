@@ -1,0 +1,100 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="B9AA848E-9209-819C-5B22-52A712C8BF17" name="Depense">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>04439F7B-E4CA-4F15-013D-BFA2D3C02F40</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="8F9A4E9E-B6BA-B91F-3563-FEB5443404BA">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>129D7C56-80F4-E2D8-4893-FB9BC5106246</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="titre" id="F34F9ADF-707A-2C17-B35C-820620117A6B">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>B82CC7C0-D2C5-D27C-DBAB-C71395AABD3D</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="montant" id="43EB42B7-072B-6B91-313C-F2EEB5E84801">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>50F49589-ED44-B38F-2C00-86DE08B3A44F</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT020</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="déscription" id="265D9371-E253-7671-3BCE-999621297CAB">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>F8808356-D1AF-0DF6-BC0B-C1AE11C22783</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Cabinet_id" id="FB4E5722-4A30-FECE-ACED-0516351DF931">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:31 UTC</createdTime>
+<generatorID>F0FFB3AD-93F3-D00A-E728-77A399901A28</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="9F93EC9A-0CB1-B3EE-9D62-760F9B718F7E" referredColumn="5D1E4C6A-0876-2454-F654-EBFB6057F6CE"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="3757F1E2-0E16-1098-37FB-270AAFB51EE7" name="Depense_PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:07:35 UTC</createdTime>
+<generatorID>D2614FB4-151B-294B-41E5-83F92A6917DD</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8F9A4E9E-B6BA-B91F-3563-FEB5443404BA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="259CEF22-8974-2A90-38B1-EC7C7211F25B" name="Depense_Cabinet_FK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:31 UTC</createdTime>
+<generatorID>CDF6362A-7216-6833-4993-C4937FB18923</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FB4E5722-4A30-FECE-ACED-0516351DF931"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

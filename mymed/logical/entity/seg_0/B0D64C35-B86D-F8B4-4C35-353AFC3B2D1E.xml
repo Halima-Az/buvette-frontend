@@ -1,0 +1,141 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="B0D64C35-B86D-F8B4-4C35-353AFC3B2D1E" name="Cabinet">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:07:17 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="A9DA26C9-FCC3-AA2C-74EE-245984EDA9E3">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:08:33 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nom" id="84ED2D5A-11C8-F387-5233-9356A91BD3FD">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:07:41 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="type" id="B385220D-3ED6-D9C3-CBBE-D285DE090D8D">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:09:06 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="address" id="85A934CC-6204-578B-6857-FA289829BB69">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:09:33 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT041</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="telephone" id="197F83C2-7043-4F58-78F2-76838406E24C">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:09:53 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="email" id="2A347F8A-6057-D2A5-5200-5242842497BB">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:10:28 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id1" id="9E215269-45AE-3301-C2C6-02BF10E51713">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-10-07 19:10:09 UTC</createdTime>
+<generatorID>CD07F3D4-6EC5-1B2F-3788-DFEBE91C8EE8</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<referedAttribute>A352EAAD-C509-E83B-38C5-4D6D786725FF</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="CC92E53A-11FF-3C36-6E25-596DE2365A4D" name="Key_1">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:11:14 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="false"/>
+</engineerTo>
+<newElementsIDs>A9DA26C9-FCC3-AA2C-74EE-245984EDA9E3</newElementsIDs>
+<usedAttributes>
+<attributeRef>A9DA26C9-FCC3-AA2C-74EE-245984EDA9E3</attributeRef>
+</usedAttributes>
+</identifier>
+<identifier id="51FA6F8E-E5B3-7559-DB1F-D302A42371B7" name="Cabinet PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:18:38 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>A9DA26C9-FCC3-AA2C-74EE-245984EDA9E3</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

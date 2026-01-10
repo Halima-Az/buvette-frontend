@@ -1,0 +1,87 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="174AAC56-D833-C268-A2E8-A1014EBCD9E7" name="paiement">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:57:42 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="24977D9C-D903-5F4B-DE35-85F2CC06BB1E">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:57:50 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="montant" id="5312F801-F4DE-EA04-F879-8589FBB360D7">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:58:02 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT020</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id1" id="C95EF126-BEB7-70ED-2F25-5F0E3320B0C9">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:17:53 UTC</createdTime>
+<generatorID>E9CE6AA2-E1F0-F699-8266-FB0360D76871</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<referedAttribute>626CDC57-D06F-AD2C-A8C6-D309A67272FD</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id2" id="57274B57-DBB4-10EB-04F9-298356B30B5A">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-10-07 14:55:01 UTC</createdTime>
+<generatorID>9331C541-A81A-B6F9-AF8C-29678CD73B09</generatorID>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<referedAttribute>A9DA26C9-FCC3-AA2C-74EE-245984EDA9E3</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="DDE08D2B-79DB-C66B-CE1A-0158221089AB" name="paiement PK">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 16:58:00 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>24977D9C-D903-5F4B-DE35-85F2CC06BB1E</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

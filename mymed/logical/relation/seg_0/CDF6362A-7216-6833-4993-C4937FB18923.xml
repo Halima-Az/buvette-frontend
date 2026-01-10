@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="depensecabinet" directorySegmentName="seg_0" id="CDF6362A-7216-6833-4993-C4937FB18923">
+<createdBy>ADmiN</createdBy>
+<createdTime>2025-08-10 17:24:02 UTC</createdTime>
+<ownerDesignName>mymed</ownerDesignName>
+<engineerTo>
+<item key="E88B8121-8BD3-4C82-FCA1-7BA161D4DD97" value="true"/>
+</engineerTo>
+<sourcePk>51FA6F8E-E5B3-7559-DB1F-D302A42371B7</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>B0D64C35-B86D-F8B4-4C35-353AFC3B2D1E</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>04439F7B-E4CA-4F15-013D-BFA2D3C02F40</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

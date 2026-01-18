@@ -136,8 +136,8 @@ async function updateCart({ item, count }) {
     // 2️⃣ Check if item already exists
     const existing = cart.find(c => c.itemId === item.id);
 
-    // 3️⃣ Compute correct final quantity
-    const finalQty = existing ? existing.quantity + count : count;
+    // 3️⃣ Use the count emitted from the card (fix + / -)
+    const finalQty = count;
 
     // 4️⃣ Push the updated quantity
     const updateRes = await axios.post(
@@ -153,6 +153,7 @@ async function updateCart({ item, count }) {
     console.error("Error updating cart:", err);
   }
 }
+
 
 </script>
 

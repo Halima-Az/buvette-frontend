@@ -7,6 +7,7 @@ import CardPage from '@/views/CardPage.vue'
 import Hello from '@/views/hello.vue'
 import Favorites from '@/views/Favorites.vue'
 import Profile from '@/views/Profile.vue'
+import Categorie from '@/views/Categories.vue'
 
 import { isAuthenticated } from "@/stores/auth";
 
@@ -62,7 +63,13 @@ const router = createRouter({
       path: '/hello',
       name: 'hello',
       component: Hello,
-    }
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: Categorie,
+      meta: { requiresAuth: true }
+    },
   ]
 })
 

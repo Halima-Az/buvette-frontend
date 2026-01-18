@@ -10,7 +10,7 @@
     </router-link>
 
     <router-link
-      to="/search"
+      to="/categories"
       class="nav-item"
        :class="{ active: active === 'search' }"
       @click="setActive('search')"

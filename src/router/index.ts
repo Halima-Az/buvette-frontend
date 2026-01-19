@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Login from '@/views/Login.vue'
-import Register from '@/views/Register.vue'
-import Menu from '@/views/Menu.vue'
-import CardPage from '@/views/CardPage.vue'
-import Hello from '@/views/hello.vue'
-import Favorites from '@/views/Favorites.vue'
-import Profile from '@/views/Profile.vue'
-import Categorie from '@/views/Categories.vue'
+import Login from '@/views/shared/Login.vue'
+import Register from '@/views/shared/Register.vue'
+import Menu from '@/views/client/Menu.vue'
+import CardPage from '@/views/client/CardPage.vue'
+import Hello from '@/views/shared/hello.vue'
+import Favorites from '@/views/client/Favorites.vue'
+import Profile from '@/views/shared/Profile.vue'
+import Categorie from '@/views/client/Categories.vue'
 
 import { isAuthenticated } from "@/stores/auth";
 

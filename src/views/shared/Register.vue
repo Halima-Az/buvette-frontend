@@ -15,8 +15,8 @@
 </template>
 
 <script setup>
-import Register from '@/components/Register.vue';
-import IllustrationPanel from '@/components/IllustrationPanel.vue';
+import Register from '@/components/shared/Register.vue';
+import IllustrationPanel from '@/components/client/IllustrationPanel.vue';
 import axios from 'axios';
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'

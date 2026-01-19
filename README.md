@@ -52,3 +52,18 @@ npm run lint
 CartPage :
 <img width="1894" height="806" alt="image" src="https://github.com/user-attachments/assets/4bdecf01-930e-4950-9365-ed89c708d712" />
 
+
+
+## Organisation:
+The frontend uses a Module-based structure to keep views and components manageable as the feature set grows.
+
+  src/modules/client/: Contains the customer-facing dashboard, menu, and cart views.
+
+  src/modules/employee/: Contains the staff-only dashboard and order management tools.
+
+  src/components/shared/: Common UI elements (Buttons, Inputs, Modals) used by both roles.
+
+  src/router/: Centralized routing with Navigation Guards to prevent unauthorized role access.
+
+  src/stores/: Role-specific Pinia stores (cartStore.js for clients, orderQueueStore.js for workers).
+

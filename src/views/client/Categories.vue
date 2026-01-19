@@ -66,9 +66,9 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import HeaderPageMenu from "@/components/HeaderPageMenu.vue";
-import FooterPageMenu from "@/components/FooterPageMenu.vue";
-import MenuItemCard from "@/components/MenuItemCard.vue";
+import HeaderPageMenu from "@/components/client/HeaderPageMenu.vue";
+import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
+import MenuItemCard from "@/components/client/MenuItemCard.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
 
 import axios from "axios";

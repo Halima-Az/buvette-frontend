@@ -48,8 +48,8 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
-import HeaderPageMenu from "@/components/HeaderPageMenu.vue";
-import FooterPageMenu from "@/components/FooterPageMenu.vue";
+import HeaderPageMenu from "@/components/client/HeaderPageMenu.vue";
+import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
 
 

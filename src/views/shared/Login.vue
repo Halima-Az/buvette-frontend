@@ -16,7 +16,7 @@
 
 <script setup>
 
-import IllustrationPanel from '@/components/IllustrationPanel.vue';
-import Login from '@/components/Login.vue';
+import IllustrationPanel from '@/components/client/IllustrationPanel.vue';
+import Login from '@/components/shared/Login.vue';
 
 </script>

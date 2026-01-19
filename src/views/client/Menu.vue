@@ -23,10 +23,10 @@
 <script setup>
 import axios from "axios"
 import { ref, computed, onMounted } from "vue";
-import MenuItemCard from "../components/MenuItemCard.vue";
-import HeaderPage from "@/components/HeaderPageMenu.vue";
-import SearchBar from "@/components/SearchBar.vue";
-import FooterPageMenu from "@/components/FooterPageMenu.vue";
+import MenuItemCard from "@/components/client/MenuItemCard.vue";
+import HeaderPage from "@/components/client/HeaderPageMenu.vue";
+import SearchBar from "@/components/client/SearchBar.vue";
+import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
 
 // Favorite / preference tracking

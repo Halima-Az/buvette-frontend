@@ -18,8 +18,8 @@ const router = createRouter({
     // Public pages
     {
       path: '/',
-      name: 'login',
-      component: Login,
+      name: 'landing page',
+      component: Hello,
     },
     {
       path: '/login',
@@ -59,11 +59,7 @@ const router = createRouter({
     },
 
     // Dev page
-    {
-      path: '/hello',
-      name: 'hello',
-      component: Hello,
-    },
+   
     {
       path: '/categories',
       name: 'categories',

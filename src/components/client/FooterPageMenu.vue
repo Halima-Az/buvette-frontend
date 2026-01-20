@@ -52,7 +52,7 @@ async function loadFavorites() {
   if (!token) return;
 
   try {
-    const res = await axios.get("http://localhost:8088/favorites", {
+    const res = await axios.get("http://localhost:8088/client/favorites", {
       headers: { Authorization: `Bearer ${token}` }
     });
 

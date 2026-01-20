@@ -73,7 +73,7 @@ async function loadFavorites() {
   if (!token) return;
 
   try {
-    const res = await axios.get("http://localhost:8088/favorites", {
+    const res = await axios.get("http://localhost:8088/client/favorites", {
       headers: { Authorization: `Bearer ${token}` }
     });
 
@@ -100,7 +100,7 @@ async function togglePreference(item) {
   try {
      if (preferences.value.has(item.id)) {
       await axios.post(
-        "http://localhost:8088/favorites/delete",
+        "http://localhost:8088/client/favorites/delete",
         { itemId: item.id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -108,7 +108,7 @@ async function togglePreference(item) {
 
     } else {
       await axios.post(
-        "http://localhost:8088/favorites/add",
+        "http://localhost:8088/client/favorites/add",
         { itemId: item.id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -127,7 +127,7 @@ async function updateCart({ item, count }) {
 
   try {
     // 1️⃣ Load existing cart from backend
-    const cartRes = await axios.get("http://localhost:8088/cart", {
+    const cartRes = await axios.get("http://localhost:8088/client/cart", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -141,7 +141,7 @@ async function updateCart({ item, count }) {
 
     // 4️⃣ Push the updated quantity
     const updateRes = await axios.post(
-      "http://localhost:8088/cart/update",
+      "http://localhost:8088/client/cart/update",
       { itemId: item.id, quantity: finalQty },
       { headers: { Authorization: `Bearer ${token}` } }
     );

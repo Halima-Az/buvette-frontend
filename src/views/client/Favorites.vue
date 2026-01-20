@@ -33,7 +33,7 @@ const fetchFavorites = async () => {
     if (!token) return;
 
     try {
-        const res = await axios.get("http://localhost:8088/favorites", {
+        const res = await axios.get("http://localhost:8088/client/favorites", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -50,7 +50,7 @@ const removeFavorite = async (itemId) => {
 
     try {
         await axios.post(
-            "http://localhost:8088/favorites/delete",
+            "http://localhost:8088/client/favorites/delete",
             { itemId: itemId },
             { headers: { Authorization: `Bearer ${token}` } }
         );

@@ -4,7 +4,7 @@
             <img class="logo" src="/images/sanckuplogo.png" alt="Snack Up">
             <p class="signup">Sign In</p>
         </div>
-        <form @submit.prevent="login">
+        <form @submit.prevent="finalLogin">
 
             <div class="mb-3">
                 <label class="form-label">Email address</label>
@@ -32,12 +32,13 @@
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { login } from "@/stores/auth";
 const router = useRouter();
 const email = ref('');
 const password = ref('');
 const error = ref(null);
 
-const login = async () => {
+const finalLogin = async () => {
     if (!email.value || !password.value) {
         error.value = "Tous les champs sont obligatoires !";
         return;
@@ -48,12 +49,17 @@ const login = async () => {
             email: email.value,
             password: password.value,
         });
+        login(res.data.token, res.data.role);
+        console.log(res.data.role)
 
-        // maintenant res est défini, tu peux l'utiliser
-        localStorage.setItem("token", res.data.token);
-        axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.token;
-
-        router.push('/home');
+        // Redirection selon rôle
+        if (res.data.role === "ROLE_WORKER") {
+            router.push("/serveur/home");
+        } else if (res.data.role === "ROLE_CLIENT") {
+            router.push("/home");
+        } else {
+            router.push("/"); // fallback
+        }
 
     } catch (err) {
         console.error(err);

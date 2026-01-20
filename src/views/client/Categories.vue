@@ -4,19 +4,10 @@
 
     <!-- CATEGORY STRIP -->
     <div :class="['category-strip', { collapsed: selectedCategory }]">
-      <div
-        v-for="c in categories"
-        :key="c.key"
-        class="category-card"
-        :class="{ active: selectedCategory === c.key }"
-        @click="selectCategory(c.key)"
-      >
+      <div v-for="c in categories" :key="c.key" class="category-card" :class="{ active: selectedCategory === c.key }"
+        @click="selectCategory(c.key)">
         <div class="img-wrapper">
-          <img
-            :src="c.image"
-            class="img"
-            @error="e => e.target.src = '/categories/default.png'"
-          />
+          <img :src="c.image" class="img" @error="e => e.target.src = '/categories/default.png'" />
         </div>
         <div class="info">
           <h2 class="name">{{ c.label }}</h2>
@@ -40,14 +31,9 @@
           <p class="product-count">{{ categoryProducts.length }} items available</p>
         </div>
         <div class="grid">
-          <MenuItemCard
-            v-for="p in categoryProducts"
-            :key="p.id"
-            :item="p"
-            :favorite="isFavorite(p.id)"
-            @update-count="updateCart"
-            @add-preference="toggleFavorite"
-          />
+          <MenuItemCard v-for="p in categoryProducts" :key="p.id" :item="p" :favorite="preferences.has(p.id)"
+            @update-count="updateCart" @add-preference="togglePreference" />
+
         </div>
       </div>
     </transition>
@@ -70,9 +56,10 @@ import HeaderPageMenu from "@/components/client/HeaderPageMenu.vue";
 import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
 import MenuItemCard from "@/components/client/MenuItemCard.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
+import { useFavorites } from "@/composables/client/useFavorites";
 
 import axios from "axios";
-
+const { preferences, loadFavorites, togglePreference } = useFavorites();
 const categories = ref([]);
 const selectedCategory = ref(null);
 const categoryProducts = ref([]);
@@ -124,7 +111,7 @@ async function updateCart({ item, count }) {
 
   try {
     // 1️⃣ Load existing cart from backend
-    const cartRes = await axios.get("http://localhost:8088/cart", {
+    const cartRes = await axios.get("http://localhost:8088/client/cart", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -138,7 +125,7 @@ async function updateCart({ item, count }) {
 
     // 4️⃣ Push the updated quantity
     const updateRes = await axios.post(
-      "http://localhost:8088/cart/update",
+      "http://localhost:8088/client/cart/update",
       { itemId: item.id, quantity: finalQty },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -173,6 +160,12 @@ function goBack() {
   selectedCategory.value = null;
   categoryProducts.value = [];
 }
+
+
+onMounted(() => {
+  loadFavorites();
+
+});
 </script>
 
 <style scoped>
@@ -223,7 +216,7 @@ function goBack() {
   padding: 20px;
   border-radius: 24px;
   cursor: pointer;
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.08),
     0 1px 3px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -235,7 +228,7 @@ function goBack() {
   background: linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%);
   border-color: #ffd699;
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 8px 30px rgba(192, 139, 62, 0.2),
     0 3px 10px rgba(192, 139, 62, 0.1);
 
@@ -244,7 +237,7 @@ function goBack() {
 
 .category-card:hover:not(.active) {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.12),
     0 2px 6px rgba(0, 0, 0, 0.06);
 }
@@ -446,6 +439,7 @@ function goBack() {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -456,6 +450,7 @@ function goBack() {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -466,26 +461,26 @@ function goBack() {
   .categories-page {
     padding: 16px 12px 80px;
   }
-  
+
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 16px;
   }
-  
+
   .selected-title {
     font-size: 24px;
   }
-  
+
   .category-card {
     padding: 16px;
     gap: 16px;
   }
-  
+
   .img-wrapper {
     width: 80px;
     height: 80px;
   }
-  
+
   .name {
     font-size: 20px;
   }
@@ -496,13 +491,13 @@ function goBack() {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 12px;
   }
-  
+
   .back-section {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
-  
+
   .back-btn {
     align-self: flex-start;
   }
@@ -581,5 +576,4 @@ function goBack() {
 .category-strip.collapsed .arrow {
   display: none;
 }
-
 </style>

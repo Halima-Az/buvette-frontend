@@ -1,6 +1,6 @@
 <template>
   <div class="illustration-panel">
-    <div class="content">
+    <div class="contentFirst">
       <h1>Welcome to SnackUp!</h1>
       <p>{{subtitle || 'hhhh'}}</p>
       <img src="/images/body.png" alt="SnackUp Illustration" class="imgsub"/>
@@ -16,8 +16,8 @@ const props=defineProps({
 </script>
 
 <style scoped>
+
 .illustration-panel {
-   /* Couleurs SnackUp */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,18 +28,18 @@ const props=defineProps({
   height: 100%;
 }
 
-.illustration-panel .content h1 {
+.illustration-panel .contentFirst h1 {
   font-size: 32px;
   margin-bottom: 15px;
   font-weight: 700;
 }
 
-.illustration-panel .content p {
+.illustration-panel .contentFirst p {
   font-size: 18px;
   margin-bottom: 20px;
 }
 
-.illustration-panel .content img {
+.illustration-panel .contentFirst img {
   max-width: 80%;
   height: auto;
   border-radius: 15px;

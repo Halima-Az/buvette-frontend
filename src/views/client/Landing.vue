@@ -13,8 +13,8 @@
 
 <script setup>
 
-import HeaderPage from '@/components/HeaderPage.vue'
-import FooterPage from '@/components/FooterPage.vue'
+import HeaderPage from '@/components/client/HeaderPage.vue'
+import FooterPage from '@/components/client/FooterPage.vue'
 </script>
 <style scoped>
 button {

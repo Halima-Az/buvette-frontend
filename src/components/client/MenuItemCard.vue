@@ -139,6 +139,7 @@ function decrease() {
   text-align: left;
   height: 40px;       /* consistent name block */
   overflow: hidden;
+  color:#cc9333
 }
 .heart-btn.active { background: #ffe0e0; box-shadow: 0 0 8px rgba(255,0,0,0.25); transform: scale(1.12); }
 

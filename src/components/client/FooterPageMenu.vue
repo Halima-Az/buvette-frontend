@@ -3,8 +3,6 @@
     <router-link
       to="/home"
       class="nav-item"
-      :class="{ active: active === 'home' }"
-      @click="setActive('home')"
     >
       <i class="fa-solid fa-house icon"></i>
     </router-link>
@@ -12,17 +10,14 @@
     <router-link
       to="/categories"
       class="nav-item"
-       :class="{ active: active === 'search' }"
-      @click="setActive('search')"
     >
-      <i class="fa-solid fa-magnifying-glass icon"></i>
+      <i class="fa-solid fa-layer-group icon"></i>
+
     </router-link>
 
     <router-link
       to="/cart"
       class="nav-item"
-       :class="{ active: active === 'cart' }"
-      @click="setActive('cart')"
     >
       <i class="fa-solid fa-cart-shopping icon"></i>
     </router-link>
@@ -30,8 +25,6 @@
     <router-link
       to="/favorites"
       class="nav-item"
-      :class="{ active: active === 'favorites' }"
-      @click="setActive('favorites')"
     >
       <i class="fa-solid fa-heart icon"></i>
       <span v-if="favIds.length > 0" class="dot1"></span>
@@ -40,8 +33,6 @@
     <router-link
       to="/profile"
       class="nav-item profile"
-       :class="{ active: active === 'profile' }"
-      @click="setActive('profile')"
     >
       <i class="fa-solid fa-user icon"></i>
       <span class="dot"></span>
@@ -55,21 +46,13 @@ import { useRoute } from "vue-router";
 import {ref,onMounted} from "vue";
 import axios from "axios";
 const route = useRoute();
-import { cartCount } from "@/store/cartStore";   // ⬅️ Import your global cart count
-
-const active = ref("home");
-
-// Vérifie si la route actuelle correspond à l'onglet
-function isActive(path) {
-  return route.path === path;
-}
 const favIds=ref([])
 async function loadFavorites() {
   const token = localStorage.getItem("token");
   if (!token) return;
 
   try {
-    const res = await axios.get("http://localhost:8088/favorites", {
+    const res = await axios.get("http://localhost:8088/client/favorites", {
       headers: { Authorization: `Bearer ${token}` }
     });
 
@@ -110,7 +93,7 @@ onMounted(()=>loadFavorites())
   transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease;
 }
 
-.nav-item.active {
+.router-link-exact-active{
   opacity: 1;
   color: #c08b3e; /* golden color */
 }

@@ -19,9 +19,9 @@
     <FooterPageMenu />
 </template>
 <script setup>
-import Favorite from '@/components/Favorite.vue';
-import FooterPageMenu from '@/components/FooterPageMenu.vue';
-import HeaderPageMenu from '@/components/HeaderPageMenu.vue';
+import Favorite from '@/components/client/Favorite.vue';
+import FooterPageMenu from '@/components/client/FooterPageMenu.vue';
+import HeaderPageMenu from '@/components/client/HeaderPageMenu.vue';
 import axios from "axios";
 import { ref, onMounted } from "vue";
 
@@ -33,7 +33,7 @@ const fetchFavorites = async () => {
     if (!token) return;
 
     try {
-        const res = await axios.get("http://localhost:8088/favorites", {
+        const res = await axios.get("http://localhost:8088/client/favorites", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -50,7 +50,7 @@ const removeFavorite = async (itemId) => {
 
     try {
         await axios.post(
-            "http://localhost:8088/favorites/delete",
+            "http://localhost:8088/client/favorites/delete",
             { itemId: itemId },
             { headers: { Authorization: `Bearer ${token}` } }
         );

@@ -4,33 +4,31 @@
     <HeaderPage />
 
     <!-- SEARCH BAR -->
-   <SearchBar v-model="search" placeholder="search food..."/>
+    <SearchBar v-model="search" placeholder="search food..." />
 
     <!-- GRID -->
     <div class="grid">
-      <MenuItemCard v-for="item in filteredItems" 
-      :key="item.id" :item="item"
-      :favorite="preferences.has(item.id)"
-         @update-count="updateCart"
-         @add-preference="togglePreference" />
+      <MenuItemCard v-for="item in filteredItems" :key="item.id" :item="item" :favorite="preferences.has(item.id)"
+        @update-count="updateCart" @add-preference="togglePreference" />
     </div>
     <FooterPageMenu />
   </div>
 
-  
+
 </template>
 
 <script setup>
 import axios from "axios"
 import { ref, computed, onMounted } from "vue";
-import MenuItemCard from "../components/MenuItemCard.vue";
-import HeaderPage from "@/components/HeaderPageMenu.vue";
-import SearchBar from "@/components/SearchBar.vue";
-import FooterPageMenu from "@/components/FooterPageMenu.vue";
+import MenuItemCard from "@/components/client/MenuItemCard.vue";
+import HeaderPage from "@/components/client/HeaderPageMenu.vue";
+import SearchBar from "@/components/client/SearchBar.vue";
+import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
+import { useFavorites } from "@/composables/client/useFavorites";
 
 // Favorite / preference tracking
-const preferences = ref(new Set());
+const { preferences, loadFavorites, togglePreference } = useFavorites();
 // Search input
 const search = ref("");
 
@@ -42,13 +40,13 @@ onMounted(async () => {
   try {
     const res = await axios.get("http://localhost:8088/api/menu");
     items.value = res.data; // Axios stocke les données dans .data
- 
-    
+
+
   } catch (err) {
     console.error("Failed to fetch menu items:", err);
   }
-  
-  
+
+
 });
 
 // Filter items based on search input
@@ -60,66 +58,18 @@ const filteredItems = computed(() =>
 
 // Order counts
 const order = ref({});
-
-
-
 // Increase count of item in order
 function increaseCount(item) {
   order.value[item.id] = (order.value[item.id] || 0) + 1;
-}
-// Fonction pour charger l'état des favoris
-async function loadFavorites() {
-  const token = localStorage.getItem("token");
-  if (!token) return;
-
-  try {
-    const res = await axios.get("http://localhost:8088/favorites", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
-    const favIds = res.data.map(f => f.id);
-    console.log(favIds)
-    preferences.value = new Set(favIds);
-     console.log(preferences.value)
-  } catch (err) {
-    console.error("Erreur en récupérant les favoris:", err);
-  }
 }
 
 // Charger au montage
 onMounted(() => {
   loadFavorites();
-  
+
 });
 
-// Toggle favorite / preference
-async function togglePreference(item) {
-  const token = localStorage.getItem("token");
-  if (!token) return;
 
-  try {
-     if (preferences.value.has(item.id)) {
-      await axios.post(
-        "http://localhost:8088/favorites/delete",
-        { itemId: item.id },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      preferences.value.delete(item.id);
-
-    } else {
-      await axios.post(
-        "http://localhost:8088/favorites/add",
-        { itemId: item.id },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      
-      preferences.value.add(item.id);
-
-    }
-  } catch (err) {
-    console.error("Erreur toggle favorite:", err);
-  }
-}
 
 async function updateCart({ item, count }) {
   const token = localStorage.getItem("token");
@@ -127,7 +77,7 @@ async function updateCart({ item, count }) {
 
   try {
     // 1️⃣ Load existing cart from backend
-    const cartRes = await axios.get("http://localhost:8088/cart", {
+    const cartRes = await axios.get("http://localhost:8088/client/cart", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -141,7 +91,7 @@ async function updateCart({ item, count }) {
 
     // 4️⃣ Push the updated quantity
     const updateRes = await axios.post(
-      "http://localhost:8088/cart/update",
+      "http://localhost:8088/client/cart/update",
       { itemId: item.id, quantity: finalQty },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -158,14 +108,13 @@ async function updateCart({ item, count }) {
 </script>
 
 <style scoped>
- 
 /* PAGE BASE */
 .page {
   background: #f5f8f3;
   min-height: 100vh;
   font-family: "Inter", sans-serif;
   animation: fadeIn 0.5s ease;
- padding-bottom: 100px;
+  padding-bottom: 100px;
 }
 
 
@@ -177,7 +126,7 @@ async function updateCart({ item, count }) {
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 16px;
   margin: 0 10px;
- 
+
 }
 
 
@@ -194,4 +143,3 @@ async function updateCart({ item, count }) {
   }
 }
 </style>
-

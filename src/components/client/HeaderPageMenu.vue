@@ -13,20 +13,28 @@
       <!-- BADGE -->
       <span v-if="cartCount > 0" class="badge">{{ cartCount }}</span>
     </div>
-    <div class="card-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
-
-
-
-
+    
+      <button @click="logoutFct" class="card-btn">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>  
+      </button>
   </header>
 </template>
 
 <script setup>
 import { cartCount } from "@/store/cartStore"; // <-- ADD THIS
-
+import { logout } from "@/stores/auth";
+import { useRouter } from "vue-router";
+const router = useRouter();
 defineProps({
   title: { type: String, default: "Home Page" }
 });
+
+function logoutFct(){
+  const confirmed=window.confirm("Are you sure you want to logout?");
+  if(!confirmed) return;
+  logout();
+ router.push("/login")
+}
 </script>
 
 <style scoped>

@@ -1,28 +1,31 @@
-// auth.ts
+// src/stores/auth.ts
+
 export function getToken(): string | null {
-    return localStorage.getItem("token");
+  return localStorage.getItem("token");
+}
+
+export function getRole(): string | null {
+  return localStorage.getItem("role");
 }
 
 export function isAuthenticated(): boolean {
-    const token = getToken();
-    if (!token) return false;
+  const token = getToken();
+  if (!token) return false;
 
-    try {
-        const tk=token.split('.')[1]
-        if(!tk) return false;
-        const payload = JSON.parse(window.atob(tk));
-        const now = Date.now() / 1000; // timestamp en secondes
-        return payload.exp > now;
-    } catch (error) {
-        console.error("Token invalide", error);
-        return false;
-    }
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.exp > Date.now() / 1000;
+  } catch {
+    return false;
+  }
 }
 
-export function login(token: string) {
-    localStorage.setItem("token", token);
+export function login(token: string, role: string) {
+  localStorage.setItem("token", token);
+  localStorage.setItem("role", role);
 }
 
 export function logout() {
-    localStorage.removeItem("token");
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
 }

@@ -1,5 +1,6 @@
 <template>
   <HeaderPageMenu title="" />
+
   <div class="cart-page">
     <h2 class="title">Your Cart</h2>
 
@@ -12,10 +13,15 @@
       </p>
     </div>
 
-
     <!-- CART ITEMS -->
-    <div class="cart-list">
+    <div v-else class="cart-list">
+      <!-- Select All -->
+      <div class="select-all">
+        <input type="checkbox" v-model="allSelected" /> Select All
+      </div>
+
       <div v-for="item in cartItems" :key="item.itemId" class="cart-item">
+        <input type="checkbox" v-model="item.selected" />
         <img :src="item.image" class="item-image" />
 
         <div class="details">
@@ -39,22 +45,37 @@
     <!-- FOOTER TOTAL -->
     <div v-if="cartItems.length > 0" class="summary">
       <p>Total: <strong>${{ totalPrice.toFixed(2) }}</strong></p>
-      <button class="checkout-btn">Checkout</button>
+      <button class="checkout-btn" @click="checkout">Checkout</button>
     </div>
   </div>
+
   <FooterPageMenu />
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import axios from "axios";
+import router from "@/router";
 import HeaderPageMenu from "@/components/client/HeaderPageMenu.vue";
 import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
 
-
 const cartItems = ref([]);
+const allSelected = ref(true);
 
+// Watch allSelected to toggle individual item selection
+watch(allSelected, val => {
+  cartItems.value.forEach(item => item.selected = val);
+});
+
+// Update allSelected if individual items change
+watch(
+  () => cartItems.value.map(i => i.selected),
+  (arr) => {
+    allSelected.value = arr.every(Boolean);
+  },
+  { deep: true }
+);
 
 // Load cart on mount
 onMounted(async () => {
@@ -66,16 +87,14 @@ onMounted(async () => {
     const cartRes = await axios.get("http://localhost:8088/client/cart", {
       headers: { Authorization: `Bearer ${token}` },
     });
-
-    const rawCart = cartRes.data;   // [{itemId, quantity}]
-
+    const rawCart = cartRes.data; // [{itemId, quantity}]
     setCartCountFromCart(rawCart);
 
-    // 2️⃣ Get menu items to match names, images, price
+    // 2️⃣ Get menu items
     const menuRes = await axios.get("http://localhost:8088/api/menu");
     const menuItems = menuRes.data;
 
-    // 3️⃣ Merge
+    // 3️⃣ Merge and add selected
     cartItems.value = rawCart.map(c => {
       const item = menuItems.find(m => m.id === c.itemId);
       return {
@@ -83,7 +102,8 @@ onMounted(async () => {
         quantity: c.quantity,
         name: item.name,
         price: item.price,
-        image: item.image
+        image: item.image,
+        selected: true
       };
     });
   } catch (err) {
@@ -91,13 +111,12 @@ onMounted(async () => {
   }
 });
 
-// Update item quantity (+ or -)
+// Update quantity (+ or -)
 async function updateQuantity(item, newQty) {
   const token = localStorage.getItem("token");
   if (!token) return;
 
   if (newQty <= 0) {
-    // Remove item locally
     cartItems.value = cartItems.value.filter(i => i.itemId !== item.itemId);
   } else {
     item.quantity = newQty;
@@ -110,22 +129,64 @@ async function updateQuantity(item, newQty) {
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
-
-    // update badge count using backend updated cart
     setCartCountFromCart(res.data);
-
     localStorage.setItem("cart", JSON.stringify(res.data));
   } catch (err) {
     console.error("Error updating cart:", err);
   }
 }
 
+// Total only for selected items
 const totalPrice = computed(() =>
-  cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  cartItems.value
+    .filter(item => item.selected)
+    .reduce((sum, item) => sum + item.price * item.quantity, 0)
 );
+
+// Checkout selected items
+async function checkout() {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  const selectedItems = cartItems.value
+    .filter(item => item.selected)
+    .map(item => ({ itemId: item.itemId, quantity: item.quantity }));
+
+  if (selectedItems.length === 0) {
+    alert("Please select at least one item to checkout.");
+    return;
+  }
+
+  try {
+    await axios.post(
+      "http://localhost:8088/client/orders",
+      { items: selectedItems },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    // Remove checked-out items from cart
+    cartItems.value = cartItems.value.filter(item => !item.selected);
+    setCartCountFromCart(cartItems.value.map(i => ({ itemId: i.itemId, quantity: i.quantity })));
+
+    router.push("/cart");
+  } catch (err) {
+    console.error("Checkout failed:", err);
+    alert("Failed to place order. Please try again.");
+  }
+}
 </script>
 
 <style scoped>
+/* Keep your existing styles; add this for the Select All */
+.select-all {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
 .cart-page {
   padding: 10px 30px 180px;
   background: #f8f9fa;
@@ -552,4 +613,38 @@ const totalPrice = computed(() =>
     height: 70px;
   }
 }
+/* ✅ Smooth selection feedback */
+.cart-item {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.cart-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #ce971f;
+  cursor: pointer;
+  transform: scale(1);
+  transition: transform 0.15s ease;
+}
+
+.cart-item input[type="checkbox"]:hover {
+  transform: scale(1.15);
+}
+
+/* Selected item highlight */
+.cart-item:has(input[type="checkbox"]:checked) {
+  background: rgba(255, 248, 230, 0.95);
+  box-shadow: 0 12px 35px rgba(206, 151, 31, 0.25);
+  border-color: rgba(206, 151, 31, 0.4);
+}
+
+/* Unselected items feel lighter */
+.cart-item:has(input[type="checkbox"]:not(:checked)) {
+  opacity: 0.75;
+}
+
 </style>

@@ -168,7 +168,7 @@ async function checkout() {
     cartItems.value = cartItems.value.filter(item => !item.selected);
     setCartCountFromCart(cartItems.value.map(i => ({ itemId: i.itemId, quantity: i.quantity })));
 
-    router.push("/cart");
+    router.push("/home");
   } catch (err) {
     console.error("Checkout failed:", err);
     alert("Failed to place order. Please try again.");

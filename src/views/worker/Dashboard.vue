@@ -35,31 +35,102 @@
                         <div class="badge-counter">{{ pendingOrders.length }} pending</div>
                     </div>
 
+                    <div class="order-tabs">
+                        <button 
+                            @click="activeTab = 'PENDING'" 
+                            :class="['tab-btn', { active: activeTab === 'PENDING' }]"
+                        >
+                            Pending ({{ pendingOrders.length }})
+                        </button>
+                        <button 
+                            @click="activeTab = 'PREPARING'" 
+                            :class="['tab-btn', { active: activeTab === 'PREPARING' }]"
+                        >
+                            Preparing ({{ preparingOrders.length }})
+                        </button>
+                    </div>
+
                     <div class="orders-list">
-                        <div v-for="(order, index) in pendingOrders" :key="order.id" class="order-card">
-                            <div class="order-header">
-                                <div class="order-id">
-                                    <p class="hash">
-                                        <span>#{{ index + 1 }}</span> {{ order.username }}
-                                    </p>
+                        <!-- PENDING ORDERS -->
+                        <div v-if="activeTab === 'PENDING'">
+                            <div v-for="(order, index) in pendingOrders" :key="order.id" class="order-card">
+                                <div class="order-header">
+                                    <div class="order-id">
+                                        <p class="hash">
+                                            <span>#{{ index + 1 }}</span> {{ order.username }}
+                                        </p>
+                                    </div>
+                                    <div class="order-time">{{ formatTime(order.createdAt) }}</div>
                                 </div>
-                                <div class="order-time">{{ order.createdAt.split("T")[1].substring(0, 5) }}</div>
-                            </div>
 
-                            <div class="order-items">
-                                <div v-for="item in order.items" :key="item.id" class="item-row">
-                                    <span class="item-name">{{ item.itemName }}</span>
-                                    <span class="item-quantity">×{{ item.quantity }}</span>
+                                <div class="order-items">
+                                    <div v-for="item in order.items" :key="item.id" class="item-row">
+                                        <span class="item-name">{{ item.itemName }}</span>
+                                        <span class="item-quantity">×{{ item.quantity }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="order-footer">
+                                    <div class="order-total">${{ order.total }}</div>
+                                    <div class="order-actions">
+                                        <button 
+                                            class="btn-start" 
+                                            @click="confirmOrder(order.id)"
+                                        >
+                                            <span class="action-icon">👨‍🍳</span>
+                                            Start Preparing
+                                        </button>
+                                        <button 
+                                            class="btn-cancel" 
+                                            @click="cancelOrder(order.id)"
+                                        >
+                                            <span class="action-icon">✕</span>
+                                            Cancel
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="order-footer">
-                                <div class="order-total">${{ order.total }}</div>
-                                <div class="order-actions">
-                                    <button class="btn-ready" @click="updateOrderStatus(order.id, 'READY')">✓
-                                        Ready</button>
-                                    <button class="btn-cancel" @click="updateOrderStatus(order.id, 'CANCELLED')">✕
-                                        Cancel</button>
+                        <!-- PREPARING ORDERS -->
+                        <div v-if="activeTab === 'PREPARING'">
+                            <div v-for="(order, index) in preparingOrders" :key="order.id" class="order-card">
+                                <div class="order-header">
+                                    <div class="order-id">
+                                        <p class="hash">
+                                            <span>#{{ index + 1 }}</span> {{ order.username }}
+                                        </p>
+                                    </div>
+                                    <div class="order-time">
+                                        Started: {{ formatTime(order.startedAt || order.updatedAt) }}
+                                    </div>
+                                </div>
+
+                                <div class="order-items">
+                                    <div v-for="item in order.items" :key="item.id" class="item-row">
+                                        <span class="item-name">{{ item.itemName }}</span>
+                                        <span class="item-quantity">×{{ item.quantity }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="order-footer">
+                                    <div class="order-total">${{ order.total }}</div>
+                                    <div class="order-actions">
+                                        <button 
+                                            class="btn-ready" 
+                                            @click="markAsReady(order.id)"
+                                        >
+                                            <span class="action-icon">✓</span>
+                                            Mark as Ready
+                                        </button>
+                                        <button 
+                                            class="btn-cancel" 
+                                            @click="cancelOrder(order.id)"
+                                        >
+                                            <span class="action-icon">✕</span>
+                                            Cancel
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -93,6 +164,7 @@
                             </span>
                             Ready for Pickup
                         </h2>
+                        <div class="badge-counter">{{ readyOrders.length }} ready</div>
                     </div>
                     <div class="ready-list">
                         <div v-for="(order, index) in readyOrders" :key="order.id" class="ready-item">
@@ -100,12 +172,39 @@
                                 <p class="ready-id">
                                     <span>#{{ index + 1 }}</span> {{ order.username }}
                                 </p>
-                                <div class="ready-time">Ready at {{ order.readyTime }}</div>
+                                <div class="ready-time">Ready at {{ formatTime(order.readyTime || order.updatedAt) }}</div>
                             </div>
-                            <button class="btn-notified">
-                                <span>✓</span>
-                                Notified
+                            <button 
+                                class="btn-delivered" 
+                                @click="markAsDelivered(order.id)"
+                            >
+                                <span class="action-icon">✓</span>
+                                Mark Delivered
                             </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recently Delivered -->
+                <div class="section-card delivered-orders" v-if="deliveredOrders.length > 0">
+                    <div class="card-header">
+                        <h2>
+                            <span class="icon">🚚</span>
+                            Recently Delivered
+                        </h2>
+                        <div class="badge-counter">{{ deliveredOrders.length }} delivered</div>
+                    </div>
+                    <div class="delivered-list">
+                        <div v-for="(order, index) in deliveredOrders.slice(0, 3)" :key="order.id" class="delivered-item">
+                            <div class="delivered-info">
+                                <p class="delivered-id">
+                                    <span>#{{ index + 1 }}</span> {{ order.username }}
+                                </p>
+                                <div class="delivered-time">Delivered at {{ formatTime(order.deliveredAt || order.updatedAt) }}</div>
+                            </div>
+                            <div class="delivered-status">
+                                <span class="status-badge delivered">✓ Delivered</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,55 +214,34 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 
 const orders = ref([])
-const pendingOrders = ref([])
-const readyOrders = ref([])
-const totalItemsNeeded = ref([])
-
+const activeTab = ref('PENDING')
 const currentTime = ref(
     new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 )
 
-//  Clock
-onMounted(() => {
-    setInterval(() => {
-        currentTime.value = new Date().toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit'
-        })
-    }, 60000)
-})
+// Computed properties for filtered orders
+const pendingOrders = computed(() => 
+    orders.value.filter(o => o.status === "PENDING")
+)
 
-// Load orders
-onMounted(async () => {
-    const token = localStorage.getItem("token")
-    if (!token) return
+const preparingOrders = computed(() => 
+    orders.value.filter(o => o.status === "PREPARING")
+)
 
-    try {
-        const res = await axios.get("http://localhost:8088/worker/orders", {
-            headers: { Authorization: `Bearer ${token}` },
-        })
+const readyOrders = computed(() => 
+    orders.value.filter(o => o.status === "READY")
+)
 
-        orders.value = res.data
+const deliveredOrders = computed(() => 
+    orders.value.filter(o => o.status === "DELIVERED")
+)
 
-        refreshLists()
-
-    } catch (err) {
-        console.error("Erreur chargement commandes", err)
-    }
-})
-
-//  Refresh all derived lists
-function refreshLists() {
-    pendingOrders.value = orders.value.filter(o => o.status === "PENDING")
-    readyOrders.value = orders.value.filter(o => o.status === "READY")
-
-
+const totalItemsNeeded = computed(() => {
     const map = {}
-
     pendingOrders.value
         .flatMap(o => o.items)
         .forEach(item => {
@@ -175,41 +253,153 @@ function refreshLists() {
             }
             map[item.itemName].quantity += item.quantity
         })
+    return Object.values(map)
+})
 
-    totalItemsNeeded.value = Object.values(map)
+// Clock
+onMounted(() => {
+    setInterval(() => {
+        currentTime.value = new Date().toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        })
+    }, 60000)
+})
+
+// Load orders
+const loadOrders = async () => {
+    const token = localStorage.getItem("token")
+    if (!token) return
+
+    try {
+        const res = await axios.get("http://localhost:8088/worker/orders", {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+
+        orders.value = res.data
+        console.log("Loaded orders:", orders.value)
+
+    } catch (err) {
+        console.error("Erreur chargement commandes", err)
+    }
 }
 
-// Update order status
-const updateOrderStatus = async (orderId, newStatus) => {
-    const token = localStorage.getItem("token")
+onMounted(() => {
+    loadOrders()
+    // Poll for new orders every 10 seconds
+    setInterval(loadOrders, 10000)
+})
 
+// Helper function to format time
+const formatTime = (dateString) => {
+    if (!dateString) return '--:--'
+    const date = new Date(dateString)
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+}
+
+// Confirm order (Start Preparing)
+const confirmOrder = async (orderId) => {
+    const token = localStorage.getItem("token")
+    
     try {
         await axios.put(
             `http://localhost:8088/worker/orders/${orderId}/status`,
-            { status: newStatus },
+            { 
+                status: "PREPARING",
+            },
             { headers: { Authorization: `Bearer ${token}` } }
         )
-
+        
+        // Update local order
         const order = orders.value.find(o => o.id === orderId)
-        if (!order) return
-
-        order.status = newStatus
-
-        if (newStatus === "READY") {
-            order.readyTime = new Date().toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit'
-            })
+        if (order) {
+            order.status = "PREPARING"
         }
-
-        refreshLists()
-
+        
     } catch (err) {
-        console.error("Erreur mise à jour statut", err)
+        console.error("Error starting order:", err)
+        alert("Failed to start order preparation")
+    }
+}
+
+// Mark as Ready
+const markAsReady = async (orderId) => {
+    const token = localStorage.getItem("token")
+    
+    try {
+        await axios.put(
+            `http://localhost:8088/worker/orders/${orderId}/status`,
+            { 
+                status: "READY",
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+        )
+        
+        // Update local order
+        const order = orders.value.find(o => o.id === orderId)
+        if (order) {
+            order.status = "READY"
+        }
+        
+    } catch (err) {
+        console.error("Error marking order as ready:", err)
+        alert("Failed to mark order as ready")
+    }
+}
+
+// Mark as Delivered
+const markAsDelivered = async (orderId) => {
+    const token = localStorage.getItem("token")
+    
+    try {
+        await axios.put(
+            `http://localhost:8088/worker/orders/${orderId}/status`,
+            { 
+                status: "DELIVERED",
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+        )
+        
+        // Update local order
+        const order = orders.value.find(o => o.id === orderId)
+        if (order) {
+            order.status = "DELIVERED"
+        }
+        
+    } catch (err) {
+        console.error("Error marking order as delivered:", err)
+        alert("Failed to mark order as delivered")
+    }
+}
+
+// Cancel order
+const cancelOrder = async (orderId) => {
+    const confirmed = window.confirm("Are you sure you want to cancel this order?")
+    if (!confirmed) return
+    
+    const token = localStorage.getItem("token")
+    
+    try {
+        await axios.put(
+            `http://localhost:8088/worker/orders/${orderId}/status`,
+            { 
+                status: "CANCELLED",
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+        )
+        
+        // Update local order
+        const order = orders.value.find(o => o.id === orderId)
+        if (order) {
+            order.status = "CANCELLED"
+        }
+        
+    } catch (err) {
+        console.error("Error cancelling order:", err)
+        alert("Failed to cancel order")
     }
 }
 </script>
-
 
 <style scoped>
 .dashboard {
@@ -282,6 +472,12 @@ const updateOrderStatus = async (orderId, newStatus) => {
     font-size: 14px;
 }
 
+.status-badge.delivered {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
 .status-dot {
     width: 8px;
     height: 8px;
@@ -312,12 +508,6 @@ const updateOrderStatus = async (orderId, newStatus) => {
     font-weight: 600;
     color: #d69d21;
     font-size: 14px;
-}
-
-.clock {
-    width: 25px;
-    height: 30px;
-    border-radius: 50%;
 }
 
 /* Content Layout */
@@ -362,10 +552,6 @@ const updateOrderStatus = async (orderId, newStatus) => {
     font-size: 35px;
 }
 
-.clock {
-    font-size: 20px;
-}
-
 .badge-counter {
     background: linear-gradient(135deg, #d69d21 0%, #eca50b 100%);
     color: white;
@@ -375,13 +561,44 @@ const updateOrderStatus = async (orderId, newStatus) => {
     font-weight: 700;
 }
 
+/* Order Tabs */
+.order-tabs {
+    display: flex;
+    padding: 0 25px;
+    border-bottom: 2px solid rgba(214, 157, 33, 0.1);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.tab-btn {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.tab-btn.active {
+    color: #d69d21;
+    border-bottom-color: #d69d21;
+    background: rgba(214, 157, 33, 0.05);
+}
+
+.tab-btn:hover:not(.active) {
+    color: #d69d21;
+    background: rgba(214, 157, 33, 0.05);
+}
+
 /* Orders List */
 .orders-list {
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-height: calc(100vh - 250px);
+    max-height: calc(100vh - 300px);
     overflow-y: auto;
 }
 
@@ -471,7 +688,10 @@ const updateOrderStatus = async (orderId, newStatus) => {
     gap: 10px;
 }
 
+/* Button Styles */
+.btn-start,
 .btn-ready,
+.btn-delivered,
 .btn-cancel {
     border: none;
     padding: 10px 20px;
@@ -480,6 +700,24 @@ const updateOrderStatus = async (orderId, newStatus) => {
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-icon {
+    font-size: 16px;
+}
+
+.btn-start {
+    background: linear-gradient(135deg, #d69d21 0%, #eca50b 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(214, 157, 33, 0.3);
+}
+
+.btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(214, 157, 33, 0.5);
 }
 
 .btn-ready {
@@ -491,6 +729,17 @@ const updateOrderStatus = async (orderId, newStatus) => {
 .btn-ready:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+}
+
+.btn-delivered {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-delivered:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
 }
 
 .btn-cancel {
@@ -512,7 +761,8 @@ const updateOrderStatus = async (orderId, newStatus) => {
 }
 
 .items-list,
-.ready-list {
+.ready-list,
+.delivered-list {
     padding: 15px 20px;
 }
 
@@ -539,16 +789,20 @@ const updateOrderStatus = async (orderId, newStatus) => {
     font-size: 14px;
 }
 
-.ready-item {
+.ready-item,
+.delivered-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px;
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.1) 100%);
     border-radius: 12px;
     margin-bottom: 12px;
-    border: 2px solid rgba(34, 197, 94, 0.2);
     transition: all 0.3s ease;
+}
+
+.ready-item {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.1) 100%);
+    border: 2px solid rgba(34, 197, 94, 0.2);
 }
 
 .ready-item:hover {
@@ -556,37 +810,28 @@ const updateOrderStatus = async (orderId, newStatus) => {
     border-color: #22c55e;
 }
 
-.ready-id {
+.delivered-item {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(29, 78, 216, 0.1) 100%);
+    border: 2px solid rgba(59, 130, 246, 0.2);
+}
+
+.delivered-item:hover {
+    transform: translateX(5px);
+    border-color: #3b82f6;
+}
+
+.ready-id,
+.delivered-id {
     font-weight: 700;
     color: #1a1a2e;
     font-size: 16px;
 }
 
-.ready-time {
+.ready-time,
+.delivered-time {
     color: #666;
     font-size: 13px;
     margin-top: 2px;
-}
-
-.btn-notified {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-    transition: all 0.3s ease;
-}
-
-.btn-notified:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.5);
 }
 
 /* Responsive */
@@ -634,11 +879,15 @@ const updateOrderStatus = async (orderId, newStatus) => {
 
     .order-actions {
         width: 100%;
+        flex-direction: column;
     }
 
+    .btn-start,
     .btn-ready,
+    .btn-delivered,
     .btn-cancel {
-        flex: 1;
+        width: 100%;
+        justify-content: center;
     }
 }
 
@@ -673,11 +922,10 @@ const updateOrderStatus = async (orderId, newStatus) => {
     content: "🕐";
     font-size: 20px;
 }
-/* ✅ Check */
-.icon-check::before {
-  content: "✓";
-  font-size: 18px;
-  font-weight: 700;
-}
 
+.icon-check::before {
+    content: "✓";
+    font-size: 18px;
+    font-weight: 700;
+}
 </style>

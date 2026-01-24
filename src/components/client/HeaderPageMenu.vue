@@ -3,7 +3,9 @@
     <img src="/img/SnackUpLogo.png" alt="logo" class="logo" @click="$router.push('/home')" />
 
     <h1 class="page-title">{{ title }}</h1>
-
+    <!-- 🔔 NOTIFICATION ICON -->
+    <NotificationBell />
+    
     <!-- CART BUTTON WITH BADGE -->
     <div class="cart-wrapper" @click="$router.push('/cart')">
       <button class="card-btn">
@@ -14,28 +16,34 @@
       <span v-if="cartCount > 0" class="badge">{{ cartCount }}</span>
     </div>
     
-      <button @click="logoutFct" class="card-btn">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>  
-      </button>
+    
+
+    <button @click="logoutFct" class="card-btn">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>  
+    </button>
   </header>
 </template>
 
 <script setup>
-import { cartCount } from "@/store/cartStore"; // <-- ADD THIS
-import { logout } from "@/stores/auth";
-import { useRouter } from "vue-router";
-const router = useRouter();
+import { cartCount } from "@/store/cartStore"
+import { logout } from "@/stores/auth"
+import { useRouter } from "vue-router"
+import NotificationBell from "@/components/client/NotificationBell.vue"
+
+const router = useRouter()
+
 defineProps({
   title: { type: String, default: "Home Page" }
-});
+})
 
-function logoutFct(){
-  const confirmed=window.confirm("Are you sure you want to logout?");
-  if(!confirmed) return;
-  logout();
- router.push("/login")
+function logoutFct() {
+  const confirmed = window.confirm("Are you sure you want to logout?")
+  if (!confirmed) return
+  logout()
+  router.push("/login")
 }
 </script>
+
 
 <style scoped>
 .header-page {

@@ -1,41 +1,64 @@
 <template>
-  <div class="content">
-  <div class=" row profile-container flex-end" v-if="user">
-    <!-- Header avec avatar -->
-    <div class="profile-header">
-      <div class="avatar">
-        {{ user.fname.charAt(0) }}{{ user.lname.charAt(0) }}
-      </div>
-      <h2 class="name">{{ user.fname }} {{ user.lname }}</h2>
-      <p class="role"><i class="fas fa-user-tag"></i> {{ user.role }}</p>
-    </div>
+  <div class="contentx">
+    <div class="container ">
+      <div class="row justify-content-center">
 
-    <!-- Infos utilisateur -->
-    <div class="profile-info">
-      <div class="info-item">
-        <i class="fas fa-user"></i>
-        <span class="label">Username:</span>
-        <span class="value">{{ user.username }}</span>
-      </div>
-      <div class="info-item">
-        <i class="fas fa-envelope"></i>
-        <span class="label">Email:</span>
-        <span class="value">{{ user.email }}</span>
-      </div>
-      <div class="info-item">
-        <i class="fas fa-calendar-alt"></i>
-        <span class="label">Date of Birth:</span>
-        <span class="value">{{ user.dob || 'Not provided' }}</span>
+        <!-- Left column : See Orders -->
+        <div class="col-12 col-md-3 seeOrders">
+          <button @click="goToMyOrders"> my orders</button>
+        </div>
+
+        <!-- Right column : Profile -->
+        <div class="col-12 col-md-9" v-if="user">
+          <div class="profile-container">
+
+            <!-- Header -->
+            <div class="profile-header">
+              <div class="avatar">
+                {{ user.fname.charAt(0) }}{{ user.lname.charAt(0) }}
+              </div>
+              <h2 class="name">{{ user.fname }} {{ user.lname }}</h2>
+              <p class="role">
+                <i class="fas fa-user-tag"></i> {{ user.role }}
+              </p>
+            </div>
+
+            <!-- User info -->
+            <div class="profile-info">
+              <div class="info-item">
+                <i class="fas fa-user"></i>
+                <span class="label">Username:</span>
+                <span class="value">{{ user.username }}</span>
+              </div>
+
+              <div class="info-item">
+                <i class="fas fa-envelope"></i>
+                <span class="label">Email:</span>
+                <span class="value">{{ user.email }}</span>
+              </div>
+
+              <div class="info-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span class="label">Date of Birth:</span>
+                <span class="value">{{ user.dob || 'Not provided' }}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
-</div>
 </template>
+
 
 <script setup>
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router =useRouter()
 const user = ref(null)
 
 onMounted(async () => {
@@ -50,21 +73,72 @@ onMounted(async () => {
     console.error("Erreur lors de la récupération de user:", err)
   }
 })
+
+const goToMyOrders =()=>{
+  router.push('/orders')
+}
 </script>
 
 <style>
+.contentx {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/body.png') !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
-  .content{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    background-image: url('/images/body4.png') !important;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
+.seeOrders {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+}
+
+.seeOrders button {
+  padding: 16px 36px 16px 44px;
+  background: linear-gradient(135deg, #cf961b 0%, #ce9e0f 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(170, 122, 17, 0.25);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.seeOrders button::before {
+  content: '📦';
+  font-size: 20px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.seeOrders button:hover::after {
+  transform: translateX(6px);
+}
+
+.seeOrders button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(170, 122, 17, 0.35);
+}
+
+.seeOrders button:active {
+  transform: translateY(-1px);
+}
 .profile-container {
   max-width: 800px;
   margin: 20px 60px;
@@ -76,7 +150,7 @@ onMounted(async () => {
   border: none;
   position: relative;
   margin-left: auto;
-  
+
 }
 
 .profile-container::before {
@@ -277,6 +351,7 @@ onMounted(async () => {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -287,7 +362,15 @@ onMounted(async () => {
   animation: fadeInUp 0.6s ease;
 }
 
-.info-item:nth-child(1) { animation: fadeInUp 0.6s ease 0.1s backwards; }
-.info-item:nth-child(2) { animation: fadeInUp 0.6s ease 0.2s backwards; }
-.info-item:nth-child(3) { animation: fadeInUp 0.6s ease 0.3s backwards; }
+.info-item:nth-child(1) {
+  animation: fadeInUp 0.6s ease 0.1s backwards;
+}
+
+.info-item:nth-child(2) {
+  animation: fadeInUp 0.6s ease 0.2s backwards;
+}
+
+.info-item:nth-child(3) {
+  animation: fadeInUp 0.6s ease 0.3s backwards;
+}
 </style>

@@ -32,25 +32,27 @@
 
       <div v-else class="notif-container">
         <ul class="notif-list">
-          <li v-for="notification in notifications" 
-              :key="notification.id"
-              :class="['notif-item', { unread: !notification.read }]"
-              @click="markAsRead(notification.id)">
-            
+          <li v-for="notification in notifications" :key="notification.id"
+            :class="['notif-item', { unread: !notification.read }]" @click="goToOrder(notification)">
+
             <div class="notif-icon" :class="getNotificationClass(notification.type)">
               <i :class="getNotificationIcon(notification.type)"></i>
             </div>
-            
+
             <div class="notif-content">
               <div class="notif-title">{{ notification.title }}</div>
               <div class="notif-message">{{ notification.message }}</div>
               <div class="notif-time">{{ formatTime(notification.createdAt) }}</div>
             </div>
-            
+
             <div v-if="!notification.read" class="unread-dot"></div>
           </li>
         </ul>
       </div>
+      <OrderPreview  :loadingOrder="loadingOrder"
+                      :showOrderDetails="showOrderDetails"
+                      :selectedOrder="selectedOrder"
+                      @close="closePreview"/>
     </div>
   </div>
 </template>
@@ -58,12 +60,21 @@
 <script setup>
 import { ref, onMounted, computed, onUnmounted } from 'vue'
 import axios from 'axios'
-
+import { useRouter } from 'vue-router'
+import OrderPreview from './OrderPreview.vue'
 const open = ref(false)
 const notifications = ref([])
 const loading = ref(false)
 const pollInterval = ref(null)
 
+
+const selectedOrder = ref(null)
+const showOrderDetails = ref(false)
+const loadingOrder = ref(false)
+
+
+
+const router = useRouter()
 // Get token from localStorage
 const getToken = () => {
   return localStorage.getItem('token')
@@ -78,7 +89,7 @@ const fetchNotifications = async () => {
     const response = await axios.get('http://localhost:8088/api/notifications', {
       headers: { Authorization: `Bearer ${token}` }
     })
-    
+
     notifications.value = response.data
   } catch (error) {
     console.error('Error fetching notifications:', error)
@@ -94,7 +105,7 @@ const fetchUnreadCount = async () => {
     const response = await axios.get('http://localhost:8088/api/notifications/unread-count', {
       headers: { Authorization: `Bearer ${token}` }
     })
-    
+
     return response.data.count || 0
   } catch (error) {
     console.error('Error fetching unread count:', error)
@@ -109,7 +120,7 @@ const markAsRead = async (notificationId) => {
     await axios.put(`http://localhost:8088/api/notifications/${notificationId}/read`, {}, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    
+
     // Update local state
     const notification = notifications.value.find(n => n.id === notificationId)
     if (notification) {
@@ -127,7 +138,7 @@ const markAllAsRead = async () => {
     await axios.put('http://localhost:8088/api/notifications/mark-all-read', {}, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    
+
     // Update local state
     notifications.value.forEach(n => n.read = true)
   } catch (error) {
@@ -138,7 +149,7 @@ const markAllAsRead = async () => {
 // Refresh notifications
 const refreshNotifications = async () => {
   if (loading.value) return
-  
+
   loading.value = true
   await fetchNotifications()
   loading.value = false
@@ -160,19 +171,19 @@ const closePanel = () => {
 // Format time
 const formatTime = (timestamp) => {
   if (!timestamp) return ''
-  
+
   const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp
   const now = new Date()
   const diffMs = now - date
   const diffMins = Math.floor(diffMs / 60000)
   const diffHours = Math.floor(diffMs / 3600000)
   const diffDays = Math.floor(diffMs / 86400000)
-  
+
   if (diffMins < 1) return 'Just now'
   if (diffMins < 60) return `${diffMins}m ago`
   if (diffHours < 24) return `${diffHours}h ago`
   if (diffDays < 7) return `${diffDays}d ago`
-  
+
   return date.toLocaleDateString()
 }
 
@@ -229,7 +240,7 @@ const stopPolling = () => {
 // Click outside directive
 const vClickOutside = {
   mounted(el, binding) {
-    el.clickOutsideEvent = function(event) {
+    el.clickOutsideEvent = function (event) {
       if (!(el === event.target || el.contains(event.target))) {
         binding.value()
       }
@@ -250,6 +261,32 @@ onMounted(() => {
 onUnmounted(() => {
   stopPolling()
 })
+
+
+// go to order detail
+const goToOrder = async (notification) => {
+  markAsRead(notification.id)
+
+  loadingOrder.value = true
+  showOrderDetails.value = true
+
+  try {
+    const token = localStorage.getItem('token')
+    const res = await axios.get(
+      `http://localhost:8088/client/orders/${notification.orderId}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    selectedOrder.value = res.data
+  } catch (e) {
+    selectedOrder.value = null
+  } finally {
+    loadingOrder.value = false
+  }
+}
+const closePreview = () => {
+  showOrderDetails.value = false
+  selectedOrder.value = null
+}
 </script>
 
 <style scoped>
@@ -308,7 +345,7 @@ onUnmounted(() => {
   max-height: 500px;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 12px 30px rgba(0,0,0,.15);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .15);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -372,11 +409,17 @@ onUnmounted(() => {
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.loading, .empty {
+.loading,
+.empty {
   text-align: center;
   padding: 30px 20px;
   color: #888;
@@ -517,4 +560,5 @@ onUnmounted(() => {
 .notif-container::-webkit-scrollbar-thumb:hover {
   background: #aaa;
 }
+
 </style>

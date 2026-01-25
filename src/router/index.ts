@@ -13,6 +13,7 @@ import Profile from "@/views/shared/Profile.vue";
 import Categorie from "@/views/client/Categories.vue";
 
 import Dashboard from "@/views/worker/Dashboard.vue";
+import OrderDetails from "@/views/client/OrderDetails.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,7 @@ const router = createRouter({
     { path: "/cart", name: "cart", component: CardPage, meta: { requiresAuth: true, role: "ROLE_CLIENT" } },
     { path: "/profile", name: "profile", component: Profile, meta: { requiresAuth: true } },
     { path: "/categories", name: "categories", component: Categorie, meta: { requiresAuth: true } },
+    {path:"/orders", name:"orderDetails",component:OrderDetails,meta: { requiresAuth: true, role: "ROLE_CLIENT"  }},
 
     // Worker
     { path: "/serveur/home", name: "serverHome", component: Dashboard, meta: { requiresAuth: true, role: "ROLE_WORKER" } },

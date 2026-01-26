@@ -15,6 +15,7 @@ import Categorie from "@/views/client/Categories.vue";
 import Dashboard from "@/views/worker/Dashboard.vue";
 import OrderDetails from "@/views/client/OrderDetails.vue";
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -24,7 +25,7 @@ const router = createRouter({
     { path: "/register", name: "register", component: Register },
 
     // Client
-    { path: "/home", name: "home", component: Menu, meta: { requiresAuth: true, role: "ROLE_CLIENT" } },
+    { path: "/home", name: "home", component: Menu, meta: { requiresAuth: true} },
     { path: "/favorites", name: "favorites", component: Favorites, meta: { requiresAuth: true, role: "ROLE_CLIENT" } },
     { path: "/cart", name: "cart", component: CardPage, meta: { requiresAuth: true, role: "ROLE_CLIENT" } },
     { path: "/profile", name: "profile", component: Profile, meta: { requiresAuth: true } },
@@ -33,6 +34,7 @@ const router = createRouter({
 
     // Worker
     { path: "/serveur/home", name: "serverHome", component: Dashboard, meta: { requiresAuth: true, role: "ROLE_WORKER" } },
+   
   ],
 });
 

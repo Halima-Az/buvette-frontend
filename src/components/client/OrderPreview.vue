@@ -2,7 +2,7 @@
     <div v-if="showOrderDetails" class="order-preview">
 
         <div class="preview-header">
-          <h3>Aperçu de la commande</h3>
+          <h3>Order preview</h3>
           <button @click="$emit('close')" class="close-btn">
             <i class="fas fa-times"></i>
           </button>
@@ -11,21 +11,21 @@
         <!-- Loading State -->
         <div v-if="loadingOrder" class="loading-state">
           <div class="spinner"></div>
-          <p>Chargement des détails...</p>
+          <p>loading...</p>
         </div>
 
         <div v-else-if="!selectedOrder" class="error-state">
           <div class="error-icon">
             <i class="fas fa-exclamation-circle"></i>
           </div>
-          <h4>Commande introuvable</h4>
-          <p>La commande demandée n'existe pas ou a été supprimée.</p>
+          <h4>Order not found</h4>
+          <p>The requested order not exist or has been deleted</p>
         </div>
 
         <div v-else class="preview-content">
           <div class="order-header-preview">
             <div class="order-number">
-              <span class="label">Commande</span>
+              <span class="label">Order</span>
               <span class="number">#{{ selectedOrder.orderCode}}</span>
             </div>
             <div :class="['status-pill', selectedOrder.status.toLowerCase()]">
@@ -68,7 +68,7 @@
                   </div>
                   <div class="item-info">
                     <span class="item-name">{{ item.itemName }}</span>
-                    <span class="item-quantity">Qté: {{ item.quantity }}</span>
+                    <span class="item-quantity">Qty: {{ item.quantity }}</span>
                   </div>
                 </div>
                 <div class="item-price" v-if="item.price">

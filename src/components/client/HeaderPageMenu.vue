@@ -2,12 +2,12 @@
   <header class="header-page">
     <img src="/img/SnackUpLogo.png" alt="logo" class="logo" @click="$router.push('/home')" />
 
-    <h1 class="page-title">{{ title }}</h1>
+    <h1 class="page-title" >{{ title }}</h1>
     <!-- 🔔 NOTIFICATION ICON -->
-    <NotificationBell />
+    <NotificationBell v-if="isClient" />
     
     <!-- CART BUTTON WITH BADGE -->
-    <div class="cart-wrapper" @click="$router.push('/cart')">
+    <div class="cart-wrapper" @click="$router.push('/cart')" v-if="isClient">
       <button class="card-btn">
         🛒
       </button>
@@ -29,12 +29,18 @@ import { cartCount } from "@/store/cartStore"
 import { logout } from "@/stores/auth"
 import { useRouter } from "vue-router"
 import NotificationBell from "@/components/client/NotificationBell.vue"
+import { computed } from "vue"
 
 const router = useRouter()
 
 defineProps({
   title: { type: String, default: "Home Page" }
 })
+
+const role= localStorage.getItem("role")
+const isWorker=computed(()=>role=='ROLE_WORKER')
+const isClient=computed(()=>role=="ROLE_CLIENT")
+
 
 function logoutFct() {
   const confirmed = window.confirm("Are you sure you want to logout?")

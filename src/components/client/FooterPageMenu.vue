@@ -2,10 +2,17 @@
   <nav class="bottom-nav">
     <router-link
       to="/home"
-      class="nav-item"
+      class="nav-item" v-if="isClient"
     >
       <i class="fa-solid fa-house icon"></i>
     </router-link>
+     <router-link
+      to="/serveur/home"
+      class="nav-item" v-if="isWorker"
+    >
+      <i class="fa-solid fa-house icon"></i>
+    </router-link>
+
 
     <router-link
       to="/categories"
@@ -15,16 +22,23 @@
 
     </router-link>
 
+     <router-link
+      to="/home"
+      class="nav-item" v-if="isWorker"
+    >
+      <i class="fa-solid fa-box icon"></i>
+
+    </router-link>
     <router-link
       to="/cart"
-      class="nav-item"
+      class="nav-item" v-if="isClient"
     >
       <i class="fa-solid fa-cart-shopping icon"></i>
     </router-link>
 
     <router-link
       to="/favorites"
-      class="nav-item"
+      class="nav-item" v-if="isClient"
     >
       <i class="fa-solid fa-heart icon"></i>
       <span v-if="favIds.length > 0" class="dot1"></span>
@@ -45,6 +59,7 @@
 import { useRoute } from "vue-router";
 import {ref,onMounted} from "vue";
 import axios from "axios";
+import { computed } from "vue";
 const route = useRoute();
 const favIds=ref([])
 async function loadFavorites() {
@@ -62,6 +77,9 @@ async function loadFavorites() {
   }
 }
 
+const role= localStorage.getItem("role")
+const isWorker=computed(()=>role=='ROLE_WORKER')
+const isClient=computed(()=>role=="ROLE_CLIENT")
 onMounted(()=>loadFavorites())
 
 

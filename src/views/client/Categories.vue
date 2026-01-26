@@ -1,8 +1,7 @@
 <template>
   <HeaderPageMenu title="" />
   <div class="categories-page">
-
-    <!-- CATEGORY STRIP -->
+  <!-- CATEGORY STRIP -->
     <div :class="['category-strip', { collapsed: selectedCategory }]">
       <div v-for="c in categories" :key="c.key" class="category-card" :class="{ active: selectedCategory === c.key }"
         @click="selectCategory(c.key)">
@@ -57,13 +56,17 @@ import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
 import MenuItemCard from "@/components/client/MenuItemCard.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
 import { useFavorites } from "@/composables/client/useFavorites";
-
+import { useRouter } from "vue-router";
 import axios from "axios";
 const { preferences, loadFavorites, togglePreference } = useFavorites();
 const categories = ref([]);
 const selectedCategory = ref(null);
 const categoryProducts = ref([]);
 const favorites = ref(new Set());
+const router = useRouter()
+const role = localStorage.getItem("role")
+const isWorker=computed(()=>role=="ROLE_WORKER")
+
 
 // Computed property for selected category label
 const selectedCategoryLabel = computed(() => {
@@ -169,6 +172,8 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+
 .categories-page {
   padding: 20px 16px 80px;
   background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);

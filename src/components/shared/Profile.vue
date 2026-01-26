@@ -4,7 +4,7 @@
       <div class="row justify-content-center">
 
         <!-- Left column : See Orders -->
-        <div class="col-12 col-md-3 seeOrders">
+        <div class="col-12 col-md-3 seeOrders" v-if="is_client">
           <button @click="goToMyOrders"> my orders</button>
         </div>
 
@@ -55,11 +55,14 @@
 
 <script setup>
 import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router =useRouter()
 const user = ref(null)
+
+const role = localStorage.getItem("role")
+const is_client=computed(()=>role=="ROLE_CLIENT")
 
 onMounted(async () => {
   const token = localStorage.getItem("token")

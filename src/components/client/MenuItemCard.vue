@@ -1,14 +1,13 @@
 <template>
   <div class="card">
+   
     <div class="img-wrapper">
-      <img :src="item.image" class="img" />
+      <!-- <img :src="item.image" class="img" /> -->
+      <img :src="`http://localhost:8088/${item.image}`" alt="item.name" class="img"/>
+
       <div class="rating">★ {{ item.rating }}</div>
 
-      <button
-        class="heart-btn"
-        :class="{ active: isFav }"
-        @click.stop="togglePreference"
-      >
+      <button v-if="isClient" class="heart-btn" :class="{ active: isFav }" @click.stop="togglePreference">
         ♥
       </button>
     </div>
@@ -20,20 +19,22 @@
         <p class="price" v-if="count === 0">${{ item.price.toFixed(2) }}</p>
         <p class="total-price" v-else>${{ (item.price * count).toFixed(2) }}</p>
       </div>
+      <div v-if="isClient">
 
-      <button v-if="count === 0" class="add-btn" @click.stop="increase">+</button>
+        <button v-if="count === 0" class="add-btn" @click.stop="increase">+</button>
 
-      <div v-else class="counter">
-        <button class="counter-btn" @click.stop="decrease">−</button>
-        <span class="count">{{ count }}</span>
-        <button class="counter-btn" @click.stop="increase">+</button>
+        <div v-else class="counter">
+          <button class="counter-btn" @click.stop="decrease">−</button>
+          <span class="count">{{ count }}</span>
+          <button class="counter-btn" @click.stop="increase">+</button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 const props = defineProps({
   item: Object,
@@ -50,20 +51,23 @@ function togglePreference() {
   isFav.value = !isFav.value;
   emit("add-preference", props.item);
 }
-
+const role = localStorage.getItem("role")
+const isClient = computed(() => role == "ROLE_CLIENT")
 
 
 
 function increase() {
   count.value++;
-   emit("update-count", { item: props.item, count: count.value });
+  emit("update-count", { item: props.item, count: count.value });
 }
 
 function decrease() {
-   if (count.value > 0) {
+  if (count.value > 0) {
     count.value--;
-   emit("update-count", { item: props.item, count: count.value });}
+    emit("update-count", { item: props.item, count: count.value });
+  }
 }
+
 </script>
 
 <style scoped>
@@ -71,17 +75,21 @@ function decrease() {
   background: #ffffff;
   border-radius: 16px;
   padding: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: 0.25s ease;
   display: flex;
   flex-direction: column;
 
 }
-.card:hover { transform: translateY(-3px); box-shadow: 0 4px 14px rgba(0,0,0,0.14); }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
 }
 
 .img-wrapper {
@@ -104,8 +112,15 @@ function decrease() {
 }
 
 .rating {
-  position: absolute; top: 10px; left: 10px; background: #cc9333;
-  padding: 3px 8px; border-radius: 10px; font-size: 12px; font-weight: bold; color: white;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #cc9333;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
 }
 
 .heart-btn {
@@ -116,7 +131,7 @@ function decrease() {
   height: 30px;
   border-radius: 50%;
   border: none;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(4px);
   color: #e04e4e;
   font-size: 16px;
@@ -127,7 +142,7 @@ function decrease() {
 
 .heart-btn.active {
   background: #ffe0e0;
-  box-shadow: 0 0 8px rgba(255,0,0,0.25);
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.25);
   transform: scale(1.12);
 }
 
@@ -137,11 +152,17 @@ function decrease() {
   font-weight: 600;
   font-size: 15px;
   text-align: left;
-  height: 40px;       /* consistent name block */
+  height: 40px;
+  /* consistent name block */
   overflow: hidden;
-  color:#cc9333
+  color: #cc9333
 }
-.heart-btn.active { background: #ffe0e0; box-shadow: 0 0 8px rgba(255,0,0,0.25); transform: scale(1.12); }
+
+.heart-btn.active {
+  background: #ffe0e0;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.25);
+  transform: scale(1.12);
+}
 
 /* Price + buttons row */
 .row {
@@ -151,19 +172,39 @@ function decrease() {
   margin-top: auto;
 }
 
-.row { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
 
-.price-info { display: flex; flex-direction: column; justify-content: center; }
-.price, .total-price { font-weight: bold; font-size: 15px; margin: 0; }
-.total-price { color: #cc9333; }
+.price-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.price,
+.total-price {
+  font-weight: bold;
+  font-size: 15px;
+  margin: 0;
+}
+
+.total-price {
+  color: #cc9333;
+}
 
 .add-btn {
   margin-left: 30px;
-  width: 100px; /* Wider rectangular look */
+  width: 100px;
+  /* Wider rectangular look */
   height: 34px;
   border-radius: 10px;
   border: none;
-  background: #c08b3e; /* Golden Brown */
+  background: #c08b3e;
+  /* Golden Brown */
   color: white;
   font-size: 22px;
   font-weight: bold;
@@ -178,17 +219,47 @@ function decrease() {
 .add-btn:active {
   transform: scale(0.95);
 }
-.add-btn:active { transform: scale(0.95); }
+
+.add-btn:active {
+  transform: scale(0.95);
+}
 
 .counter {
-  margin-left: 30px; width: 100px; height: 34px; display: flex; align-items: center;
-  justify-content: space-between; background: #fcf4e8; border-radius: 10px; padding: 0 4px;
+  margin-left: 30px;
+  width: 100px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fcf4e8;
+  border-radius: 10px;
+  padding: 0 4px;
 }
-.counter-btn { width: 26px; height: 26px; border-radius: 50%; border: none;
-  background: #c08b3e; color: white; font-size: 18px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; transition: transform 0.15s;
-}
-.counter-btn:active { transform: scale(0.85); }
 
-.count { font-size: 15px; font-weight: bold; width: auto; text-align: center; color: #333; }
+.counter-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: #c08b3e;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s;
+}
+
+.counter-btn:active {
+  transform: scale(0.85);
+}
+
+.count {
+  font-size: 15px;
+  font-weight: bold;
+  width: auto;
+  text-align: center;
+  color: #333;
+}
 </style>

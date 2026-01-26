@@ -20,7 +20,7 @@
             <!-- DÉTAILS -->
             <section class="order-details" v-if="selectedOrder">
                 <div class="order-header">
-                    <h2>Commande #{{ selectedOrder.orderCode }}</h2>
+                    <h2>Order #{{ selectedOrder.orderCode }}</h2>
                     <span class="status-badge" :class="selectedOrder.status.toLowerCase()">{{ getStatusLabel(selectedOrder.status) }}</span>
                 </div>
 
@@ -38,7 +38,7 @@
 
             <!-- ÉTAT VIDE -->
             <section class="order-details empty" v-else>
-                <p>Sélectionnez une commande</p>
+                <p>Select an order</p>
             </section>
         </div>
     </div>

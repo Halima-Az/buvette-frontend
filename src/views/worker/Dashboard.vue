@@ -1,4 +1,5 @@
 <template>
+<HeaderPageMenu/>
     <div class="dashboard">
         <!-- Header -->
         <div class="dashboard-header">
@@ -211,11 +212,14 @@
             </div>
         </div>
     </div>
+    <FooterPageMenu/>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
+import HeaderPageMenu from '@/components/client/HeaderPageMenu.vue'
+import FooterPageMenu from '@/components/client/FooterPageMenu.vue'
 
 const orders = ref([])
 const activeTab = ref('PENDING')

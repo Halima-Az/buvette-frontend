@@ -165,6 +165,7 @@ const toggle = () => {
 
 // Close panel when clicking outside
 const closePanel = () => {
+  if (showOrderDetails) return;
   open.value = false
 }
 
@@ -265,8 +266,16 @@ onUnmounted(() => {
 
 // go to order detail
 const goToOrder = async (notification) => {
+  // 1️⃣ Immediately mark as read locally for instant UI update
+  const notif = notifications.value.find(n => n.id === notification.id)
+  if (notif && !notif.read) {
+    notif.read = true
+  }
+
+  // 2️⃣ Send request to backend
   markAsRead(notification.id)
 
+  // 3️⃣ Show order details
   loadingOrder.value = true
   showOrderDetails.value = true
 
@@ -283,6 +292,8 @@ const goToOrder = async (notification) => {
     loadingOrder.value = false
   }
 }
+
+
 const closePreview = () => {
   showOrderDetails.value = false
   selectedOrder.value = null

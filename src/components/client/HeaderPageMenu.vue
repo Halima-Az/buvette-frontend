@@ -1,6 +1,6 @@
 <template>
   <header class="header-page">
-    <img src="/img/SnackUpLogo.png" alt="logo" class="logo" @click="$router.push('/home')" />
+    <img :src="`http://localhost:8088/img/sanckuplogo.png`" alt="logo" class="logo" @click="$router.push('/home')" />
 
     <h1 class="page-title" >{{ title }}</h1>
     <!-- 🔔 NOTIFICATION ICON -->

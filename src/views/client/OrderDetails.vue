@@ -1,5 +1,5 @@
 <template>
-    <HeaderPageMenu title="my orders" />
+    <HeaderPageMenu title="My Orders" />
     <div class="content">
         <div class="orders-page">
             <!-- LISTE DES COMMANDES -->

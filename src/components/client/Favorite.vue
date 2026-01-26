@@ -20,6 +20,9 @@
 
 
 <script setup>
+import CardPage from '@/views/client/CardPage.vue';
+import MenuItemCard from './MenuItemCard.vue';
+
 defineProps({
     item: Object
 })

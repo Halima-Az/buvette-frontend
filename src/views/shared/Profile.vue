@@ -1,5 +1,5 @@
 <template>
-    <HeaderPageMenu/>
+    <HeaderPageMenu title ="Profile"/>
     <Profile />
     <FooterPageMenu/>
 

@@ -40,6 +40,7 @@
               v-model:price="price" 
               v-model:rating="rating" 
               v-model:category="category"
+              v-model:available="available"
               :preview="preview" 
               @file-change="handleImage" 
               @submit="additem" 
@@ -51,7 +52,11 @@
 
     <div class="grid">
       <MenuItemCard v-for="item in filteredItems" :key="item.id" :item="item" :favorite="preferences.has(item.id)"
-        @update-count="updateCart" @add-preference="togglePreference" />
+        @update-count="updateCart" 
+        @add-preference="togglePreference" 
+        @invalidate-item="setAvailableFalse"
+        @validate-item="setAvailableTrue"
+      />
     </div>
     <FooterPageMenu />
   </div>
@@ -66,6 +71,7 @@ import SearchBar from "@/components/client/SearchBar.vue";
 import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
 import { useFavorites } from "@/composables/client/useFavorites";
+import { useMenuAvailability } from "@/composables/worker/useMenuAvailability";
 import { useRouter } from "vue-router";
 import AddItem from "@/components/worker/AddItem.vue";
 
@@ -111,6 +117,9 @@ const search = ref("");
 
 // Items fetched from backend
 const items = ref([]);
+
+//items state
+const { invalidate, validate } = useMenuAvailability();
 
 // Fetch items on component mount
 onMounted(async () => {
@@ -183,6 +192,7 @@ const additem = async () => {
   formData.append('price', price.value)
   formData.append('rating', rating.value)
   formData.append('itemCategory', category.value)
+  formData.append('available', available.value)
   formData.append('image', imageFile.value)
 
   try {
@@ -208,6 +218,15 @@ const additem = async () => {
     console.error(err)
   }
 }
+
+async function setAvailableFalse(item) {
+  invalidate(item);
+}
+
+async function setAvailableTrue(item) {
+  validate(item);
+}
+
 </script>
 
 <style scoped>

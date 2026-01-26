@@ -62,7 +62,10 @@ import axios from "axios";
 import { computed } from "vue";
 const route = useRoute();
 const favIds=ref([])
+
 async function loadFavorites() {
+  if (isWorker) return ;
+  
   const token = localStorage.getItem("token");
   if (!token) return;
 
@@ -80,8 +83,11 @@ async function loadFavorites() {
 const role= localStorage.getItem("role")
 const isWorker=computed(()=>role=='ROLE_WORKER')
 const isClient=computed(()=>role=="ROLE_CLIENT")
-onMounted(()=>loadFavorites())
-
+onMounted(() => {
+  if (isClient.value) {
+    loadFavorites();
+  }
+});
 
 </script>
 

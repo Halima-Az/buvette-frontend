@@ -1,5 +1,5 @@
 <template>
-  <HeaderPageMenu title="" />
+  <HeaderPageMenu title="Categoris" />
   <div class="categories-page">
   <!-- CATEGORY STRIP -->
     <div :class="['category-strip', { collapsed: selectedCategory }]">
@@ -29,9 +29,20 @@
         <div class="grid-header">
           <p class="product-count">{{ categoryProducts.length }} items available</p>
         </div>
-        <div class="grid">
+        <div class="grid" v-if="isWorker">
           <MenuItemCard v-for="p in categoryProducts" :key="p.id" :item="p" :favorite="preferences.has(p.id)"
-            @update-count="updateCart" @add-preference="togglePreference" />
+            @update-count="updateCart" 
+            @invalidate-item="setAvailableFalse"
+            @validate-item="setAvailableTrue"
+          />
+        </div>
+        <div class="grid" v-if="isClient">
+          <MenuItemCard v-for="p in categoryProducts" :key="p.id" :item="p" :favorite="preferences.has(p.id)"
+            @update-count="updateCart" 
+            @add-preference="togglePreference" 
+            @invalidate-item="setAvailableFalse"
+            @validate-item="setAvailableTrue"
+          />
 
         </div>
       </div>
@@ -56,6 +67,8 @@ import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
 import MenuItemCard from "@/components/client/MenuItemCard.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
 import { useFavorites } from "@/composables/client/useFavorites";
+import { useMenuAvailability } from "@/composables/worker/useMenuAvailability";
+
 import { useRouter } from "vue-router";
 import axios from "axios";
 const { preferences, loadFavorites, togglePreference } = useFavorites();
@@ -66,7 +79,9 @@ const favorites = ref(new Set());
 const router = useRouter()
 const role = localStorage.getItem("role")
 const isWorker=computed(()=>role=="ROLE_WORKER")
+const isClient=computed(()=> role =="ROLE_CLIENT")
 
+const { invalidate, validate } = useMenuAvailability();
 
 // Computed property for selected category label
 const selectedCategoryLabel = computed(() => {
@@ -169,6 +184,16 @@ onMounted(() => {
   loadFavorites();
 
 });
+
+async function setAvailableFalse(item) {
+  invalidate(item);
+  item.available = false;
+}
+
+async function setAvailableTrue(item) {
+  validate(item);
+  item.available = true;
+}
 </script>
 
 <style scoped>

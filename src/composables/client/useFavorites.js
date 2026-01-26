@@ -1,13 +1,17 @@
 // src/composables/useFavorites.js
-import { ref } from "vue";
+import { ref,computed } from "vue";
 import axios from "axios";
 
 export function useFavorites() {
   const preferences = ref(new Set());
+  
 
   // Charger les favoris depuis backend
   async function loadFavorites() {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    if (role === "ROLE_WORKER") return;
     if (!token) return;
 
     try {
@@ -15,8 +19,7 @@ export function useFavorites() {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      const favIds = res.data.map(f => f.id);
-      preferences.value = new Set(favIds);
+      preferences.value = new Set(res.data.map(f => f.id));
     } catch (err) {
       console.error("Erreur en récupérant les favoris:", err);
     }

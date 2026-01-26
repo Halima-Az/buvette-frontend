@@ -20,7 +20,7 @@
         <p class="total-price" v-else>${{ (item.price * count).toFixed(2) }}</p>
       </div>
       <div v-if="isClient">
-
+  
         <button v-if="count === 0" class="add-btn" @click.stop="increase">+</button>
 
         <div v-else class="counter">
@@ -29,6 +29,25 @@
           <button class="counter-btn" @click.stop="increase">+</button>
         </div>
       </div>
+      <!-- WORKER UI -->
+       <div v-if="isWorker">
+        <button
+          v-if="item.available"
+          class="invalidate-btn"
+          @click.stop="invalidateItem"
+        >
+          Unavailable
+        </button>
+
+        <button
+          v-else
+          class="validate-btn"
+          @click.stop="validateItem"
+        >
+          Available
+        </button>
+      </div>
+        
     </div>
   </div>
 </template>
@@ -42,7 +61,11 @@ const props = defineProps({
 });
 const count = ref(0);
 const isFav = ref(props.favorite);
-const emit = defineEmits(["update-count", "add-preference"]);
+const emit = defineEmits(["update-count", 
+            "add-preference",
+            "invalidate-item",
+            "validate-item"
+          ]);
 watch(() => props.favorite, (newVal) => {
   isFav.value = newVal;
 });
@@ -51,8 +74,10 @@ function togglePreference() {
   isFav.value = !isFav.value;
   emit("add-preference", props.item);
 }
+
 const role = localStorage.getItem("role")
 const isClient = computed(() => role == "ROLE_CLIENT")
+const isWorker = computed(() => role === "ROLE_WORKER");
 
 
 
@@ -66,6 +91,14 @@ function decrease() {
     count.value--;
     emit("update-count", { item: props.item, count: count.value });
   }
+}
+
+function invalidateItem() {
+  emit("invalidate-item", props.item);
+}
+
+function validateItem() {
+  emit("validate-item", props.item);
 }
 
 </script>
@@ -261,5 +294,46 @@ function decrease() {
   width: auto;
   text-align: center;
   color: #333;
+}
+.invalidate-btn {
+  width: 140px;
+  height: 34px;
+  border-radius: 10px;
+  border: none;
+  background: #d9534f; /* danger red */
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.2s;
+}
+
+.invalidate-btn:hover {
+  background: #c9302c;
+}
+
+.invalidate-btn:active {
+  transform: scale(0.95);
+}
+
+.validate-btn {
+  width: 140px;
+  height: 34px;
+  border-radius: 10px;
+  border: none;
+  background: #62b870; /* danger red */
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.2s;
+}
+
+.validate-btn:hover {
+  background: #24e62d;
+}
+
+.validate-btn:active {
+  transform: scale(0.95);
 }
 </style>

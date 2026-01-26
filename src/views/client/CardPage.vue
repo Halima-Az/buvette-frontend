@@ -1,5 +1,5 @@
 <template>
-  <HeaderPageMenu title="" />
+  <HeaderPageMenu title="CartPage" />
 
   <div class="cart-page">
     <h2 class="title">Your Cart</h2>
@@ -22,7 +22,7 @@
 
       <div v-for="item in cartItems" :key="item.itemId" class="cart-item">
         <input type="checkbox" v-model="item.selected" />
-        <img :src="item.image" class="item-image" />
+        <img :src="`http://localhost:8088/${item.image}`" class="item-image" />
 
         <div class="details">
           <p class="name">{{ item.name }}</p>

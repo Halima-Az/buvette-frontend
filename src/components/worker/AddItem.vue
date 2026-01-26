@@ -30,6 +30,15 @@
       </div>
 
       <div class="form-group">
+        <label>Available</label>
+        <div class="toggle-wrapper">
+          <input type="checkbox" id="available" v-model="availableModel" />
+          <label for="available" class="toggle-slider"></label>
+        </div>
+      </div>
+
+
+      <div class="form-group">
         <label>Image</label>
         <input type="file" accept="image/*" @change="onFileChange" />
       </div>
@@ -52,7 +61,8 @@ const props = defineProps({
   price: Number,
   rating: Number,
   category: String,
-  preview: String
+  preview: String,
+  available: Boolean
 })
 
 const emit = defineEmits([
@@ -61,6 +71,7 @@ const emit = defineEmits([
   "update:rating",
   "update:category",
   "file-change",
+  "update:available",
   "submit"
 ])
 
@@ -87,6 +98,12 @@ const categoryModel = computed({
 const onFileChange = (e) => {
   emit("file-change", e.target.files[0])
 }
+
+const availableModel = computed({
+  get: () => props.available,
+  set: v => emit("update:available", v)
+})
+
 </script>
 
 
@@ -136,5 +153,52 @@ button:hover {
     max-width: 100%;
     margin-top: 10px;
     border-radius: 8px;
+}
+
+.toggle-wrapper {
+  position: relative;
+  width: 60px;
+  height: 30px;
+}
+
+.toggle-wrapper input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 6px;
+  top:1px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .toggle-slider {
+  background: linear-gradient(180deg, #c08b3e 0%, #d6a050 100%);
+}
+
+input:checked + .toggle-slider::before {
+  transform: translateX(32px);
 }
 </style>

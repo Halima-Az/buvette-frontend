@@ -1,5 +1,5 @@
 <template>
-    <HeaderPageMenu title="" />
+    <HeaderPageMenu title="Favorites" />
     <div class="favorites-page">
         <h2 class="title">
             Discover Your Favorite Food & Drinks</h2>
@@ -7,71 +7,90 @@
             <i class="fa-regular fa-star"></i>
             <p class="empty-title">No favorites yet</p>
             <p class="empty-text">
-                You haven’t added any favorite food or drinks yet.
+                You haven't added any favorite food or drinks yet.
             </p>
         </div>
 
-        <div v-else class="favorites-grid">
-            <Favorite v-for="item in favorites" :key="item.id" :item="item" @remove="removeFavorite" />
+        <div class="favorites-grid">
+            <MenuItemCard
+                v-for="item in favorites"
+                :key="item.id"
+                :item="item"
+                :favorite="preferences.has(item.id)"
+                @update-count="updateCart"
+                @add-preference="togglePreference"
+                @invalidate-item="invalidate"
+                @validate-item="validate"
+            />
         </div>
+
     </div>
 
     <FooterPageMenu />
 </template>
-<script setup>
-import Favorite from '@/components/client/Favorite.vue';
-import FooterPageMenu from '@/components/client/FooterPageMenu.vue';
-import HeaderPageMenu from '@/components/client/HeaderPageMenu.vue';
-import axios from "axios";
-import { ref, onMounted } from "vue";
 
+<script setup>
+import axios from "axios";
+import { ref, onMounted, computed } from "vue";
+
+import MenuItemCard from "@/components/client/MenuItemCard.vue";
+import HeaderPageMenu from "@/components/client/HeaderPageMenu.vue";
+import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
+
+import { useFavorites } from "@/composables/client/useFavorites";
+import { useMenuAvailability } from "@/composables/worker/useMenuAvailability";
+import { setCartCountFromCart } from "@/store/cartStore";
+
+const role = localStorage.getItem("role");
+const isWorker = computed(() => role === "ROLE_WORKER");
+
+// 🔁 SAME composables as Menu page
+const { preferences, loadFavorites, togglePreference } = useFavorites();
+const { invalidate, validate } = useMenuAvailability();
+
+// Data source is different
 const favorites = ref([]);
 
-// Charger les favoris
-const fetchFavorites = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
+// Fetch favorites list
+onMounted(async () => {
+  await loadFavorites();
 
-    try {
-        const res = await axios.get("http://localhost:8088/client/favorites", {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+  const token = localStorage.getItem("token");
+  if (!token) return;
 
-        favorites.value = res.data;
-    } catch (err) {
-        console.error("Erreur lors de la récupération des favoris:", err);
-    }
-};
+  const res = await axios.get("http://localhost:8088/client/favorites", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
 
-// Supprimer un favori
-const removeFavorite = async (itemId) => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
+  favorites.value = res.data;
+});
 
-    try {
-        await axios.post(
-            "http://localhost:8088/client/favorites/delete",
-            { itemId: itemId },
-            { headers: { Authorization: `Bearer ${token}` } }
-        );
+async function updateCart({ item, count }) {
+  const token = localStorage.getItem("token");
+  if (!token) return;
 
-        // Supprimer localement
-        favorites.value = favorites.value.filter(item => item.id !== itemId);
+  try {
+    const updateRes = await axios.post(
+      "http://localhost:8088/client/cart/update",
+      { itemId: item.id, quantity: count },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
-    } catch (err) {
-        console.error("Erreur lors de la suppression:", err);
-    }
-};
+    setCartCountFromCart(updateRes.data);
+  } catch (err) {
+    console.error("Error updating cart:", err);
+  }
+}
 
-onMounted(fetchFavorites);
+
 </script>
+
 <style>
 .favorites-page {
     min-height: 100vh;
     padding: 20px 30px;
     padding-bottom: 120px;
     background: #f5f8f3;
-    ;
 }
 
 .title {
@@ -109,12 +128,12 @@ onMounted(fetchFavorites);
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-    width:40%;
-    margin:0 auto
+    width: 40%;
+    margin: 0 auto
 }
 
 .empty-state i {
-     color: #6b7280;
+    color: #6b7280;
     font-size: 48px;
     margin-bottom: 20px;
     opacity: 0.9;
@@ -141,15 +160,16 @@ onMounted(fetchFavorites);
     animation: fadeIn 0.8s ease;
 }
 
-@media (max-width:700px) {
+@media (max-width: 700px) {
     .favorites-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 30px;
         animation: fadeIn 0.8s ease;
     }
+
     .empty-state {
-    width:100%
-}
+        width: 100%
+    }
 }
 </style>

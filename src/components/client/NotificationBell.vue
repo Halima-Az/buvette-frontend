@@ -72,6 +72,15 @@ const selectedOrder = ref(null)
 const showOrderDetails = ref(false)
 const loadingOrder = ref(false)
 
+const notificationSound = new Audio('/sounds/notificationClient.mp3')
+notificationSound.volume = 0.7
+
+//track new notification to make a sound when new  arrives
+const STORAGE_KEY = 'knownNotificationIds'
+
+const knownNotificationIds = ref(
+  new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
+)
 
 
 const router = useRouter()
@@ -86,15 +95,48 @@ const fetchNotifications = async () => {
     const token = getToken()
     if (!token) return
 
-    const response = await axios.get('http://localhost:8088/api/notifications', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const response = await axios.get(
+      'http://localhost:8088/api/notifications',
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
 
-    notifications.value = response.data
+    const incoming = response.data
+
+    const newOnes = incoming.filter(
+      n => !knownNotificationIds.value.has(n.id)
+    )
+
+    // 🔕 prevent sound on first-ever load
+    const hasStoredIds = knownNotificationIds.value.size > 0
+
+    if (newOnes.length > 0 && hasStoredIds && !open.value) {
+      playNotificationSound()
+    }
+
+    incoming.forEach(n => knownNotificationIds.value.add(n.id))
+
+    // 🔐 persist
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify([...knownNotificationIds.value])
+    )
+
+    notifications.value = incoming
   } catch (error) {
     console.error('Error fetching notifications:', error)
   }
 }
+
+
+const playNotificationSound = () => {
+  try {
+    notificationSound.currentTime = 0
+    notificationSound.play()
+  } catch (e) {
+    // autoplay blocked from browser→ silently ignore
+  }
+}
+
 
 // Fetch unread count
 const fetchUnreadCount = async () => {

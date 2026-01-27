@@ -226,6 +226,13 @@ const activeTab = ref('PENDING')
 const currentTime = ref(
     new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 )
+//for notifications
+const PENDING_STORAGE_KEY = 'knownPendingOrderIds'
+
+const knownPendingOrderIds = ref(
+  new Set(JSON.parse(localStorage.getItem(PENDING_STORAGE_KEY) || '[]'))
+)
+
 
 // Computed properties for filtered orders
 const pendingOrders = computed(() => 
@@ -272,20 +279,44 @@ onMounted(() => {
 
 // Load orders
 const loadOrders = async () => {
-    const token = localStorage.getItem("token")
-    if (!token) return
+  const token = localStorage.getItem("token")
+  if (!token) return
 
-    try {
-        const res = await axios.get("http://localhost:8088/worker/orders", {
-            headers: { Authorization: `Bearer ${token}` },
-        })
+  try {
+    const res = await axios.get("http://localhost:8088/worker/orders", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
 
-        orders.value = res.data
-        console.log("Loaded orders:", orders.value)
+    const incomingOrders = res.data
 
-    } catch (err) {
-        console.error("Erreur chargement commandes", err)
+    // Only pending orders
+    const incomingPending = incomingOrders.filter(o => o.status === "PENDING")
+
+    // Detect NEW pending orders
+    const newPending = incomingPending.filter(
+      o => !knownPendingOrderIds.value.has(o.id)
+    )
+
+    // 🔊 play sound ONLY if not first load
+    const hasStoredPending = knownPendingOrderIds.value.size > 0
+
+    if (newPending.length > 0 && hasStoredPending) {
+      playPendingOrderSound()
     }
+
+    // Update known pending IDs
+    incomingPending.forEach(o => knownPendingOrderIds.value.add(o.id))
+
+    // Persist
+    localStorage.setItem(
+      PENDING_STORAGE_KEY,
+      JSON.stringify([...knownPendingOrderIds.value])
+    )
+
+    orders.value = incomingOrders
+  } catch (err) {
+    console.error("Erreur chargement commandes", err)
+  }
 }
 
 onMounted(() => {
@@ -403,6 +434,12 @@ const cancelOrder = async (orderId) => {
         alert("Failed to cancel order")
     }
 }
+
+const playPendingOrderSound = () => {
+  const audio = new Audio('/sounds/notificationWorker.mp3')
+  audio.play().catch(() => {})
+}
+
 </script>
 
 <style scoped>

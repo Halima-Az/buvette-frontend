@@ -162,7 +162,7 @@ async function updateCart({ item, count }) {
 
     const cart = cartRes.data;
     const existing = cart.find(c => c.itemId === item.id);
-    const finalQty = count;
+    const finalQty = existing ? existing.quantity + count : count;
 
     const updateRes = await axios.post(
       "http://localhost:8088/client/cart/update",

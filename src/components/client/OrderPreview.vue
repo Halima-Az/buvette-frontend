@@ -1,87 +1,98 @@
 <template>
-    <div v-if="showOrderDetails" class="order-preview">
+  <div v-if="showOrderDetails" class="order-preview">
 
-        <div class="preview-header">
-          <h3>Order preview</h3>
-          <button @click="$emit('close')" class="close-btn">
-            <i class="fas fa-times"></i>
+    <div class="preview-header">
+      <h3>Order preview</h3>
+      <button @click="$emit('close')" class="close-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div v-if="loadingOrder" class="loading-state">
+      <div class="spinner"></div>
+      <p>loading...</p>
+    </div>
+
+    <div v-else-if="!selectedOrder" class="error-state">
+      <div class="error-icon">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <h4>Order not found</h4>
+      <p>The requested order not exist or has been deleted</p>
+    </div>
+
+    <div v-else class="preview-content">
+      <div class="order-header-preview">
+        <div class="order-number">
+          <span class="label">Order</span>
+          <span class="number">#{{ selectedOrder.orderCode }}</span>
+
+
+        </div>
+        <div class="status-actions">
+          <div :class="['status-pill', selectedOrder.status.toLowerCase()]">
+            <span class="status-dot"></span>
+            {{ selectedOrder.status }}
+          </div>
+
+          <button v-if="selectedOrder.status==='PENDING'" class="edit-btn" @click="editOrder(selectedOrder.id)">
+            <i class="fa-solid fa-pen-to-square"></i>
           </button>
         </div>
 
-        <!-- Loading State -->
-        <div v-if="loadingOrder" class="loading-state">
-          <div class="spinner"></div>
-          <p>loading...</p>
-        </div>
 
-        <div v-else-if="!selectedOrder" class="error-state">
-          <div class="error-icon">
-            <i class="fas fa-exclamation-circle"></i>
-          </div>
-          <h4>Order not found</h4>
-          <p>The requested order not exist or has been deleted</p>
-        </div>
-
-        <div v-else class="preview-content">
-          <div class="order-header-preview">
-            <div class="order-number">
-              <span class="label">Order</span>
-              <span class="number">#{{ selectedOrder.orderCode}}</span>
-            </div>
-            <div :class="['status-pill', selectedOrder.status.toLowerCase()]">
-              <span class="status-dot"></span>
-              {{ selectedOrder.status }}
-            </div>
-          </div>
-          
-          <div class="order-meta">
-            <div class="meta-item">
-              <i class="fas fa-calendar-alt"></i>
-              <div>
-                <span class="meta-label">Date</span>
-                <span class="meta-value">{{ formatDate(selectedOrder.createdAt) }}</span>
-              </div>
-            </div>
-            <div class="meta-item">
-              <i class="fas fa-wallet"></i>
-              <div>
-                <span class="meta-label">Total</span>
-                <span class="meta-value highlight">{{ selectedOrder.total }} DH</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="divider"></div>
-
-          <!-- Items Section -->
-          <div class="items-section">
-            <div class="section-header">
-              <h4>Articles</h4>
-              <span class="items-count">{{ selectedOrder.items.length }} article(s)</span>
-            </div>
-
-            <div class="items-list">
-              <div v-for="item in selectedOrder.items" :key="item.itemId" class="item-row">
-                <div class="item-details">
-                  <div class="item-icon">
-                    <i class="fas fa-box"></i>
-                  </div>
-                  <div class="item-info">
-                    <span class="item-name">{{ item.itemName }}</span>
-                    <span class="item-quantity">Qty: {{ item.quantity }}</span>
-                  </div>
-                </div>
-                <div class="item-price" v-if="item.price">
-                  {{ (item.price * item.quantity).toFixed(2) }} DH
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-        </div>
 
       </div>
+
+      <div class="order-meta">
+        <div class="meta-item">
+          <i class="fas fa-calendar-alt"></i>
+          <div>
+            <span class="meta-label">Date</span>
+            <span class="meta-value">{{ formatDate(selectedOrder.createdAt) }}</span>
+          </div>
+        </div>
+        <div class="meta-item">
+          <i class="fas fa-wallet"></i>
+          <div>
+            <span class="meta-label">Total</span>
+            <span class="meta-value highlight">{{ selectedOrder.total }} DH</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Items Section -->
+      <div class="items-section">
+        <div class="section-header">
+          <h4>Articles</h4>
+          <span class="items-count">{{ selectedOrder.items.length }} article(s)</span>
+        </div>
+
+        <div class="items-list">
+          <div v-for="item in selectedOrder.items" :key="item.itemId" class="item-row">
+            <div class="item-details">
+              <div class="item-icon">
+                <i class="fas fa-box"></i>
+              </div>
+              <div class="item-info">
+                <span class="item-name">{{ item.itemName }}</span>
+                <span class="item-quantity">Qty: {{ item.quantity }}</span>
+              </div>
+            </div>
+            <div class="item-price" v-if="item.price">
+              {{ (item.price * item.quantity).toFixed(2) }} DH
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
 </template>
 
 <script setup>
@@ -90,12 +101,12 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 defineProps({
-    loadingOrder: Boolean,
-    showOrderDetails: Boolean,
-    selectedOrder: Object,
+  loadingOrder: Boolean,
+  showOrderDetails: Boolean,
+  selectedOrder: Object,
 })
 
-defineEmits(['close'])
+const emit =defineEmits(['close'])
 
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString('fr-FR', {
@@ -110,6 +121,12 @@ const formatDate = (date) => {
 const viewFullOrder = (orderId) => {
   router.push(`/orders/${orderId}`)
 }
+
+const editOrder=(orderId)=>{
+
+  emit('close')
+  router.push({name:'orderDetails',params:{orderId}})
+}
 </script>
 
 <style scoped>
@@ -123,7 +140,7 @@ const viewFullOrder = (orderId) => {
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 25px 50px -12px rgba(170, 122, 17, 0.25),
-              0 0 0 1px rgba(170, 122, 17, 0.1);
+    0 0 0 1px rgba(170, 122, 17, 0.1);
   overflow: hidden;
   z-index: 999;
   animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -134,6 +151,7 @@ const viewFullOrder = (orderId) => {
     opacity: 0;
     transform: translateX(40px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateX(0) scale(1);
@@ -198,7 +216,9 @@ const viewFullOrder = (orderId) => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-state p {
@@ -307,11 +327,14 @@ const viewFullOrder = (orderId) => {
 }
 
 @keyframes pulse {
-  0%, 100% { 
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
-  50% { 
+
+  50% {
     opacity: 0.6;
     transform: scale(0.9);
   }
@@ -591,14 +614,36 @@ const viewFullOrder = (orderId) => {
   .order-meta {
     grid-template-columns: 1fr;
   }
-  
+
   .order-header-preview {
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .status-pill {
     align-self: flex-start;
   }
 }
+.status-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+  gap: 8px;
+}
+
+.edit-btn {
+  background: #0a6bcc;
+  border: 1px solid #0a6bcc;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color:white;
+}
+
+.edit-btn:hover {
+  background: #0c67c2;
+  transform: scale(1.05);
+}
+
 </style>

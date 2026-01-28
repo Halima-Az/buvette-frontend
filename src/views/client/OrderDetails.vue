@@ -1,23 +1,24 @@
 <template>
   <HeaderPageMenu title="My Orders" />
+
   <div class="content">
     <div class="orders-page">
-      <!-- Horizontal Search & Filters Bar -->
+      <!-- Filters bar -->
       <div class="filters-bar">
         <div class="search-input">
           <input
             type="text"
             v-model="searchQuery"
-            placeholder="Search by order code or item name..."
+            placeholder="🔍 Search by order code or item..."
           />
         </div>
         <select v-model="statusFilter">
           <option value="">All statuses</option>
-          <option value="PENDING">En attente</option>
-          <option value="CONFIRMED">Confirmée</option>
-          <option value="READY">READY</option>
-          <option value="DELIVERED">Livrée</option>
-          <option value="CANCELED">Annulée</option>
+          <option value="PENDING">⏳ En attente</option>
+          <option value="CONFIRMED">✅ Confirmée</option>
+          <option value="READY">🍽 READY</option>
+          <option value="DELIVERED">🚚 Livrée</option>
+          <option value="CANCELED">❌ Annulée</option>
         </select>
         <select v-model="sortOrder">
           <option value="desc">Newest first</option>
@@ -26,25 +27,30 @@
       </div>
 
       <div class="main-layout">
-        <!-- Orders List (now card-style for modern look) -->
+        <!-- Orders List -->
         <aside class="orders-list">
-          <h3>My orders </h3>
+          <h3>My Orders</h3>
           <div
             v-for="o in filteredOrders"
             :key="o.id"
             class="order-card"
             :class="{ active: selectedOrder?.id === o.id }"
-            @click="selectOrder(o)"
+            @click="selectOrder(o.id)"
           >
             <div class="order-card-header">
               <div class="order-code">#{{ o.orderCode }}</div>
               <div class="order-status" :class="o.status.toLowerCase()">
+                <i v-if="o.status==='PENDING'" class="far fa-hourglass"></i>
+                <i v-else-if="o.status==='CONFIRMED'" class="fas fa-check-circle"></i>
+                <i v-else-if="o.status==='READY'" class="fas fa-utensils"></i>
+                <i v-else-if="o.status==='DELIVERED'" class="fas fa-truck"></i>
+                <i v-else class="fas fa-times-circle"></i>
                 {{ getStatusLabel(o.status) }}
               </div>
             </div>
             <div class="order-card-body">
-              <div class="order-date">{{ formatDate(o.createdAt) }}</div>
-              <div class="order-total">{{ o.total }} DH</div>
+              <div class="order-date"><i class="far fa-calendar-alt"></i> {{ formatDate(o.createdAt) }}</div>
+              <div class="order-total"><i class="fas fa-money-bill-wave"></i> {{ o.total }} DH</div>
             </div>
           </div>
           <p v-if="filteredOrders.length === 0" class="no-orders">
@@ -54,87 +60,84 @@
 
         <!-- Order Details -->
         <section class="order-details" v-if="selectedOrder">
-        <!-- Order Header -->
-        <div class="order-header">
+          <div class="order-header">
             <h2>Order #{{ selectedOrder.orderCode }}</h2>
             <span class="status-badge" :class="selectedOrder.status.toLowerCase()">
-            {{ getStatusLabel(selectedOrder.status) }}
+              {{ getStatusLabel(selectedOrder.status) }}
             </span>
-        </div>
+          </div>
 
-        <!-- Order Meta -->
-        <div class="order-meta">
+          <div class="order-meta">
             <p><strong>Date:</strong> {{ formatDate(selectedOrder.createdAt) }}</p>
             <p><strong>Total:</strong> {{ calculateOrderTotal(selectedOrder).toFixed(2) }} DH</p>
-        </div>
+          </div>
 
-        <!-- Actions (Only if order is pending) -->
-        <div class="actions" v-if="selectedOrder.status === 'PENDING'">
-            <button class="btn-cancel" @click="cancelOrder">Cancel Order</button>
-            <button class="btn-save" @click="updateOrder" :disabled="!hasChanges">
-            Save Changes
+          <div class="actions" v-if="selectedOrder.status === 'PENDING'">
+            <button class="btn-cancel" @click="cancelOrder">
+              <i class="fas fa-times-circle"></i> Cancel Order
             </button>
-        </div>
+            <button class="btn-save" @click="updateOrder" :disabled="!hasChanges">
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+          </div>
 
-        <h3>Items</h3>
-        <div class="items-list">
+          <h3>Items</h3>
+          <div class="items-list">
             <div
-            class="item editable"
-            v-for="item in selectedOrder.items"
-            :key="item.itemId"
+              class="item editable"
+              v-for="item in selectedOrder.items"
+              :key="item.itemId"
             >
-            <div class="item-info">
-                <span class="item-name">{{ item.itemName }}</span>
+              <div class="item-info">
+                <span class="item-name"><i class="fas fa-hamburger"></i> {{ item.itemName }}</span>
 
-                <!-- Quantity controls for pending orders -->
                 <div class="quantity-controls" v-if="selectedOrder.status === 'PENDING'">
-                <button @click="decrementQuantity(item)" :disabled="item.quantity <= 1">−</button>
-                <input type="number" v-model.number="item.quantity" min="1" />
-                <button @click="incrementQuantity(item)">+</button>
+                  <button @click="decrementQuantity(item)" :disabled="item.quantity <= 1">−</button>
+                  <input type="number" v-model.number="item.quantity" min="1" />
+                  <button @click="incrementQuantity(item)">+</button>
                 </div>
 
-                <!-- Display quantity only if not pending -->
                 <span v-else class="quantity">x {{ item.quantity }}</span>
-            </div>
+              </div>
 
-            <!-- Item total -->
-            <span class="item-total">{{ (item.quantity * item.itemPrice).toFixed(2) }} DH</span>
+              <span class="item-total"><i class="fas fa-money-bill-wave"></i> {{ (item.quantity * item.itemPrice).toFixed(2) }} DH</span>
 
-            <!-- Remove item button (only for pending orders) -->
-            <button
+              <button
                 class="btn-delete"
                 v-if="selectedOrder.status === 'PENDING'"
                 @click="removeItem(item)"
                 title="Remove item"
-            >
-                🗑
-            </button>
+              >
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
 
-            <!-- Empty state if all items removed -->
             <p v-if="selectedOrder.items.length === 0" class="no-items">
-            No items left in this order.
+              No items left in this order.
             </p>
-        </div>
+          </div>
         </section>
 
-
-
-        <!-- Empty State -->
         <section class="order-details empty" v-else>
+          <i class="fas fa-dolly"></i>  
           <p>Select an order to view details</p>
         </section>
       </div>
     </div>
   </div>
+
   <FooterPageMenu />
 </template>
+
+
 
 <script setup>
 import HeaderPageMenu from '@/components/client/HeaderPageMenu.vue'
 import FooterPageMenu from '@/components/client/FooterPageMenu.vue'
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
+import { useRoute } from 'vue-router'
+import { watch } from 'vue'
 
 // --- Reactive state ---
 const orders = ref([])
@@ -143,6 +146,7 @@ const searchQuery = ref('')
 const statusFilter = ref('')
 const sortOrder = ref('desc') // desc = newest first
 const hasChanges = ref(false)
+const route=useRoute()
 
 // --- Helper to get token ---
 const getToken = () => localStorage.getItem('token')
@@ -161,15 +165,16 @@ const fetchOrders = async () => {
 }
 
 // --- Fetch details of a single order ---
-const selectOrder = async (order) => {
+const selectOrder = async (orderId) => {
   try {
-    const res = await axios.get(`http://localhost:8088/client/orders/${order.id}`, {
+    const res = await axios.get(`http://localhost:8088/client/orders/${orderId}`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
     selectedOrder.value = res.data
-    hasChanges.value = false // reset changes when selecting
+    hasChanges.value = false
   } catch (err) {
     console.error('Error fetching order details:', err)
+    selectedOrder.value = null
   }
 }
 
@@ -294,304 +299,804 @@ const calculateOrderTotal = (order) => {
 
 // --- Lifecycle hook ---
 onMounted(fetchOrders)
+watch(
+  () => route.params.orderId,
+  async (newId) => {
+    if (newId) {
+        await selectOrder(newId)}
+    else{
+      selectOrder.value=null
+    }    
+      
+    },
+  { immediate: true }
+)
 </script>
 
 
 <style scoped>
+/* ==================== BASE CONTENT ==================== */
+
+
 .content {
-  background: #f8fafc;
+  background: linear-gradient(135deg, #fdfaf2 0%, #f8f3e9 50%, #f2ead9 100%);
   min-height: 100vh;
-  padding: 24px 0;
+  padding: 40px 24px;
+  position: relative;
+}
+
+.content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 500px;
+  background: radial-gradient(ellipse at top, rgba(170, 122, 17, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .orders-page {
-  max-width: 1200px;
+  max-width: 1320px;
   margin: auto;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
+  position: relative;
+  z-index: 1;
 }
 
-/* Filters bar - horizontal at the top */
+/* ==================== FILTERS BAR ==================== */
 .filters-bar {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   flex-wrap: wrap;
   align-items: center;
   background: #ffffff;
-  padding: 16px;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 24px 28px;
+  border-radius: 24px;
+  box-shadow: 
+    0 10px 40px rgba(170, 122, 17, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(170, 122, 17, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.filters-bar:hover {
+  box-shadow: 
+    0 16px 48px rgba(170, 122, 17, 0.18),
+    0 6px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Search Input */
+.search-input {
+  flex: 1;
+  min-width: 320px;
+  position: relative;
 }
 
 .search-input input {
-  padding: 10px 14px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  width: 300px;
-  max-width: 100%;
+  width: 100%;
+  padding: 16px 24px;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  background: #fafbfc;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.search-input input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 6px rgba(170, 122, 17, 0.1);
+  transform: translateY(-2px);
+}
+
+.search-input input::placeholder {
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Select Dropdowns */
 .filters-bar select {
-  padding: 10px 14px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: white;
+  padding: 16px 48px 16px 22px;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fafbfc;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2937;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 180px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23aa7a11' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
 }
 
-/* Main layout */
+.filters-bar select:hover {
+  border-color: var(--primary);
+  background-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(170, 122, 17, 0.15);
+}
+
+.filters-bar select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 6px rgba(170, 122, 17, 0.1);
+}
+
+/* ==================== MAIN LAYOUT ==================== */
 .main-layout {
   display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 24px;
+  grid-template-columns: 420px 1fr;
+  gap: 32px;
 }
 
-@media (max-width: 868px) {
-  .main-layout {
-    grid-template-columns: 1fr;
-  }
-  .search-input input {
-    width: 100%;
-  }
-}
-
-/* Orders list - modern cards */
+/* ==================== ORDERS LIST ==================== */
 .orders-list {
   background: #ffffff;
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  max-height: 80vh;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 
+    0 10px 40px rgba(170, 122, 17, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(170, 122, 17, 0.1);
+  max-height: calc(100vh - 280px);
   overflow-y: auto;
+  position: sticky;
+  top: 32px;
 }
 
 .orders-list h3 {
-  font-size: 20px;
-  font-weight: 700;
-  color: #37311f;
-  margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: 900;
+  color: #1f2937;
+  margin-bottom: 24px;
+  letter-spacing: -0.03em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid rgba(170, 122, 17, 0.1);
 }
 
+.orders-list h3::before {
+  content: '📋';
+  font-size: 28px;
+  filter: drop-shadow(0 2px 4px rgba(170, 122, 17, 0.3));
+}
+
+/* ==================== ORDER CARD ==================== */
 .order-card {
-  padding: 16px;
-  border-radius: 12px;
+  padding: 20px 24px;
+  border-radius: 18px;
   cursor: pointer;
-  margin-bottom: 12px;
-  background: #f9fafb;
-  transition: all 0.3s ease;
-  border-left: 4px solid transparent;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fafbfc 0%, #f5f6f7 100%);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 5px solid transparent;
+  border: 1px solid #f0f1f3;
+  border-left-width: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.order-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(170, 122, 17, 0.06) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.order-card:hover::before {
+  opacity: 1;
 }
 
 .order-card:hover {
-  background: #fffbee;
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, #fffcf5 0%, #fef9e7 100%);
+  transform: translateX(8px) translateY(-4px);
+  box-shadow: 0 12px 32px rgba(170, 122, 17, 0.2);
+  border-left-color: var(--primary);
 }
 
 .order-card.active {
-  background: #fffbee;
-  border-left-color: #dfb838;
+  background: linear-gradient(135deg, #fef9e7 0%, #fcefc7 100%);
+  border-left-color: var(--primary);
+  box-shadow: 0 12px 32px rgba(170, 122, 17, 0.25);
+  transform: translateX(8px);
 }
 
+.order-card.active::before {
+  opacity: 0;
+}
+
+/* Card Header */
 .order-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .order-code {
-  font-weight: 700;
-  font-size: 16px;
-  color: #ce9e37;
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--primary);
+  letter-spacing: -0.02em;
 }
 
+/* Card Body */
 .order-card-body {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
-  color: #4b5563;
+  color: #6b7280;
+  font-weight: 600;
 }
 
-/* Status badges (same colors as before) */
+.order-card-body i {
+  margin-right: 6px;
+  color: var(--primary);
+}
+
+.order-date {
+  display: flex;
+  align-items: center;
+}
+
+.order-total {
+  font-weight: 800;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+}
+
+/* ==================== STATUS BADGES ==================== */
 .order-status,
 .status-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  color: white;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.order-status:hover,
+.status-badge:hover {
+  transform: scale(1.05);
+}
+
+.order-status i,
+.status-badge i {
+  font-size: 13px;
 }
 
 .order-status.pending,
-.status-badge.pending { background: #facc15; color: #78350f; }
-.order-status.confirmed,
-.status-badge.confirmed { background: #3b82f6; }
-.order-status.delivered,
-.status-badge.delivered { background: #10b981; }
-.order-status.cancelled,
-.status-badge.cancelled { background: #ef4444; }
+.status-badge.pending { 
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #78350f;
+}
 
-/* Details section */
+.order-status.confirmed,
+.status-badge.confirmed { 
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+}
+
+.order-status.preparing,
+.status-badge.preparing {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: #000000;
+}
+
+.order-status.ready,
+.status-badge.ready {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: #ffffff;
+}
+
+.order-status.delivered,
+.status-badge.delivered { 
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+}
+
+.order-status.cancelled,
+.status-badge.cancelled { 
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+}
+
+/* ==================== ORDER DETAILS ==================== */
 .order-details {
   background: #ffffff;
-  border-radius: 16px;
-  padding: 28px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+  border-radius: 24px;
+  padding: 36px 40px;
+  box-shadow: 
+    0 10px 40px rgba(170, 122, 17, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(170, 122, 17, 0.1);
 }
 
 .order-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 3px solid rgba(170, 122, 17, 0.1);
 }
 
 .order-header h2 {
-  font-size: 24px;
+  font-size: 32px;
+  font-weight: 900;
+  color: #1f2937;
+  letter-spacing: -0.03em;
+}
+
+/* ==================== ORDER META ==================== */
+.order-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.order-meta p {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #fafbfc 0%, #f5f6f7 100%);
+  border-radius: 16px;
+  border: 1px solid #f0f1f3;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.order-meta p:hover {
+  background: linear-gradient(135deg, #fef9e7 0%, #fcefc7 100%);
+  border-color: rgba(170, 122, 17, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(170, 122, 17, 0.12);
+}
+
+.order-meta strong {
+  font-size: 12px;
+  font-weight: 800;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.order-meta p {
+  font-size: 18px;
+  font-weight: 800;
   color: #1f2937;
 }
 
-.order-meta {
-  display: flex;
-  gap: 32px;
-  margin-bottom: 28px;
-  color: #374151;
-  font-size: 15px;
-}
-
+/* ==================== ACTIONS ==================== */
 .actions {
   display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.btn-cancel,
+.btn-save {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  font-size: 13px;
 }
 
 .btn-cancel {
-  background: #ef4444;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+}
+
+.btn-cancel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(239, 68, 68, 0.45);
 }
 
 .btn-save {
-  background: #10b981;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+}
+
+.btn-save:hover:not(:disabled) {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(16, 185, 129, 0.45);
+}
+
+.btn-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-cancel i,
+.btn-save i {
+  font-size: 16px;
+}
+
+/* ==================== ITEMS SECTION ==================== */
+.order-details h3 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #1f2937;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(170, 122, 17, 0.1);
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .items-list .item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  background: #f9fafb;
-  border-radius: 10px;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #fafbfc 0%, #f5f6f7 100%);
+  border-radius: 18px;
+  padding: 22px 26px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid #f0f1f3;
+  position: relative;
+  overflow: hidden;
+}
+
+.items-list .item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--primary)1 0%, var(--secondary) 100%);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.items-list .item:hover::before {
+  transform: scaleY(1);
+}
+
+.items-list .item:hover {
+  background: linear-gradient(135deg, #fef9e7 0%, #fcefc7 100%);
+  transform: translateX(8px);
+  box-shadow: 0 10px 28px rgba(170, 122, 17, 0.15);
+  border-color: rgba(170, 122, 17, 0.25);
 }
 
 .item-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+  flex: 1;
 }
 
 .item-name {
-  font-weight: 600;
+  font-weight: 800;
+  font-size: 17px;
+  color: #1f2937;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
+.item-name i {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+.quantity {
+  font-size: 15px;
+  font-weight: 700;
+  color: #6b7280;
+}
+
+/* ==================== QUANTITY CONTROLS ==================== */
 .quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quantity-controls button {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--primary);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-controls button:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: #000000;
+  border-color: var(--primary);
+  transform: scale(1.15);
+  box-shadow: 0 6px 16px rgba(170, 122, 17, 0.3);
+}
+
+.quantity-controls button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.quantity-controls input {
+  width: 80px;
+  text-align: center;
+  padding: 10px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #1f2937;
+  transition: all 0.3s ease;
+  background: #ffffff;
+}
+
+.quantity-controls input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 6px rgba(170, 122, 17, 0.1);
+}
+
+/* ==================== ITEM TOTAL & DELETE ==================== */
+.item-total {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--primary);
+  margin-right: 16px;
+  letter-spacing: -0.02em;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.quantity-controls button {
-  width: 32px;
-  height: 32px;
-  border: 1px solid #ccc;
-  background: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.quantity-controls input {
-  width: 60px;
-  text-align: center;
-  padding: 6px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
+.item-total i {
+  font-size: 18px;
 }
 
 .btn-delete {
-  background: #ef4444;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 12px 18px;
+  border-radius: 12px;
   cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
+.btn-delete:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 10px 24px rgba(239, 68, 68, 0.45);
+}
+
+.btn-delete i {
+  font-size: 14px;
+}
+
+/* ==================== EMPTY STATES ==================== */
 .order-details.empty {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 300px;
+  min-height: 500px;
   color: #9ca3af;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 700;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px ;
+}
+
+.order-details.empty .fa-dolly {
+  font-size: 80px;
+  opacity: 0.5;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .no-orders {
   text-align: center;
   color: #9ca3af;
-  padding: 40px;
+  padding: 80px 20px;
+  font-size: 18px;
+  font-weight: 700;
 }
-.items-list .item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+.no-orders::before {
+  content: '🔍';
+  display: block;
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.no-items {
+  text-align: center;
+  color: #9ca3af;
+  padding: 60px 20px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* ==================== SCROLLBAR ==================== */
+.orders-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.orders-list::-webkit-scrollbar-track {
   background: #f9fafb;
-  border-radius: 12px;
-  padding: 14px 18px;
-  margin-bottom: 12px;
-  transition: all 0.3s ease;
+  border-radius: 10px;
+  margin: 8px 0;
 }
 
-.items-list .item:hover {
-  background: #fffdee;
-  transform: translateY(-2px);
+.orders-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+  border-radius: 10px;
+  border: 2px solid #f9fafb;
 }
 
-.quantity-controls button {
-  transition: background 0.2s;
+.orders-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--secondary) 0%,var(--primary) 100%);
 }
 
-.quantity-controls button:hover {
-  background: #e5e7eb;
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .main-layout {
+    grid-template-columns: 380px 1fr;
+  }
 }
 
-.btn-delete {
-  transition: all 0.2s ease;
-}
-.btn-delete:hover {
-  background: #dc2626;
-  transform: scale(1.05);
+@media (max-width: 868px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .orders-list {
+    max-height: none;
+    position: static;
+  }
+  
+  .search-input {
+    min-width: 100%;
+  }
+  
+  .filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filters-bar select {
+    width: 100%;
+  }
+  
+  .order-meta {
+    grid-template-columns: 1fr;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+  
+  .btn-cancel,
+  .btn-save {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
-.order-status.preparing,
-.status-badge.preparing {
-  background: #f59e0b; /* amber */
-  color: #78350f;
+@media (max-width: 640px) {
+  .content {
+    padding: 24px 16px;
+  }
+  
+  .orders-page {
+    gap: 24px;
+  }
+  
+  .filters-bar {
+    padding: 20px;
+  }
+  
+  .orders-list,
+  .order-details {
+    padding: 24px;
+  }
+  
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .items-list .item {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .item-info {
+    width: 100%;
+  }
+  
+  .item-total {
+    margin-right: 0;
+  }
 }
 
-.order-status.ready,
-.status-badge.ready {
-  background: #8b5cf6; /* violet */
+/* ==================== ANIMATIONS ==================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+.order-card,
+.items-list .item {
+  animation: fadeIn 0.5s ease-out backwards;
+}
 
+.order-card:nth-child(1) { animation-delay: 0.05s; }
+.order-card:nth-child(2) { animation-delay: 0.1s; }
+.order-card:nth-child(3) { animation-delay: 0.15s; }
+.order-card:nth-child(4) { animation-delay: 0.2s; }
+.order-card:nth-child(5) { animation-delay: 0.25s; }
+.order-card:nth-child(6) { animation-delay: 0.3s; }
 </style>

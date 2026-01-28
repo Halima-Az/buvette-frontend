@@ -1,218 +1,181 @@
 <template>
-<HeaderPageMenu/>
-    <div class="dashboard">
-        <!-- Header -->
-        <div class="dashboard-header">
-            <div class="header-left">
-                <div class="icon-badge">
-                    <span>👨‍🍳</span>
-                </div>
-                <div>
-                    <h1>Worker Dashboard</h1>
-                    <p class="subtitle">Gérez vos commandes en temps réel</p>
-                </div>
+<HeaderPageMenu title=""/>
+
+<div class="dashboard">
+
+    <!-- HEADER -->
+    <div class="dashboard-header">
+        <div class="header-left">
+            <div class="icon-badge">
+                <!-- Icon FontAwesome chef -->
+                👨‍🍳
             </div>
-            <div class="header-right">
-                <div class="status-badge active">
-                    <span class="status-dot"></span>
-                    Taking Orders (8AM-6PM)
-                </div>
-                <div class="time-display">
-                    <i class="icon icon-clock"></i>
-                    {{ currentTime }}
-                </div>
+            <div>
+                <h1>Kitchen Screen</h1>
+                <p class="subtitle">Live Orders Management</p>
             </div>
         </div>
 
-        <div class="dashboard-content">
-            <!-- Order Queue -->
-            <div class="main-section">
-                <div class="section-card order-queue">
-                    <div class="card-header">
-                        <h2>
-                            <span class="icon">📋</span>
-                            Order Queue
-                        </h2>
-                        <div class="badge-counter">{{ pendingOrders.length }} pending</div>
-                    </div>
-
-                    <div class="order-tabs">
-                        <button 
-                            @click="activeTab = 'PENDING'" 
-                            :class="['tab-btn', { active: activeTab === 'PENDING' }]"
-                        >
-                            Pending ({{ pendingOrders.length }})
-                        </button>
-                        <button 
-                            @click="activeTab = 'PREPARING'" 
-                            :class="['tab-btn', { active: activeTab === 'PREPARING' }]"
-                        >
-                            Preparing ({{ preparingOrders.length }})
-                        </button>
-                    </div>
-
-                    <div class="orders-list">
-                        <!-- PENDING ORDERS -->
-                        <div v-if="activeTab === 'PENDING'">
-                            <div v-for="(order, index) in pendingOrders" :key="order.id" class="order-card">
-                                <div class="order-header">
-                                    <div class="order-id">
-                                        <p class="hash">
-                                            <span>#{{ index + 1 }}</span> {{ order.username }}
-                                        </p>
-                                    </div>
-                                    <div class="order-time">{{ formatTime(order.createdAt) }}</div>
-                                </div>
-
-                                <div class="order-items">
-                                    <div v-for="item in order.items" :key="item.id" class="item-row">
-                                        <span class="item-name">{{ item.itemName }}</span>
-                                        <span class="item-quantity">×{{ item.quantity }}</span>
-                                    </div>
-                                </div>
-
-                                <div class="order-footer">
-                                    <div class="order-total">${{ order.total }}</div>
-                                    <div class="order-actions">
-                                        <button 
-                                            class="btn-start" 
-                                            @click="confirmOrder(order.id)"
-                                        >
-                                            <span class="action-icon">👨‍🍳</span>
-                                            Start Preparing
-                                        </button>
-                                        <button 
-                                            class="btn-cancel" 
-                                            @click="cancelOrder(order.id)"
-                                        >
-                                            <span class="action-icon">✕</span>
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- PREPARING ORDERS -->
-                        <div v-if="activeTab === 'PREPARING'">
-                            <div v-for="(order, index) in preparingOrders" :key="order.id" class="order-card">
-                                <div class="order-header">
-                                    <div class="order-id">
-                                        <p class="hash">
-                                            <span>#{{ index + 1 }}</span> {{ order.username }}
-                                        </p>
-                                    </div>
-                                    <div class="order-time">
-                                        Started: {{ formatTime(order.startedAt || order.updatedAt) }}
-                                    </div>
-                                </div>
-
-                                <div class="order-items">
-                                    <div v-for="item in order.items" :key="item.id" class="item-row">
-                                        <span class="item-name">{{ item.itemName }}</span>
-                                        <span class="item-quantity">×{{ item.quantity }}</span>
-                                    </div>
-                                </div>
-
-                                <div class="order-footer">
-                                    <div class="order-total">${{ order.total }}</div>
-                                    <div class="order-actions">
-                                        <button 
-                                            class="btn-ready" 
-                                            @click="markAsReady(order.id)"
-                                        >
-                                            <span class="action-icon">✓</span>
-                                            Mark as Ready
-                                        </button>
-                                        <button 
-                                            class="btn-cancel" 
-                                            @click="cancelOrder(order.id)"
-                                        >
-                                            <span class="action-icon">✕</span>
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="header-right">
+            <div class="status-badge active">
+                <span class="status-dot"></span>
+                Service ON
             </div>
-
-            <!-- Sidebar -->
-            <div class="sidebar-section">
-                <!-- Total Items Needed -->
-                <div class="section-card items-needed">
-                    <div class="card-header">
-                        <h2>
-                            <span class="icon">📦</span>
-                            Total Items Needed
-                        </h2>
-                    </div>
-                    <div class="items-list">
-                        <div v-for="item in totalItemsNeeded" :key="item.name" class="item-needed">
-                            <span class="item-name">{{ item.itemName }}</span>
-                            <span class="item-count">{{ item.quantity }} requis</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ready for Pickup -->
-                <div class="section-card ready-pickup">
-                    <div class="card-header">
-                        <h2>
-                            <span class="icon"><i class="icon icon-check"></i>
-                            </span>
-                            Ready for Pickup
-                        </h2>
-                        <div class="badge-counter">{{ readyOrders.length }} ready</div>
-                    </div>
-                    <div class="ready-list">
-                        <div v-for="(order, index) in readyOrders" :key="order.id" class="ready-item">
-                            <div class="ready-info">
-                                <p class="ready-id">
-                                    <span>#{{ index + 1 }}</span> {{ order.username }}
-                                </p>
-                                <div class="ready-time">Ready at {{ formatTime(order.readyTime || order.updatedAt) }}</div>
-                            </div>
-                            <button 
-                                class="btn-delivered" 
-                                @click="markAsDelivered(order.id)"
-                            >
-                                <span class="action-icon">✓</span>
-                                Mark Delivered
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recently Delivered -->
-                <div class="section-card delivered-orders" v-if="deliveredOrders.length > 0">
-                    <div class="card-header">
-                        <h2>
-                            <span class="icon">🚚</span>
-                            Recently Delivered
-                        </h2>
-                        <div class="badge-counter">{{ deliveredOrders.length }} delivered</div>
-                    </div>
-                    <div class="delivered-list">
-                        <div v-for="(order, index) in deliveredOrders.slice(0, 3)" :key="order.id" class="delivered-item">
-                            <div class="delivered-info">
-                                <p class="delivered-id">
-                                    <span>#{{ index + 1 }}</span> {{ order.username }}
-                                </p>
-                                <div class="delivered-time">Delivered at {{ formatTime(order.deliveredAt || order.updatedAt) }}</div>
-                            </div>
-                            <div class="delivered-status">
-                                <span class="status-badge delivered">✓ Delivered</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="time-display">
+                <i class="far fa-clock"></i>
+                {{ currentTime }}
             </div>
         </div>
     </div>
-    <FooterPageMenu/>
+
+    <!-- CONTENT GRID -->
+    <div class="dashboard-content">
+
+        <!-- LEFT COLUMN -->
+        <div class="main-section">
+
+            <!-- ORDER QUEUE -->
+            <div class="section-card order-queue">
+                <div class="card-header">
+                    <h2><i class="fas fa-clipboard-list"></i> Order Queue</h2>
+                    <div class="badge-counter">{{ pendingOrders.length }}</div>
+                </div>
+
+                <div class="order-tabs">
+                    <button
+                        @click="activeTab = 'PENDING'"
+                        :class="['tab-btn', { active: activeTab === 'PENDING' }]"
+                    >
+                        <i class="far fa-hourglass"></i> Pending
+                    </button>
+                    <button
+                        @click="activeTab = 'PREPARING'"
+                        :class="['tab-btn', { active: activeTab === 'PREPARING' }]"
+                    >
+                        <i class="fas fa-utensils"></i> Preparing
+                    </button>
+                </div>
+
+                <div class="orders-list">
+                    <div v-if="activeTab === 'PENDING'">
+                        <div v-for="(order, index) in pendingOrders" :key="order.id" class="order-card">
+                            <div class="order-header">
+                                <div class="order-id">
+                                    #{{ index + 1 }} – {{ order.username }}
+                                </div>
+                                <div class="order-time"><i class="far fa-clock"></i> {{ formatTime(order.createdAt) }}</div>
+                            </div>
+
+                            <div class="order-items">
+                                <div v-for="item in order.items" :key="item.id" class="item-row">
+                                    <span class="item-name"><i class="fas fa-hamburger"></i> {{ item.itemName }}</span>
+                                    <span class="item-quantity">×{{ item.quantity }}</span>
+                                </div>
+                            </div>
+
+                            <div class="order-footer">
+                                <div class="order-total"><i class="fas fa-dollar-sign"></i> {{ order.total }}</div>
+                                <div class="order-actions">
+                                    <button class="btn-start" @click="confirmOrder(order.id)">
+                                        <i class="fas fa-utensils"></i> Start
+                                    </button>
+                                    <button class="btn-cancel" @click="cancelOrder(order.id)">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="activeTab === 'PREPARING'">
+                        <div v-for="(order, index) in preparingOrders" :key="order.id" class="order-card">
+                            <div class="order-header">
+                                <div class="order-id">
+                                    #{{ index + 1 }} – {{ order.username }}
+                                </div>
+                                <div class="order-time"><i class="far fa-clock"></i> Started {{ formatTime(order.updatedAt) }}</div>
+                            </div>
+
+                            <div class="order-items">
+                                <div v-for="item in order.items" :key="item.id" class="item-row">
+                                    <span class="item-name"><i class="fas fa-hamburger"></i> {{ item.itemName }}</span>
+                                    <span class="item-quantity">×{{ item.quantity }}</span>
+                                </div>
+                            </div>
+
+                            <div class="order-footer">
+                                <div class="order-total"><i class="fas fa-dollar-sign"></i> {{ order.total }}</div>
+                                <div class="order-actions">
+                                    <button class="btn-ready" @click="markAsReady(order.id)">
+                                        <i class="fas fa-check-circle"></i> Ready
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOTAL ITEMS NEEDED -->
+            <div class="section-card items-needed my-4">
+                <div class="card-header">
+                    <h2><i class="fas fa-boxes"></i> Total Items Needed</h2>
+                </div>
+
+                <div class="items-list">
+                    <div v-for="item in totalItemsNeeded" :key="item.name" class="item-needed">
+                        <span class="item-name"><i class="fas fa-hamburger"></i> {{ item.itemName }}</span>
+                        <span class="item-count"><i class="fas fa-sort-numeric-up"></i> {{ item.quantity }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="sidebar-section">
+
+            <!-- READY FOR PICKUP -->
+            <div class="section-card ready-pickup">
+                <div class="card-header">
+                    <h2><i class="fas fa-check-circle"></i> Ready for Pickup</h2>
+                    <div class="badge-counter">{{ readyOrders.length }}</div>
+                </div>
+
+                <div class="ready-list">
+                    <div v-for="(order, index) in readyOrders" :key="order.id" class="ready-item">
+                        <div>
+                            <p class="ready-id"><i class="fas fa-user"></i> #{{ index + 1 }} – {{ order.username }}</p>
+                            <div class="ready-time"><i class="far fa-clock"></i> {{ formatTime(order.updatedAt) }}</div>
+                        </div>
+                        <button class="btn-delivered" @click="markAsDelivered(order.id)">
+                            <i class="fas fa-truck"></i> Deliver
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENTLY DELIVERED -->
+            <div class="section-card delivered-orders">
+                <div class="card-header">
+                    <h2><i class="fas fa-box-open"></i> Recently Delivered</h2>
+                </div>
+
+                <div class="delivered-list">
+                    <div v-for="(order, index) in deliveredOrders.slice(0,3)" :key="order.id" class="delivered-item">
+                        <div>
+                            <p class="delivered-id"><i class="fas fa-user"></i> #{{ index + 1 }} – {{ order.username }}</p>
+                            <div class="delivered-time"><i class="far fa-clock"></i> {{ formatTime(order.updatedAt) }}</div>
+                        </div>
+                        <span class="status-badge delivered"><i class="fas fa-check"></i></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<FooterPageMenu/>
 </template>
 
 <script setup>
@@ -443,439 +406,719 @@ const playPendingOrderSound = () => {
 </script>
 
 <style scoped>
+/* ==================== BASE DASHBOARD ==================== */
 .dashboard {
     min-height: 100vh;
-    background: linear-gradient(135deg, #f3cc79 0%, #d69d21 100%);
-    padding: 30px;
-    font-family: 'Inter', -apple-system, sans-serif;
+    background: linear-gradient(135deg, #fdfaf2 0%, #f5ede0 50%, #efe5d6 100%);
+    padding: 32px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    position: relative;
 }
 
-/* Header */
+.dashboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+    background: radial-gradient(ellipse at top, rgba(170, 122, 17, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* ==================== HEADER ==================== */
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding: 25px 30px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    margin-bottom: 32px;
+    padding: 28px 36px;
+    background: #ffffff;
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    box-shadow: 
+        0 8px 32px rgba(170, 122, 17, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(170, 122, 17, 0.1);
+    position: relative;
+    z-index: 10;
 }
 
 .header-left {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
 }
 
 .icon-badge {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #eca50b 0%, #d69d21 100%);
-    border-radius: 16px;
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #aa7a11 0%, #d4a517 100%);
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
-    box-shadow: 0 8px 20px rgba(214, 157, 33, 0.4);
+    font-size: 36px;
+    box-shadow: 
+        0 12px 32px rgba(170, 122, 17, 0.35),
+        0 4px 12px rgba(170, 122, 17, 0.2),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.icon-badge::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: linear-gradient(135deg, rgba(170, 122, 17, 0.2) 0%, rgba(212, 165, 23, 0.1) 100%);
+    border-radius: 22px;
+    z-index: -1;
+}
+
+.icon-badge:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 
+        0 16px 40px rgba(170, 122, 17, 0.4),
+        0 8px 16px rgba(170, 122, 17, 0.25);
 }
 
 .header-left h1 {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 800;
-    color: #1a1a2e;
+    margin: 0 0 6px 0;
+    font-size: 32px;
+    font-weight: 900;
+    color: #1f2937;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
 }
 
 .subtitle {
-    margin: 4px 0 0 0;
-    color: #666;
-    font-size: 14px;
+    margin: 0;
+    color: #6b7280;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
 }
 
 .header-right {
     display: flex;
-    gap: 20px;
+    gap: 16px;
     align-items: center;
 }
 
 .status-badge {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: rgba(34, 197, 94, 0.1);
-    border: 2px solid #22c55e;
-    border-radius: 50px;
-    font-weight: 600;
-    color: #22c55e;
+    gap: 10px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    border: 2px solid #10b981;
+    border-radius: 100px;
+    font-weight: 700;
+    color: #065f46;
     font-size: 14px;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+    transition: all 0.3s ease;
+}
+
+.status-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
 }
 
 .status-badge.delivered {
-    background: rgba(59, 130, 246, 0.1);
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
     border-color: #3b82f6;
-    color: #3b82f6;
+    color: #1e40af;
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
 }
 
 .status-dot {
-    width: 8px;
-    height: 8px;
-    background: #22c55e;
+    width: 10px;
+    height: 10px;
+    background: #10b981;
     border-radius: 50%;
-    animation: pulse 2s ease infinite;
+    animation: statusPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
 }
 
-@keyframes pulse {
-
-    0%,
-    100% {
+@keyframes statusPulse {
+    0%, 100% {
         opacity: 1;
+        transform: scale(1);
     }
-
     50% {
-        opacity: 0.5;
+        opacity: 0.6;
+        transform: scale(0.9);
     }
 }
 
 .time-display {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: rgba(214, 157, 33, 0.15);
-    border-radius: 12px;
-    font-weight: 600;
-    color: #d69d21;
+    gap: 10px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #fef9e7 0%, #fcefc7 100%);
+    border-radius: 100px;
+    font-weight: 700;
+    color: #aa7a11;
     font-size: 14px;
+    border: 2px solid rgba(170, 122, 17, 0.2);
+    box-shadow: 0 4px 16px rgba(170, 122, 17, 0.12);
+    transition: all 0.3s ease;
 }
 
-/* Content Layout */
+.time-display:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(170, 122, 17, 0.18);
+}
+
+/* ==================== CONTENT LAYOUT ==================== */
 .dashboard-content {
     display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 25px;
+    grid-template-columns: 1fr 420px;
+    gap: 32px;
 }
 
+/* ==================== SECTION CARDS ==================== */
 .section-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    box-shadow: 
+        0 8px 32px rgba(170, 122, 17, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(170, 122, 17, 0.08);
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
+.section-card:hover {
+    box-shadow: 
+        0 12px 40px rgba(170, 122, 17, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* ==================== CARD HEADER ==================== */
 .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 25px;
-    background: linear-gradient(135deg, rgba(214, 157, 33, 0.1) 0%, rgba(236, 165, 11, 0.1) 100%);
-    border-bottom: 2px solid rgba(214, 157, 33, 0.2);
+    padding: 28px 32px;
+    background: linear-gradient(135deg, #fef9e7 0%, #fcefc7 100%);
+    border-bottom: 2px solid rgba(170, 122, 17, 0.15);
+    position: relative;
+}
+
+.card-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, #aa7a11 0%, transparent 100%);
 }
 
 .card-header h2 {
     margin: 0;
-    font-size: 20px;
-    font-weight: 700;
-    color: #1a1a2e;
+    font-size: 22px;
+    font-weight: 800;
+    color: #1f2937;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
+    letter-spacing: -0.02em;
 }
 
 .icon {
     font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(170, 122, 17, 0.2));
 }
 
 .icon-badge span {
-    font-size: 35px;
+    font-size: 36px;
 }
 
 .badge-counter {
-    background: linear-gradient(135deg, #d69d21 0%, #eca50b 100%);
+    background: linear-gradient(135deg, #aa7a11 0%, #d4a517 100%);
     color: white;
-    padding: 6px 16px;
-    border-radius: 50px;
+    padding: 8px 18px;
+    border-radius: 100px;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 16px rgba(170, 122, 17, 0.3);
+    text-transform: uppercase;
 }
 
-/* Order Tabs */
+/* ==================== ORDER TABS ==================== */
 .order-tabs {
     display: flex;
-    padding: 0 25px;
-    border-bottom: 2px solid rgba(214, 157, 33, 0.1);
-    background: rgba(255, 255, 255, 0.9);
+    padding: 0 32px;
+    background: #ffffff;
+    border-bottom: 2px solid #f3f4f6;
+    gap: 4px;
 }
 
 .tab-btn {
-    padding: 12px 20px;
-    background: none;
+    padding: 18px 28px;
+    background: transparent;
     border: none;
     border-bottom: 3px solid transparent;
-    font-weight: 600;
-    color: #666;
+    font-weight: 700;
+    color: #6b7280;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    position: relative;
+}
+
+.tab-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(170, 122, 17, 0.05) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tab-btn:hover:not(.active)::before {
+    opacity: 1;
 }
 
 .tab-btn.active {
-    color: #d69d21;
-    border-bottom-color: #d69d21;
-    background: rgba(214, 157, 33, 0.05);
+    color: #aa7a11;
+    border-bottom-color: #aa7a11;
+    background: linear-gradient(180deg, rgba(170, 122, 17, 0.08) 0%, transparent 100%);
 }
 
 .tab-btn:hover:not(.active) {
-    color: #d69d21;
-    background: rgba(214, 157, 33, 0.05);
+    color: #aa7a11;
 }
 
-/* Orders List */
+/* ==================== ORDERS LIST ==================== */
 .orders-list {
-    padding: 20px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    max-height: calc(100vh - 300px);
+    gap: 20px;
+    max-height: calc(100vh - 220px);
     overflow-y: auto;
 }
 
+/* ==================== ORDER CARDS ==================== */
 .order-card {
-    background: white;
+    background: #ffffff;
     border: 2px solid #e5e7eb;
-    border-radius: 16px;
-    padding: 20px;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 20px;
+    padding: 28px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.order-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg, #aa7a11 0%, #d4a517 100%);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+    transform-origin: top;
+}
+
+.order-card:hover::before {
+    transform: scaleY(1);
 }
 
 .order-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(214, 157, 33, 0.2);
-    border-color: #d69d21;
+    transform: translateY(-6px);
+    box-shadow: 
+        0 20px 48px rgba(170, 122, 17, 0.18),
+        0 8px 24px rgba(0, 0, 0, 0.08);
+    border-color: #aa7a11;
 }
 
+/* ==================== ORDER HEADER ==================== */
 .order-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #f9fafb;
 }
 
 .order-id {
-    font-size: 20px;
-    font-weight: 800;
-    color: #1a1a2e;
+    flex: 1;
 }
 
 .hash {
-    color: #d69d21;
+    font-size: 22px;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+}
+
+.hash span {
+    color: #aa7a11;
+    font-size: 20px;
 }
 
 .order-time {
-    color: #666;
+    color: #6b7280;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border-radius: 100px;
+    border: 1px solid #e5e7eb;
 }
 
+/* ==================== ORDER ITEMS ==================== */
 .order-items {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 15px;
+    background: linear-gradient(135deg, #fafbfc 0%, #f5f6f7 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #f0f1f3;
 }
 
 .item-row {
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
 }
 
 .item-row:last-child {
     border-bottom: none;
+    padding-bottom: 0;
+}
+
+.item-row:hover {
+    padding-left: 8px;
 }
 
 .item-name {
-    font-weight: 600;
+    font-weight: 700;
     color: #374151;
+    font-size: 15px;
+    letter-spacing: -0.01em;
 }
 
 .item-quantity {
-    font-weight: 700;
-    color: #d69d21;
+    font-weight: 800;
+    color: #aa7a11;
     background: white;
-    padding: 2px 10px;
-    border-radius: 50px;
+    padding: 4px 14px;
+    border-radius: 100px;
     font-size: 13px;
+    border: 2px solid rgba(170, 122, 17, 0.2);
+    box-shadow: 0 2px 8px rgba(170, 122, 17, 0.12);
 }
 
+/* ==================== ORDER FOOTER ==================== */
 .order-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
 }
 
 .order-total {
-    font-size: 24px;
-    font-weight: 800;
-    color: #22c55e;
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
 }
 
 .order-actions {
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    flex: 1;
+    justify-content: flex-end;
 }
 
-/* Button Styles */
+/* ==================== BUTTONS ==================== */
 .btn-start,
 .btn-ready,
 .btn-delivered,
 .btn-cancel {
     border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     font-size: 14px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 10px;
+    letter-spacing: 0.2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-start,
+.btn-ready,
+.btn-delivered,
+.btn-cancel {
+    box-shadow: 
+        0 6px 20px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.btn-start::before,
+.btn-ready::before,
+.btn-delivered::before,
+.btn-cancel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-start:hover::before,
+.btn-ready:hover::before,
+.btn-delivered:hover::before,
+.btn-cancel:hover::before {
+    opacity: 1;
 }
 
 .action-icon {
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .btn-start {
-    background: linear-gradient(135deg, #d69d21 0%, #eca50b 100%);
+    background: linear-gradient(135deg, #aa7a11 0%, #d4a517 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(214, 157, 33, 0.3);
 }
 
 .btn-start:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(214, 157, 33, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 
+        0 12px 32px rgba(170, 122, 17, 0.4),
+        0 4px 16px rgba(170, 122, 17, 0.3);
 }
 
 .btn-ready {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
 }
 
 .btn-ready:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 
+        0 12px 32px rgba(16, 185, 129, 0.4),
+        0 4px 16px rgba(16, 185, 129, 0.3);
 }
 
 .btn-delivered {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 .btn-delivered:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 
+        0 12px 32px rgba(59, 130, 246, 0.4),
+        0 4px 16px rgba(59, 130, 246, 0.3);
 }
 
 .btn-cancel {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    padding: 14px 20px;
 }
 
 .btn-cancel:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+    transform: translateY(-3px);
+    box-shadow: 
+        0 12px 32px rgba(239, 68, 68, 0.4),
+        0 4px 16px rgba(239, 68, 68, 0.3);
 }
 
-/* Sidebar */
+.btn-start:active,
+.btn-ready:active,
+.btn-delivered:active,
+.btn-cancel:active {
+    transform: translateY(-1px);
+}
+
+/* ==================== SIDEBAR ==================== */
 .sidebar-section {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 32px;
 }
 
 .items-list,
 .ready-list,
 .delivered-list {
-    padding: 15px 20px;
+    padding: 20px 24px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .item-needed {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 15px;
-    background: linear-gradient(135deg, #faf9f8 0%, #efede9 100%);
-    border-radius: 10px;
-    margin-bottom: 10px;
-    border-left: 4px solid #d69d21;
-    transition: all 0.3s ease;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, #fdfbf7 0%, #f8f6f1 100%);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    border-left: 4px solid #aa7a11;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid #f5f0e6;
+    border-left-width: 4px;
 }
 
 .item-needed:hover {
-    transform: translateX(5px);
-    background: linear-gradient(135deg, #efede9 0%, #e6e4de 100%);
+    transform: translateX(8px);
+    background: linear-gradient(135deg, #fef9e7 0%, #fcefc7 100%);
+    box-shadow: 0 8px 24px rgba(170, 122, 17, 0.12);
+}
+
+.item-name {
+    font-weight: 700;
+    color: #1f2937;
+    font-size: 15px;
 }
 
 .item-count {
-    font-weight: 700;
-    color: #d69d21;
+    font-weight: 800;
+    color: #aa7a11;
     font-size: 14px;
+    padding: 4px 12px;
+    background: white;
+    border-radius: 100px;
+    border: 2px solid rgba(170, 122, 17, 0.2);
 }
 
+/* ==================== READY & DELIVERED ITEMS ==================== */
 .ready-item,
 .delivered-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    transition: all 0.3s ease;
+    padding: 18px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ready-item {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.1) 100%);
-    border: 2px solid rgba(34, 197, 94, 0.2);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.05) 100%);
+    border: 2px solid rgba(16, 185, 129, 0.2);
 }
 
 .ready-item:hover {
-    transform: translateX(5px);
-    border-color: #22c55e;
+    transform: translateX(8px);
+    border-color: #10b981;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.08) 100%);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
 }
 
 .delivered-item {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(29, 78, 216, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(37, 99, 235, 0.05) 100%);
     border: 2px solid rgba(59, 130, 246, 0.2);
 }
 
 .delivered-item:hover {
-    transform: translateX(5px);
+    transform: translateX(8px);
     border-color: #3b82f6;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(37, 99, 235, 0.08) 100%);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
 }
 
 .ready-id,
 .delivered-id {
-    font-weight: 700;
-    color: #1a1a2e;
+    font-weight: 800;
+    color: #1f2937;
     font-size: 16px;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
 }
 
 .ready-time,
 .delivered-time {
-    color: #666;
+    color: #6b7280;
     font-size: 13px;
-    margin-top: 2px;
+    font-weight: 600;
+    margin: 0;
 }
 
-/* Responsive */
+/* ==================== SCROLLBAR ==================== */
+.orders-list::-webkit-scrollbar,
+.items-list::-webkit-scrollbar,
+.ready-list::-webkit-scrollbar,
+.delivered-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.orders-list::-webkit-scrollbar-track,
+.items-list::-webkit-scrollbar-track,
+.ready-list::-webkit-scrollbar-track,
+.delivered-list::-webkit-scrollbar-track {
+    background: #f9fafb;
+    border-radius: 10px;
+    margin: 8px 0;
+}
+
+.orders-list::-webkit-scrollbar-thumb,
+.items-list::-webkit-scrollbar-thumb,
+.ready-list::-webkit-scrollbar-thumb,
+.delivered-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #aa7a11 0%, #d4a517 100%);
+    border-radius: 10px;
+    border: 2px solid #f9fafb;
+}
+
+.orders-list::-webkit-scrollbar-thumb:hover,
+.items-list::-webkit-scrollbar-thumb:hover,
+.ready-list::-webkit-scrollbar-thumb:hover,
+.delivered-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #d4a517 0%, #aa7a11 100%);
+}
+
+/* ==================== ICONS ==================== */
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    font-size: 24px;
+}
+
+.icon-clock::before {
+    content: "🕐";
+    font-size: 22px;
+}
+
+.icon-check::before {
+    content: "✓";
+    font-size: 20px;
+    font-weight: 800;
+}
+
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 1200px) {
     .dashboard-content {
         grid-template-columns: 1fr;
@@ -883,30 +1126,41 @@ const playPendingOrderSound = () => {
 
     .sidebar-section {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 25px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
     }
 }
 
 @media (max-width: 768px) {
     .dashboard {
-        padding: 15px;
+        padding: 20px;
     }
 
     .dashboard-header {
         flex-direction: column;
-        gap: 15px;
-        padding: 20px;
+        gap: 20px;
+        padding: 24px;
     }
 
     .header-left,
     .header-right {
         width: 100%;
-        justify-content: center;
+    }
+
+    .header-left {
+        text-align: center;
+        flex-direction: column;
     }
 
     .header-right {
         flex-direction: column;
+        gap: 12px;
+    }
+
+    .status-badge,
+    .time-display {
+        width: 100%;
+        justify-content: center;
     }
 
     .sidebar-section {
@@ -915,12 +1169,13 @@ const playPendingOrderSound = () => {
 
     .order-footer {
         flex-direction: column;
-        gap: 15px;
+        align-items: stretch;
+        gap: 16px;
     }
 
     .order-actions {
-        width: 100%;
         flex-direction: column;
+        width: 100%;
     }
 
     .btn-start,
@@ -930,43 +1185,59 @@ const playPendingOrderSound = () => {
         width: 100%;
         justify-content: center;
     }
+
+    .order-total {
+        text-align: center;
+    }
 }
 
-/* Scrollbar */
-.orders-list::-webkit-scrollbar {
-    width: 8px;
+@media (max-width: 480px) {
+    .dashboard {
+        padding: 16px;
+    }
+
+    .dashboard-header {
+        padding: 20px;
+    }
+
+    .header-left h1 {
+        font-size: 24px;
+    }
+
+    .icon-badge {
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
+    }
+
+    .card-header {
+        padding: 20px 24px;
+    }
+
+    .orders-list {
+        padding: 16px;
+    }
+
+    .order-card {
+        padding: 20px;
+    }
+}
+.fa-hamburger{
+    color:#aa7a11
+}
+/* ==================== ANIMATIONS ==================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.orders-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.orders-list::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #d69d21 0%, #eca50b 100%);
-    border-radius: 10px;
-}
-
-.orders-list::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #eca50b 0%, #d69d21 100%);
-}
-
-.icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-style: normal;
-    font-size: 18px;
-}
-
-.icon-clock::before {
-    content: "🕐";
-    font-size: 20px;
-}
-
-.icon-check::before {
-    content: "✓";
-    font-size: 18px;
-    font-weight: 700;
+.order-card {
+    animation: fadeIn 0.4s ease-out;
 }
 </style>

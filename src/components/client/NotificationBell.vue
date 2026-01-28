@@ -62,6 +62,7 @@ import { ref, onMounted, computed, onUnmounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import OrderPreview from './OrderPreview.vue'
+
 const open = ref(false)
 const notifications = ref([])
 const loading = ref(false)
@@ -207,7 +208,7 @@ const toggle = () => {
 
 // Close panel when clicking outside
 const closePanel = () => {
-  if (showOrderDetails) return;
+  if (showOrderDetails.value) return;
   open.value = false
 }
 

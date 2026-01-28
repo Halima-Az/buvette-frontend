@@ -1,0 +1,12 @@
+:root {
+  --primary: #aa7a11;        /* couleur principale / accent */
+  --secondary: #d4a517;      /* couleur secondaire */
+  --bg-main: #fdfaf2;        /* fond général */
+  --bg-card: #ffffff;        /* fond cartes / sections */
+  --text-main: #1f2937;      /* texte principal */
+  --text-muted: #6b7280;     /* texte secondaire */
+  --success: #10b981;        /* succès / livré */
+  --warning: #fbbf24;        /* en attente */
+  --danger: #ef4444;         /* annulé */
+  --info: #7c3aed;           /* prêt / info */
+}

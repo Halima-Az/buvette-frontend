@@ -134,7 +134,7 @@ onMounted(async () => {
 // Filter items based on search input
 const filteredItems = computed(() =>
   items.value.filter(i =>
-    i.name.toLowerCase().includes(search.value.toLowerCase())
+    i.name.toLowerCase().includes(search.value.toLowerCase() && i.available)
   )
 );
 

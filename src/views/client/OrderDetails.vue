@@ -73,12 +73,32 @@
           </div>
 
           <div class="actions" v-if="selectedOrder.status === 'PENDING'">
-            <button class="btn-cancel" @click="cancelOrder">
+            <button class="btn-cancel" @click="showorderremoveconfirmaton=true">
               <i class="fas fa-times-circle"></i> Cancel Order
             </button>
-            <button class="btn-save" @click="updateOrder" :disabled="!hasChanges">
+            <button class="btn-save" @click="showordermodifyconfirmaton = true" :disabled="!hasChanges">
               <i class="fas fa-save"></i> Save Changes
             </button>
+            <!-- removeorderconfirmation-->
+            <div v-if="showorderremoveconfirmaton" class="confirm-overlay">
+              <div class="confirm-box">
+                <p>Are you sure you want to Cancel the order ?</p>
+                <div class="actions">
+                  <button class="cancel" @click="showorderremoveconfirmaton = false">Cancel</button>
+                  <button class="confirm" @click="cancelOrder">Confirm</button>
+                </div>
+              </div>
+            </div>
+            <!-- changeorderconfirmation-->
+            <div v-if="showordermodifyconfirmaton" class="confirm-overlay">
+              <div class="confirm-box">
+                <p>Are you sure you want to Modify the order ?</p>
+                <div class="actions">
+                  <button class="cancel" @click="showordermodifyconfirmaton = false">Cancel</button>
+                  <button class="confirm" @click="updateOrder">Confirm</button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <h3>Items</h3>
@@ -105,12 +125,23 @@
               <button
                 class="btn-delete"
                 v-if="selectedOrder.status === 'PENDING'"
-                @click="removeItem(item)"
+                @click="showitemremoveconfirmaton = true"
                 title="Remove item"
               >
                 <i class="fas fa-trash"></i>
               </button>
+
             </div>
+            <!-- removeitemconfirmation-->
+              <div v-if="showitemremoveconfirmaton" class="confirm-overlay">
+                <div class="confirm-box">
+                  <p>Are you sure you want to remove the item ?</p>
+                  <div class="actions">
+                    <button class="cancel" @click="showitemremoveconfirmaton = false">Cancel</button>
+                    <button class="confirm" @click="removeItem(item)">Confirm</button>
+                  </div>
+                </div>
+              </div>
 
             <p v-if="selectedOrder.items.length === 0" class="no-items">
               No items left in this order.
@@ -148,6 +179,9 @@ const sortOrder = ref('desc') // desc = newest first
 const hasChanges = ref(false)
 const route=useRoute()
 
+const showitemremoveconfirmaton = ref(false)
+const showorderremoveconfirmaton = ref(false)
+const showordermodifyconfirmaton = ref(false)
 // --- Helper to get token ---
 const getToken = () => localStorage.getItem('token')
 
@@ -231,7 +265,6 @@ const decrementQuantity = (item) => {
 }
 
 const removeItem = (itemToRemove) => {
-  if (confirm(`Remove "${itemToRemove.itemName}" from this order?`)) {
     selectedOrder.value.items = selectedOrder.value.items.filter(
       i => i.itemId !== itemToRemove.itemId
     )
@@ -242,13 +275,12 @@ const removeItem = (itemToRemove) => {
     } else {
       hasChanges.value = true
     }
-  }
+  
 }
 
 
 // --- Cancel entire order ---
 const cancelOrder = async () => {
-  if (confirm('Are you sure you want to cancel this order?')) {
     try {
       await axios.patch(
         `http://localhost:8088/client/orders/${selectedOrder.value.id}/cancel`,
@@ -266,7 +298,6 @@ const cancelOrder = async () => {
       alert('Error cancelling order')
       console.error(err)
     }
-  }
 }
 
 // --- Update order after editing ---
@@ -277,8 +308,6 @@ const updateOrder = async () => {
       selectedOrder.value,
       { headers: { Authorization: `Bearer ${getToken()}` } }
     )
-    alert('Order updated successfully!')
-
     // Update the order list
     const index = orders.value.findIndex(o => o.id === selectedOrder.value.id)
     if (index !== -1) {
@@ -1099,4 +1128,52 @@ watch(
 .order-card:nth-child(4) { animation-delay: 0.2s; }
 .order-card:nth-child(5) { animation-delay: 0.25s; }
 .order-card:nth-child(6) { animation-delay: 0.3s; }
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.confirm-box {
+  background: white;
+  padding: 24px 26px;
+  border-radius: 16px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  transform: translateY(-40px); /* 🔑 visual centering */
+}
+
+
+.confirm-box p {
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.confirm-box .actions {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm-box button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.confirm-box .cancel {
+  background: #eee;
+}
+
+.confirm-box .confirm {
+  background: #e74c3c;
+  color: white;
+}
 </style>

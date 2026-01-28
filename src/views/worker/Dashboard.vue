@@ -61,7 +61,7 @@
                         <div v-for="(order, index) in pendingOrders" :key="order.id" class="order-card">
                             <div class="order-header">
                                 <div class="order-id">
-                                    #{{ index + 1 }} – {{ order.username }}
+                                    #{{ index + 1 }} – {{ order.orderCode }}
                                 </div>
                                 <div class="order-time"><i class="far fa-clock"></i> {{ formatTime(order.createdAt) }}</div>
                             </div>
@@ -79,7 +79,7 @@
                                     <button class="btn-start" @click="confirmOrder(order.id)">
                                         <i class="fas fa-utensils"></i> Start
                                     </button>
-                                    <button class="btn-cancel" @click="cancelOrder(order.id)">
+                                    <button class="btn-cancel" @click="showCancelConfirmation(order.id)">
                                         <i class="fas fa-times"></i> Cancel
                                     </button>
                                 </div>
@@ -144,8 +144,8 @@
                 <div class="ready-list">
                     <div v-for="(order, index) in readyOrders" :key="order.id" class="ready-item">
                         <div>
-                            <p class="ready-id"><i class="fas fa-user"></i> #{{ index + 1 }} – {{ order.username }}</p>
-                            <div class="ready-time"><i class="far fa-clock"></i> {{ formatTime(order.updatedAt) }}</div>
+                            <p class="ready-id"><i class="fas fa-user"></i> #{{ index + 1 }} – {{ order.orderCode }} For {{ order.username }}</p>
+                            <div class="ready-time"><i class="far fa-clock"></i> {{ formatTime(order.readyTime) }}</div>
                         </div>
                         <button class="btn-delivered" @click="markAsDelivered(order.id)">
                             <i class="fas fa-truck"></i> Deliver
@@ -163,14 +163,29 @@
                 <div class="delivered-list">
                     <div v-for="(order, index) in deliveredOrders.slice(0,3)" :key="order.id" class="delivered-item">
                         <div>
-                            <p class="delivered-id"><i class="fas fa-user"></i> #{{ index + 1 }} – {{ order.username }}</p>
-                            <div class="delivered-time"><i class="far fa-clock"></i> {{ formatTime(order.updatedAt) }}</div>
+                            <p class="delivered-id"><i class="fas fa-user"></i> #{{ index + 1 }} – {{ order.orderCode }}</p>
+                            <div class="delivered-time"><i class="far fa-clock"></i> {{ formatTime(order.deliveredAt) }}</div>
                         </div>
                         <span class="status-badge delivered"><i class="fas fa-check"></i></span>
                     </div>
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- CANCELLATION CONFIRMATION OVERLAY (MOVED OUTSIDE THE LOOP) -->
+    <div v-if="showCancelConfirm" class="confirm-overlay">
+        <div class="confirm-box">
+            <p>Are you sure you want to cancel order #{{ orderToCancel?.id || '' }} for {{ orderToCancel?.username || '' }}?</p>
+            <div class="actions">
+                <button class="cancel" @click="hideCancelConfirmation">
+                    No
+                </button>
+                <button class="confirm" @click="cancelOrder">
+                    Yes
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -196,6 +211,8 @@ const knownPendingOrderIds = ref(
   new Set(JSON.parse(localStorage.getItem(PENDING_STORAGE_KEY) || '[]'))
 )
 
+const showCancelConfirm = ref(false)
+const orderToCancel = ref(null)
 
 // Computed properties for filtered orders
 const pendingOrders = computed(() => 
@@ -281,12 +298,45 @@ const loadOrders = async () => {
     console.error("Erreur chargement commandes", err)
   }
 }
+//websocke
+
+/*
+let socket;
+
 
 onMounted(() => {
-    loadOrders()
-    // Poll for new orders every 10 seconds
-    setInterval(loadOrders, 10000)
-})
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    socket = new WebSocket(`ws://localhost:8088/orders/ws?token=${token}`);
+
+    socket.onopen = () => {
+        console.log("WebSocket connected");
+    };
+
+    socket.onmessage = (event) => {
+        const order = JSON.parse(event.data);
+        console.log("New order received:", order);
+
+        // Push to orders
+        orders.value.unshift(order);
+
+        // Handle pending order notification
+        if (order.status === "PENDING") {
+            if (!knownPendingOrderIds.value.has(order.id)) {
+                playPendingOrderSound();
+                knownPendingOrderIds.value.add(order.id);
+                localStorage.setItem(
+                    PENDING_STORAGE_KEY,
+                    JSON.stringify([...knownPendingOrderIds.value])
+                );
+            }
+        }
+    };
+
+    socket.onclose = () => console.log("WebSocket disconnected");
+});*/
+
 
 // Helper function to format time
 const formatTime = (dateString) => {
@@ -370,16 +420,27 @@ const markAsDelivered = async (orderId) => {
     }
 }
 
+// Show cancellation confirmation
+const showCancelConfirmation = (orderId) => {
+    orderToCancel.value = orders.value.find(o => o.id === orderId)
+    showCancelConfirm.value = true
+}
+
+// Hide cancellation confirmation
+const hideCancelConfirmation = () => {
+    showCancelConfirm.value = false
+    orderToCancel.value = null
+}
+
 // Cancel order
-const cancelOrder = async (orderId) => {
-    const confirmed = window.confirm("Are you sure you want to cancel this order?")
-    if (!confirmed) return
+const cancelOrder = async () => {
+    if (!orderToCancel.value) return
     
     const token = localStorage.getItem("token")
     
     try {
         await axios.put(
-            `http://localhost:8088/worker/orders/${orderId}/status`,
+            `http://localhost:8088/worker/orders/${orderToCancel.value.id}/status`,
             { 
                 status: "CANCELLED",
             },
@@ -387,14 +448,17 @@ const cancelOrder = async (orderId) => {
         )
         
         // Update local order
-        const order = orders.value.find(o => o.id === orderId)
+        const order = orders.value.find(o => o.id === orderToCancel.value.id)
         if (order) {
             order.status = "CANCELLED"
         }
         
+        hideCancelConfirmation()
+        
     } catch (err) {
         console.error("Error cancelling order:", err)
         alert("Failed to cancel order")
+        hideCancelConfirmation()
     }
 }
 
@@ -404,6 +468,7 @@ const playPendingOrderSound = () => {
 }
 
 </script>
+
 
 <style scoped>
 /* ==================== BASE DASHBOARD ==================== */
@@ -1240,4 +1305,127 @@ const playPendingOrderSound = () => {
 .order-card {
     animation: fadeIn 0.4s ease-out;
 }
+
+/* LOGOUT CONFIRM */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.confirm-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 260px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-box p {
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.confirm-box .actions {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm-box button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.confirm-box .cancel {
+  background: #eee;
+}
+
+.confirm-box .confirm {
+  background: #e74c3c;
+  color: white;
+}
+
+/* All your existing CSS remains the same, but add these styles for the confirmation overlay */
+
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.confirm-box {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.confirm-box p {
+  margin-bottom: 24px;
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.confirm-box .actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.confirm-box button {
+  flex: 1;
+  padding: 14px 24px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  max-width: 150px;
+}
+
+.confirm-box .cancel {
+  background: #f3f4f6;
+  color: #374151;
+  border: 2px solid #e5e7eb;
+}
+
+.confirm-box .cancel:hover {
+  background: #e5e7eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.confirm-box .confirm {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+.confirm-box .confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+}
+
 </style>

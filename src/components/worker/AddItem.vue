@@ -32,8 +32,8 @@
       <div class="form-group">
         <label>Available</label>
         <div class="toggle-wrapper">
-          <input type="checkbox" id="available" v-model="availableModel" />
-          <label for="available" class="toggle-slider"></label>
+          <input type="checkbox" id="availability" v-model="availableModel" />
+          <label for="availability" class="toggle-slider"></label>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ const props = defineProps({
   rating: Number,
   category: String,
   preview: String,
-  available: Boolean
+  availability: Boolean
 })
 
 const emit = defineEmits([
@@ -71,7 +71,7 @@ const emit = defineEmits([
   "update:rating",
   "update:category",
   "file-change",
-  "update:available",
+  "update:availability",
   "submit"
 ])
 
@@ -101,7 +101,7 @@ const onFileChange = (e) => {
 
 const availableModel = computed({
   get: () => props.available,
-  set: v => emit("update:available", v)
+  set: v => emit("update:availability", v)
 })
 
 </script>

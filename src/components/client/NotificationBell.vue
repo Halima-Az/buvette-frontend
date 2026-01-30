@@ -62,6 +62,8 @@ import { ref, onMounted, computed, onUnmounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import OrderPreview from './OrderPreview.vue'
+import {connectNotificationSocket, disconnectNotificationSocket} from "@/services/websockets/notifsocket"
+
 
 const open = ref(false)
 const notifications = ref([])
@@ -89,6 +91,25 @@ const router = useRouter()
 const getToken = () => {
   return localStorage.getItem('token')
 }
+
+const handleIncomingNotification = (notification) => {
+  // Avoid duplicates
+  if (knownNotificationIds.value.has(notification.id)) return
+
+  notifications.value.unshift(notification)
+  knownNotificationIds.value.add(notification.id)
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify([...knownNotificationIds.value])
+  )
+
+  // 🔊 play sound only if panel closed
+  if (!open.value) {
+    playNotificationSound()
+  }
+}
+
 
 // Fetch notifications
 const fetchNotifications = async () => {
@@ -298,14 +319,21 @@ const vClickOutside = {
 
 // Lifecycle hooks
 onMounted(() => {
-  fetchNotifications()
-  startPolling()
+  fetchNotifications() // initial load (DB truth)
+
+  const userId = localStorage.getItem('userId')
+  if (!userId) {
+    console.warn('No userId found → notifications socket not connected')
+    return
+  }
+
+  connectNotificationSocket(userId, handleIncomingNotification)
 })
 
 onUnmounted(() => {
   stopPolling()
+  disconnectNotificationSocket()
 })
-
 
 // go to order detail
 const goToOrder = async (notification) => {
@@ -314,6 +342,7 @@ const goToOrder = async (notification) => {
   if (notif && !notif.read) {
     notif.read = true
   }
+
 
   // 2️⃣ Send request to backend
   markAsRead(notification.id)

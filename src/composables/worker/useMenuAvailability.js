@@ -2,18 +2,17 @@ import axios from "axios";
 
 export function useMenuAvailability() {
 
-  async function setAvailable(item, available) {
-    axios.put(
+  async function setAvailable(item, availability) {
+    let res; 
+    res = await axios.put(
       `http://localhost:8088/worker/menu-items/${item.id}/availability`,
       null,
       {
-        params: { available },
+        params: { availability },
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       }
     );
-
-
-    item.available = available;
+    item.availability = availability;
   }
 
   function invalidate(item) {

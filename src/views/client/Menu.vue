@@ -132,11 +132,15 @@ onMounted(async () => {
 });
 
 // Filter items based on search input
-const filteredItems = computed(() =>
-  items.value.filter(i =>
-    i.name.toLowerCase().includes(search.value.toLowerCase() && i.available)
-  )
-);
+const filteredItems = computed(() => {
+  return items.value.filter(item => {
+    // Worker sees all
+    if (isWorker.value) return item.name.toLowerCase().includes(search.value.toLowerCase());
+
+    // Client sees only available items
+    return item.availability && item.name.toLowerCase().includes(search.value.toLowerCase());
+  });
+});
 
 // Order counts
 const order = ref({});
@@ -192,7 +196,7 @@ const additem = async () => {
   formData.append('price', price.value)
   formData.append('rating', rating.value)
   formData.append('itemCategory', category.value)
-  formData.append('available', available.value)
+  formData.append('availability', availability.value)
   formData.append('image', imageFile.value)
 
   try {

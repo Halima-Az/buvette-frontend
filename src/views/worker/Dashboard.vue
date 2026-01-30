@@ -383,9 +383,7 @@ const markAsDelivered = async (orderId) => {
 
 // Cancel order
 const cancelOrder = async (orderId) => {
-    const confirmed = window.confirm("Are you sure you want to cancel this order?")
-    if (!confirmed) return
-
+    
     const token = localStorage.getItem("token")
 
     try {

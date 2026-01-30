@@ -32,7 +32,7 @@
       <!-- WORKER UI -->
        <div v-if="isWorker">
         <button
-          v-if="item.available"
+          v-if="item.availability"
           class="invalidate-btn"
           @click.stop="invalidateItem"
         >

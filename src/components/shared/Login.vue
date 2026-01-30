@@ -49,11 +49,12 @@ const finalLogin = async () => {
             email: email.value,
             password: password.value,
         });
-        login(res.data.token, res.data.role);
+        login(res.data.token, res.data.role,res.data.userId);
         console.log(res.data.role)
 
         // Redirection selon rôle
         if (res.data.role === "ROLE_WORKER") {
+            
             router.push("/serveur/home");
         } else if (res.data.role === "ROLE_CLIENT") {
             router.push("/home");

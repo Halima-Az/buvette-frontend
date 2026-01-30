@@ -1,204 +1,194 @@
 <template>
-<HeaderPageMenu title=""/>
+    <HeaderPageMenu title="" />
 
-<div class="dashboard">
+    <div class="dashboard">
 
-    <!-- HEADER -->
-    <div class="dashboard-header">
-        <div class="header-left">
-            <div class="icon-badge">
-                <!-- Icon FontAwesome chef -->
-                👨‍🍳
-            </div>
-            <div>
-                <h1>Kitchen Screen</h1>
-                <p class="subtitle">Live Orders Management</p>
-            </div>
-        </div>
-
-        <div class="header-right">
-            <div class="status-badge active">
-                <span class="status-dot"></span>
-                Service ON
-            </div>
-            <div class="time-display">
-                <i class="far fa-clock"></i>
-                {{ currentTime }}
-            </div>
-        </div>
-    </div>
-
-    <!-- CONTENT GRID -->
-    <div class="dashboard-content">
-
-        <!-- LEFT COLUMN -->
-        <div class="main-section">
-
-            <!-- ORDER QUEUE -->
-            <div class="section-card order-queue">
-                <div class="card-header">
-                    <h2><i class="fas fa-clipboard-list"></i> Order Queue</h2>
-                    <div class="badge-counter">{{ pendingOrders.length }}</div>
+        <!-- HEADER -->
+        <div class="dashboard-header">
+            <div class="header-left">
+                <div class="icon-badge">
+                    <!-- Icon FontAwesome chef -->
+                    👨‍🍳
                 </div>
-
-                <div class="order-tabs">
-                    <button
-                        @click="activeTab = 'PENDING'"
-                        :class="['tab-btn', { active: activeTab === 'PENDING' }]"
-                    >
-                        <i class="far fa-hourglass"></i> Pending
-                    </button>
-                    <button
-                        @click="activeTab = 'PREPARING'"
-                        :class="['tab-btn', { active: activeTab === 'PREPARING' }]"
-                    >
-                        <i class="fas fa-utensils"></i> Preparing
-                    </button>
-                </div>
-
-                <div class="orders-list">
-                    <div v-if="activeTab === 'PENDING'">
-                        <div v-for="(order, index) in pendingOrders" :key="order.id" class="order-card">
-                            <div class="order-header">
-                                <div class="order-id">
-                                    #{{ index + 1 }} – {{ order.orderCode }}
-                                </div>
-                                <div class="order-time"><i class="far fa-clock"></i> {{ formatTime(order.createdAt) }}</div>
-                            </div>
-
-                            <div class="order-items">
-                                <div v-for="item in order.items" :key="item.id" class="item-row">
-                                    <span class="item-name"><i class="fas fa-hamburger"></i> {{ item.itemName }}</span>
-                                    <span class="item-quantity">×{{ item.quantity }}</span>
-                                </div>
-                            </div>
-
-                            <div class="order-footer">
-                                <div class="order-total"><i class="fas fa-dollar-sign"></i> {{ order.total }}</div>
-                                <div class="order-actions">
-                                    <button class="btn-start" @click="confirmOrder(order.id)">
-                                        <i class="fas fa-utensils"></i> Start
-                                    </button>
-                                    <button class="btn-cancel" @click="showCancelConfirmation(order.id)">
-                                        <i class="fas fa-times"></i> Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div v-if="activeTab === 'PREPARING'">
-                        <div v-for="(order, index) in preparingOrders" :key="order.id" class="order-card">
-                            <div class="order-header">
-                                <div class="order-id">
-                                    #{{ index + 1 }} – {{ order.username }}
-                                </div>
-                                <div class="order-time"><i class="far fa-clock"></i> Started {{ formatTime(order.updatedAt) }}</div>
-                            </div>
-
-                            <div class="order-items">
-                                <div v-for="item in order.items" :key="item.id" class="item-row">
-                                    <span class="item-name"><i class="fas fa-hamburger"></i> {{ item.itemName }}</span>
-                                    <span class="item-quantity">×{{ item.quantity }}</span>
-                                </div>
-                            </div>
-
-                            <div class="order-footer">
-                                <div class="order-total"><i class="fas fa-dollar-sign"></i> {{ order.total }}</div>
-                                <div class="order-actions">
-                                    <button class="btn-ready" @click="markAsReady(order.id)">
-                                        <i class="fas fa-check-circle"></i> Ready
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <h1>Kitchen Screen</h1>
+                    <p class="subtitle">Live Orders Management</p>
                 </div>
             </div>
 
-            <!-- TOTAL ITEMS NEEDED -->
-            <div class="section-card items-needed my-4">
-                <div class="card-header">
-                    <h2><i class="fas fa-boxes"></i> Total Items Needed</h2>
+            <div class="header-right">
+                <div class="status-badge active">
+                    <span class="status-dot"></span>
+                    Service ON
                 </div>
-
-                <div class="items-list">
-                    <div v-for="item in totalItemsNeeded" :key="item.name" class="item-needed">
-                        <span class="item-name"><i class="fas fa-hamburger"></i> {{ item.itemName }}</span>
-                        <span class="item-count"><i class="fas fa-sort-numeric-up"></i> {{ item.quantity }}</span>
-                    </div>
+                <div class="time-display">
+                    <i class="far fa-clock"></i>
+                    {{ currentTime }}
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT COLUMN -->
-        <div class="sidebar-section">
+        <!-- CONTENT GRID -->
+        <div class="dashboard-content">
 
-            <!-- READY FOR PICKUP -->
-            <div class="section-card ready-pickup">
-                <div class="card-header">
-                    <h2><i class="fas fa-check-circle"></i> Ready for Pickup</h2>
-                    <div class="badge-counter">{{ readyOrders.length }}</div>
-                </div>
+            <!-- LEFT COLUMN -->
+            <div class="main-section">
 
-                <div class="ready-list">
-                    <div v-for="(order, index) in readyOrders" :key="order.id" class="ready-item">
-                        <div>
-                            <p class="ready-id"><i class="fas fa-user"></i> #{{ index + 1 }} – {{ order.orderCode }} For {{ order.username }}</p>
-                            <div class="ready-time"><i class="far fa-clock"></i> {{ formatTime(order.readyTime) }}</div>
-                        </div>
-                        <button class="btn-delivered" @click="markAsDelivered(order.id)">
-                            <i class="fas fa-truck"></i> Deliver
+                <!-- ORDER QUEUE -->
+                <div class="section-card order-queue">
+                    <div class="card-header">
+                        <h2><i class="fas fa-clipboard-list"></i> Order Queue</h2>
+                        <div class="badge-counter">{{ pendingOrders.length }}</div>
+                    </div>
+
+                    <div class="order-tabs">
+                        <button @click="activeTab = 'PENDING'"
+                            :class="['tab-btn', { active: activeTab === 'PENDING' }]">
+                            <i class="far fa-hourglass"></i> Pending ({{ pendingOrders.length }})
+                        </button>
+                        <button @click="activeTab = 'PREPARING'"
+                            :class="['tab-btn', { active: activeTab === 'PREPARING' }]">
+                            <i class="fas fa-utensils"></i> Preparing ({{ preparingOrders.length }})
                         </button>
                     </div>
-                </div>
-            </div>
 
-            <!-- RECENTLY DELIVERED -->
-            <div class="section-card delivered-orders">
-                <div class="card-header">
-                    <h2><i class="fas fa-box-open"></i> Recently Delivered</h2>
-                </div>
+                    <div class="orders-list">
+                        <div v-if="activeTab === 'PENDING'">
+                            <div v-for="(order, index) in pendingOrders" :key="order.id" class="order-card">
+                                <div class="order-header">
+                                    <div class="order-id">
+                                        #{{ index + 1 }} – {{ order.username }}
+                                    </div>
+                                    <div class="order-time"><i class="far fa-clock"></i> {{ formatTime(order.createdAt)
+                                        }}</div>
+                                </div>
 
-                <div class="delivered-list">
-                    <div v-for="(order, index) in deliveredOrders.slice(0,3)" :key="order.id" class="delivered-item">
-                        <div>
-                            <p class="delivered-id"><i class="fas fa-user"></i> #{{ index + 1 }} – {{ order.orderCode }}</p>
-                            <div class="delivered-time"><i class="far fa-clock"></i> {{ formatTime(order.deliveredAt) }}</div>
+                                <div class="order-items">
+                                    <div v-for="item in order.items" :key="item.id" class="item-row">
+                                        <span class="item-name"><i class="fas fa-hamburger"></i> {{ item.itemName
+                                            }}</span>
+                                        <span class="item-quantity">×{{ item.quantity }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="order-footer">
+                                    <div class="order-total"><i class="fas fa-dollar-sign"></i> {{ order.total }}</div>
+                                    <div class="order-actions">
+                                        <button class="btn-start" @click="confirmOrder(order.id)">
+                                            <i class="fas fa-utensils"></i> Start
+                                        </button>
+                                        <button class="btn-cancel" @click="cancelOrder(order.id)">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <span class="status-badge delivered"><i class="fas fa-check"></i></span>
+
+                        <div v-if="activeTab === 'PREPARING'">
+                            <div v-for="(order, index) in preparingOrders" :key="order.id" class="order-card">
+                                <div class="order-header">
+                                    <div class="order-id">
+                                        #{{ index + 1 }} – {{ order.username }}
+                                    </div>
+                                    <div class="order-time"><i class="far fa-clock"></i> Started {{
+                                        formatTime(order.updatedAt) }}</div>
+                                </div>
+
+                                <div class="order-items">
+                                    <div v-for="item in order.items" :key="item.id" class="item-row">
+                                        <span class="item-name"><i class="fas fa-hamburger"></i> {{ item.itemName
+                                            }}</span>
+                                        <span class="item-quantity">×{{ item.quantity }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="order-footer">
+                                    <div class="order-total"><i class="fas fa-dollar-sign"></i> {{ order.total }}</div>
+                                    <div class="order-actions">
+                                        <button class="btn-ready" @click="markAsReady(order.id)">
+                                            <i class="fas fa-check-circle"></i> Ready
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOTAL ITEMS NEEDED -->
+                <div class="section-card items-needed my-4">
+                    <div class="card-header">
+                        <h2><i class="fas fa-boxes"></i> Total Items Needed</h2>
+                    </div>
+
+                    <div class="items-list">
+                        <div v-for="item in totalItemsNeeded" :key="item.name" class="item-needed">
+                            <span class="item-name"><i class="fas fa-hamburger"></i> {{ item.itemName }}</span>
+                            <span class="item-count"><i class="fas fa-sort-numeric-up"></i> {{ item.quantity }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-        </div>
-    </div>
+            <!-- RIGHT COLUMN -->
+            <div class="sidebar-section">
 
-    <!-- CANCELLATION CONFIRMATION OVERLAY (MOVED OUTSIDE THE LOOP) -->
-    <div v-if="showCancelConfirm" class="confirm-overlay">
-        <div class="confirm-box">
-            <p>Are you sure you want to cancel order #{{ orderToCancel?.id || '' }} for {{ orderToCancel?.username || '' }}?</p>
-            <div class="actions">
-                <button class="cancel" @click="hideCancelConfirmation">
-                    No
-                </button>
-                <button class="confirm" @click="cancelOrder">
-                    Yes
-                </button>
+                <!-- READY FOR PICKUP -->
+                <div class="section-card ready-pickup">
+                    <div class="card-header">
+                        <h2><i class="fas fa-check-circle"></i> Ready for Pickup</h2>
+                        <div class="badge-counter">{{ readyOrders.length }}</div>
+                    </div>
+
+                    <div class="ready-list">
+                        <div v-for="(order, index) in readyOrders" :key="order.id" class="ready-item">
+                            <div>
+                                <p class="ready-id"><i class="fas fa-user"></i> #{{ index + 1 }} – {{ order.username }}
+                                </p>
+                                <div class="ready-time"><i class="far fa-clock"></i> {{ formatTime(order.updatedAt) }}
+                                </div>
+                            </div>
+                            <button class="btn-delivered" @click="markAsDelivered(order.id)">
+                                <i class="fas fa-truck"></i> Deliver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECENTLY DELIVERED -->
+                <div class="section-card delivered-orders">
+                    <div class="card-header">
+                        <h2><i class="fas fa-box-open"></i> Recently Delivered</h2>
+                    </div>
+
+                    <div class="delivered-list">
+                        <div v-for="(order, index) in deliveredOrders.slice(0, 3)" :key="order.id"
+                            class="delivered-item">
+                            <div>
+                                <p class="delivered-id"><i class="fas fa-user"></i> #{{ index + 1 }} – {{ order.username
+                                    }}</p>
+                                <div class="delivered-time"><i class="far fa-clock"></i> {{ formatTime(order.updatedAt)
+                                    }}</div>
+                            </div>
+                            <span class="status-badge delivered"><i class="fas fa-check"></i></span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
 
-<FooterPageMenu/>
+    <FooterPageMenu />
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onUnmounted } from 'vue'
 import axios from 'axios'
 import HeaderPageMenu from '@/components/client/HeaderPageMenu.vue'
 import FooterPageMenu from '@/components/client/FooterPageMenu.vue'
-
+import { connectWorkerSocket, disconnectSocket } from "@/services/websockets/socket"
 const orders = ref([])
 const activeTab = ref('PENDING')
 const currentTime = ref(
@@ -208,26 +198,24 @@ const currentTime = ref(
 const PENDING_STORAGE_KEY = 'knownPendingOrderIds'
 
 const knownPendingOrderIds = ref(
-  new Set(JSON.parse(localStorage.getItem(PENDING_STORAGE_KEY) || '[]'))
+    new Set(JSON.parse(localStorage.getItem(PENDING_STORAGE_KEY) || '[]'))
 )
 
-const showCancelConfirm = ref(false)
-const orderToCancel = ref(null)
 
 // Computed properties for filtered orders
-const pendingOrders = computed(() => 
+const pendingOrders = computed(() =>
     orders.value.filter(o => o.status === "PENDING")
 )
 
-const preparingOrders = computed(() => 
+const preparingOrders = computed(() =>
     orders.value.filter(o => o.status === "PREPARING")
 )
 
-const readyOrders = computed(() => 
+const readyOrders = computed(() =>
     orders.value.filter(o => o.status === "READY")
 )
 
-const deliveredOrders = computed(() => 
+const deliveredOrders = computed(() =>
     orders.value.filter(o => o.status === "DELIVERED")
 )
 
@@ -247,96 +235,69 @@ const totalItemsNeeded = computed(() => {
     return Object.values(map)
 })
 
-// Clock
-onMounted(() => {
-    setInterval(() => {
-        currentTime.value = new Date().toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit'
-        })
-    }, 60000)
-})
+
 
 // Load orders
 const loadOrders = async () => {
-  const token = localStorage.getItem("token")
-  if (!token) return
+    const token = localStorage.getItem("token")
+    if (!token) return
 
-  try {
-    const res = await axios.get("http://localhost:8088/worker/orders", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    try {
+        const res = await axios.get("http://localhost:8088/worker/orders", {
+            headers: { Authorization: `Bearer ${token}` },
+        })
 
-    const incomingOrders = res.data
+        const incomingOrders = res.data
 
-    // Only pending orders
-    const incomingPending = incomingOrders.filter(o => o.status === "PENDING")
+        // Only pending orders
+        const incomingPending = incomingOrders.filter(o => o.status === "PENDING")
 
-    // Detect NEW pending orders
-    const newPending = incomingPending.filter(
-      o => !knownPendingOrderIds.value.has(o.id)
-    )
+        // Detect NEW pending orders
+        const newPending = incomingPending.filter(
+            o => !knownPendingOrderIds.value.has(o.id)
+        )
 
-    // 🔊 play sound ONLY if not first load
-    const hasStoredPending = knownPendingOrderIds.value.size > 0
+        // 🔊 play sound ONLY if not first load
+        const hasStoredPending = knownPendingOrderIds.value.size > 0
 
-    if (newPending.length > 0 && hasStoredPending) {
-      playPendingOrderSound()
+        if (newPending.length > 0 && hasStoredPending) {
+            playPendingOrderSound()
+        }
+
+        // Update known pending IDs
+        incomingPending.forEach(o => knownPendingOrderIds.value.add(o.id))
+
+        // Persist
+        localStorage.setItem(
+            PENDING_STORAGE_KEY,
+            JSON.stringify([...knownPendingOrderIds.value])
+        )
+
+        orders.value = incomingOrders
+    } catch (err) {
+        console.error("Erreur chargement commandes", err)
     }
-
-    // Update known pending IDs
-    incomingPending.forEach(o => knownPendingOrderIds.value.add(o.id))
-
-    // Persist
-    localStorage.setItem(
-      PENDING_STORAGE_KEY,
-      JSON.stringify([...knownPendingOrderIds.value])
-    )
-
-    orders.value = incomingOrders
-  } catch (err) {
-    console.error("Erreur chargement commandes", err)
-  }
 }
-//websocke
-
-/*
-let socket;
 
 
 onMounted(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
+    loadOrders()  // initialise les commandes existantes
+    connectWorkerSocket(order => {
+        const index = orders.value.findIndex(o => o.id === order.id)
 
-    socket = new WebSocket(`ws://localhost:8088/orders/ws?token=${token}`);
-
-    socket.onopen = () => {
-        console.log("WebSocket connected");
-    };
-
-    socket.onmessage = (event) => {
-        const order = JSON.parse(event.data);
-        console.log("New order received:", order);
-
-        // Push to orders
-        orders.value.unshift(order);
-
-        // Handle pending order notification
-        if (order.status === "PENDING") {
-            if (!knownPendingOrderIds.value.has(order.id)) {
-                playPendingOrderSound();
-                knownPendingOrderIds.value.add(order.id);
-                localStorage.setItem(
-                    PENDING_STORAGE_KEY,
-                    JSON.stringify([...knownPendingOrderIds.value])
-                );
-            }
+        if (index !== -1) {
+            orders.value[index] = order // update
+        } else {
+            orders.value.push(order) // new order
         }
-    };
+    })
 
-    socket.onclose = () => console.log("WebSocket disconnected");
-});*/
+}) // écoute les nouvelles commandes en temps réel
 
+
+onUnmounted(() => {
+    disconnectSocket()
+})
 
 // Helper function to format time
 const formatTime = (dateString) => {
@@ -348,22 +309,22 @@ const formatTime = (dateString) => {
 // Confirm order (Start Preparing)
 const confirmOrder = async (orderId) => {
     const token = localStorage.getItem("token")
-    
+
     try {
         await axios.put(
             `http://localhost:8088/worker/orders/${orderId}/status`,
-            { 
+            {
                 status: "PREPARING",
             },
             { headers: { Authorization: `Bearer ${token}` } }
         )
-        
+
         // Update local order
         const order = orders.value.find(o => o.id === orderId)
         if (order) {
             order.status = "PREPARING"
         }
-        
+
     } catch (err) {
         console.error("Error starting order:", err)
         alert("Failed to start order preparation")
@@ -373,22 +334,22 @@ const confirmOrder = async (orderId) => {
 // Mark as Ready
 const markAsReady = async (orderId) => {
     const token = localStorage.getItem("token")
-    
+
     try {
         await axios.put(
             `http://localhost:8088/worker/orders/${orderId}/status`,
-            { 
+            {
                 status: "READY",
             },
             { headers: { Authorization: `Bearer ${token}` } }
         )
-        
+
         // Update local order
         const order = orders.value.find(o => o.id === orderId)
         if (order) {
             order.status = "READY"
         }
-        
+
     } catch (err) {
         console.error("Error marking order as ready:", err)
         alert("Failed to mark order as ready")
@@ -398,77 +359,62 @@ const markAsReady = async (orderId) => {
 // Mark as Delivered
 const markAsDelivered = async (orderId) => {
     const token = localStorage.getItem("token")
-    
+
     try {
         await axios.put(
             `http://localhost:8088/worker/orders/${orderId}/status`,
-            { 
+            {
                 status: "DELIVERED",
             },
             { headers: { Authorization: `Bearer ${token}` } }
         )
-        
+
         // Update local order
         const order = orders.value.find(o => o.id === orderId)
         if (order) {
             order.status = "DELIVERED"
         }
-        
+
     } catch (err) {
         console.error("Error marking order as delivered:", err)
         alert("Failed to mark order as delivered")
     }
 }
 
-// Show cancellation confirmation
-const showCancelConfirmation = (orderId) => {
-    orderToCancel.value = orders.value.find(o => o.id === orderId)
-    showCancelConfirm.value = true
-}
-
-// Hide cancellation confirmation
-const hideCancelConfirmation = () => {
-    showCancelConfirm.value = false
-    orderToCancel.value = null
-}
-
 // Cancel order
-const cancelOrder = async () => {
-    if (!orderToCancel.value) return
-    
+const cancelOrder = async (orderId) => {
+    const confirmed = window.confirm("Are you sure you want to cancel this order?")
+    if (!confirmed) return
+
     const token = localStorage.getItem("token")
-    
+
     try {
         await axios.put(
-            `http://localhost:8088/worker/orders/${orderToCancel.value.id}/status`,
-            { 
+            `http://localhost:8088/worker/orders/${orderId}/status`,
+            {
                 status: "CANCELLED",
             },
             { headers: { Authorization: `Bearer ${token}` } }
         )
-        
+
         // Update local order
-        const order = orders.value.find(o => o.id === orderToCancel.value.id)
+        const order = orders.value.find(o => o.id === orderId)
         if (order) {
             order.status = "CANCELLED"
         }
-        
-        hideCancelConfirmation()
-        
+
     } catch (err) {
         console.error("Error cancelling order:", err)
         alert("Failed to cancel order")
-        hideCancelConfirmation()
     }
 }
 
 const playPendingOrderSound = () => {
-  const audio = new Audio('/sounds/notificationWorker.mp3')
-  audio.play().catch(() => {})
+    const audio = new Audio('/sounds/notificationWorker.mp3')
+    audio.play().catch(() => { })
 }
 
 </script>
-
 
 <style scoped>
 /* ==================== BASE DASHBOARD ==================== */
@@ -501,7 +447,7 @@ const playPendingOrderSound = () => {
     background: #ffffff;
     backdrop-filter: blur(20px);
     border-radius: 24px;
-    box-shadow: 
+    box-shadow:
         0 8px 32px rgba(170, 122, 17, 0.12),
         0 2px 8px rgba(0, 0, 0, 0.04);
     border: 1px solid rgba(170, 122, 17, 0.1);
@@ -524,7 +470,7 @@ const playPendingOrderSound = () => {
     align-items: center;
     justify-content: center;
     font-size: 36px;
-    box-shadow: 
+    box-shadow:
         0 12px 32px rgba(170, 122, 17, 0.35),
         0 4px 12px rgba(170, 122, 17, 0.2),
         inset 0 1px 2px rgba(255, 255, 255, 0.3);
@@ -543,7 +489,7 @@ const playPendingOrderSound = () => {
 
 .icon-badge:hover {
     transform: translateY(-4px) scale(1.05);
-    box-shadow: 
+    box-shadow:
         0 16px 40px rgba(170, 122, 17, 0.4),
         0 8px 16px rgba(170, 122, 17, 0.25);
 }
@@ -608,10 +554,13 @@ const playPendingOrderSound = () => {
 }
 
 @keyframes statusPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.6;
         transform: scale(0.9);
@@ -650,7 +599,7 @@ const playPendingOrderSound = () => {
     background: #ffffff;
     backdrop-filter: blur(20px);
     border-radius: 24px;
-    box-shadow: 
+    box-shadow:
         0 8px 32px rgba(170, 122, 17, 0.1),
         0 2px 8px rgba(0, 0, 0, 0.04);
     border: 1px solid rgba(170, 122, 17, 0.08);
@@ -659,7 +608,7 @@ const playPendingOrderSound = () => {
 }
 
 .section-card:hover {
-    box-shadow: 
+    box-shadow:
         0 12px 40px rgba(170, 122, 17, 0.15),
         0 4px 12px rgba(0, 0, 0, 0.06);
 }
@@ -803,7 +752,7 @@ const playPendingOrderSound = () => {
 
 .order-card:hover {
     transform: translateY(-6px);
-    box-shadow: 
+    box-shadow:
         0 20px 48px rgba(170, 122, 17, 0.18),
         0 8px 24px rgba(0, 0, 0, 0.08);
     border-color: #aa7a11;
@@ -942,7 +891,7 @@ const playPendingOrderSound = () => {
 .btn-ready,
 .btn-delivered,
 .btn-cancel {
-    box-shadow: 
+    box-shadow:
         0 6px 20px rgba(0, 0, 0, 0.12),
         0 2px 8px rgba(0, 0, 0, 0.08);
 }
@@ -977,7 +926,7 @@ const playPendingOrderSound = () => {
 
 .btn-start:hover {
     transform: translateY(-3px);
-    box-shadow: 
+    box-shadow:
         0 12px 32px rgba(170, 122, 17, 0.4),
         0 4px 16px rgba(170, 122, 17, 0.3);
 }
@@ -989,7 +938,7 @@ const playPendingOrderSound = () => {
 
 .btn-ready:hover {
     transform: translateY(-3px);
-    box-shadow: 
+    box-shadow:
         0 12px 32px rgba(16, 185, 129, 0.4),
         0 4px 16px rgba(16, 185, 129, 0.3);
 }
@@ -1001,7 +950,7 @@ const playPendingOrderSound = () => {
 
 .btn-delivered:hover {
     transform: translateY(-3px);
-    box-shadow: 
+    box-shadow:
         0 12px 32px rgba(59, 130, 246, 0.4),
         0 4px 16px rgba(59, 130, 246, 0.3);
 }
@@ -1014,7 +963,7 @@ const playPendingOrderSound = () => {
 
 .btn-cancel:hover {
     transform: translateY(-3px);
-    box-shadow: 
+    box-shadow:
         0 12px 32px rgba(239, 68, 68, 0.4),
         0 4px 16px rgba(239, 68, 68, 0.3);
 }
@@ -1287,15 +1236,18 @@ const playPendingOrderSound = () => {
         padding: 20px;
     }
 }
-.fa-hamburger{
-    color:#aa7a11
+
+.fa-hamburger {
+    color: #aa7a11
 }
+
 /* ==================== ANIMATIONS ==================== */
 @keyframes fadeIn {
     from {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1305,127 +1257,4 @@ const playPendingOrderSound = () => {
 .order-card {
     animation: fadeIn 0.4s ease-out;
 }
-
-/* LOGOUT CONFIRM */
-.confirm-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.confirm-box {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  width: 260px;
-  text-align: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-
-.confirm-box p {
-  margin-bottom: 16px;
-  font-weight: 500;
-}
-
-.confirm-box .actions {
-  display: flex;
-  gap: 10px;
-}
-
-.confirm-box button {
-  flex: 1;
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-.confirm-box .cancel {
-  background: #eee;
-}
-
-.confirm-box .confirm {
-  background: #e74c3c;
-  color: white;
-}
-
-/* All your existing CSS remains the same, but add these styles for the confirmation overlay */
-
-.confirm-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(4px);
-}
-
-.confirm-box {
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  width: 400px;
-  max-width: 90%;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: fadeIn 0.3s ease-out;
-}
-
-.confirm-box p {
-  margin-bottom: 24px;
-  font-weight: 600;
-  color: #1f2937;
-  font-size: 18px;
-  line-height: 1.5;
-}
-
-.confirm-box .actions {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-}
-
-.confirm-box button {
-  flex: 1;
-  padding: 14px 24px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 15px;
-  transition: all 0.3s ease;
-  max-width: 150px;
-}
-
-.confirm-box .cancel {
-  background: #f3f4f6;
-  color: #374151;
-  border: 2px solid #e5e7eb;
-}
-
-.confirm-box .cancel:hover {
-  background: #e5e7eb;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.confirm-box .confirm {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-}
-
-.confirm-box .confirm:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
-}
-
 </style>

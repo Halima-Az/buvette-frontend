@@ -315,6 +315,7 @@ const updateOrder = async () => {
     }
 
     hasChanges.value = false
+    showordermodifyconfirmaton.value=false
   } catch (err) {
     alert('Error updating order')
     console.error(err)

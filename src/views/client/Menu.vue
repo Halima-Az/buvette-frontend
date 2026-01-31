@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    
+    <!-- Worker Add Item Form -->
     <transition name="slide-fade">
       <div v-if="showForm && isWorker" class="form-overlay" @click.self="closeForm">
         <div class="form-container">
@@ -50,14 +50,42 @@
       </div>
     </transition>
 
+    <!-- Menu Items -->
     <div class="grid">
-      <MenuItemCard v-for="item in filteredItems" :key="item.id" :item="item" :favorite="preferences.has(item.id)"
+      <MenuItemCard 
+        v-for="item in filteredItems" 
+        :key="item.id" 
+        :item="item" 
+        :favorite="preferences.has(item.id)"
+        :count="cartMap[item.id] || 0"
         @update-count="updateCart" 
         @add-preference="togglePreference" 
         @invalidate-item="setAvailableFalse"
         @validate-item="setAvailableTrue"
       />
     </div>
+
+    <!-- Quick Order Floating Bar -->
+<div
+  v-if="hasQuickItems"
+  class="quick-order-bar"
+>
+  <div class="quick-order-info">
+    <span class="icon">🛒</span>
+    <span>
+      {{ Object.keys(quickOrder).length }} item(s) selected
+    </span>
+  </div>
+
+  <button
+    class="quick-buy-btn"
+    @click="quickCheckout"
+  >
+    Checkout
+  </button>
+</div>
+
+
     <FooterPageMenu />
   </div>
 </template>
@@ -72,23 +100,11 @@ import FooterPageMenu from "@/components/client/FooterPageMenu.vue";
 import { setCartCountFromCart } from "@/store/cartStore";
 import { useFavorites } from "@/composables/client/useFavorites";
 import { useMenuAvailability } from "@/composables/worker/useMenuAvailability";
-import { useRouter } from "vue-router";
 import AddItem from "@/components/worker/AddItem.vue";
 
-const router = useRouter()
 const showForm = ref(false)
-
-const toggleForm = () => {
-  showForm.value = !showForm.value
-  if (!showForm.value) {
-    resetForm()
-  }
-}
-
-const closeForm = () => {
-  showForm.value = false
-  resetForm()
-}
+const toggleForm = () => { showForm.value = !showForm.value; if(!showForm.value) resetForm(); }
+const closeForm = () => { showForm.value = false; resetForm(); }
 
 const name = ref('')
 const price = ref('')
@@ -96,6 +112,7 @@ const rating = ref('')
 const category = ref('')
 const imageFile = ref(null)
 const preview = ref(null)
+const cartItems = ref([]) // raw backend cart items
 
 const resetForm = () => {
   name.value = ''
@@ -107,131 +124,191 @@ const resetForm = () => {
 }
 
 const role = localStorage.getItem("role")
-const isWorker = computed(() => role == "ROLE_WORKER")
+const isWorker = computed(() => role === "ROLE_WORKER")
 
-// Favorite / preference tracking
+// Favorites
 const { preferences, loadFavorites, togglePreference } = useFavorites();
+const search = ref("")
+const items = ref([])
+const { invalidate, validate } = useMenuAvailability()
 
-// Search input
-const search = ref("");
+// Quick order object
+const quickOrder = ref({})
 
-// Items fetched from backend
-const items = ref([]);
+const filteredItems = computed(() => 
+  items.value.filter(item => item.name.toLowerCase().includes(search.value.toLowerCase()))
+)
 
-//items state
-const { invalidate, validate } = useMenuAvailability();
+const hasQuickItems = computed(() => Object.keys(quickOrder.value).length > 0)
 
-// Fetch items on component mount
+// Fetch items & favorites on mount
 onMounted(async () => {
+  loadFavorites()
   try {
     const res = await axios.get("http://localhost:8088/api/menu");
     items.value = res.data;
-  } catch (err) {
+
+    // fetch cart from backend
+    const token = localStorage.getItem("token")
+    if (token) {
+      const cartRes = await axios.get(
+        "http://localhost:8088/client/cart",
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      cartItems.value = cartRes.data
+    }
+
+  } catch(err) {
     console.error("Failed to fetch menu items:", err);
   }
-});
+})
 
-// Filter items based on search input
-const filteredItems = computed(() => {
-  return items.value.filter(item => {
-    // Worker sees all
-    if (isWorker.value) return item.name.toLowerCase().includes(search.value.toLowerCase());
-
-    // Client sees only available items
-    return item.availability && item.name.toLowerCase().includes(search.value.toLowerCase());
-  });
-});
-
-// Order counts
-const order = ref({});
-
-// Increase count of item in order
-function increaseCount(item) {
-  order.value[item.id] = (order.value[item.id] || 0) + 1;
-}
-
-// Charger au montage
-onMounted(() => {
-  loadFavorites();
-});
-
+// Update cart & quickOrder
 async function updateCart({ item, count }) {
-  const token = localStorage.getItem("token");
-  if (!token) return;
+  const token = localStorage.getItem("token")
+  if (!token) return
+
+  // 1️⃣ Update local quickOrder (absolute quantity)
+  if (count > 0) {
+    quickOrder.value[item.id] = count
+  } else {
+    delete quickOrder.value[item.id]
+  }
 
   try {
-    const cartRes = await axios.get("http://localhost:8088/client/cart", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    // 2️⃣ Get current cart from backend
+    const cartRes = await axios.get(
+      "http://localhost:8088/client/cart",
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    const cart = cartRes.data // [{ itemId, quantity }]
 
-    const cart = cartRes.data;
-    const existing = cart.find(c => c.itemId === item.id);
-    const finalQty = existing ? existing.quantity + count : count;
+    // 3️⃣ Compute new quantity for this item
+    const existing = cart.find(c => c.itemId === item.id)
+    const finalQty = count // take the UI count as the final quantity
 
+    // 4️⃣ Update backend cart
     const updateRes = await axios.post(
       "http://localhost:8088/client/cart/update",
       { itemId: item.id, quantity: finalQty },
       { headers: { Authorization: `Bearer ${token}` } }
-    );
+    )
 
-    setCartCountFromCart(updateRes.data);
+    // 5️⃣ Sync frontend cart count
+    setCartCountFromCart(updateRes.data)
   } catch (err) {
-    console.error("Error updating cart:", err);
+    console.error("Error updating cart:", err)
   }
 }
 
-const handleImage = (file) => {
-  imageFile.value = file
-  preview.value = URL.createObjectURL(file)
-}
 
-const additem = async () => {
-  if (!imageFile.value) {
-    alert('Veuillez sélectionner une image')
-    return
-  }
+// Quick checkout
+async function quickCheckout() {
+  const token = localStorage.getItem("token")
+  if (!token) return
 
-  const formData = new FormData()
-  formData.append('name', name.value)
-  formData.append('price', price.value)
-  formData.append('rating', rating.value)
-  formData.append('itemCategory', category.value)
-  formData.append('availability', availability.value)
-  formData.append('image', imageFile.value)
+  // 1️⃣ Prepare items selected for checkout (with quantity)
+  const selectedItems = Object.entries(quickOrder.value)
+    .map(([itemId, quantity]) => ({ itemId, quantity }))
+    .filter(item => item.quantity > 0)
+
+  if (selectedItems.length === 0) return
 
   try {
-    const token = localStorage.getItem('token')
-    await axios.post('http://localhost:8088/worker/addItem', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`,
-      },
+    // 2️⃣ Get current cart items from backend
+    const cartRes = await axios.get(
+      "http://localhost:8088/client/cart",
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    const cartItems = cartRes.data // [{ itemId, quantity }]
+
+    // 3️⃣ Compute final cart quantities
+    const finalCart = cartItems.map(cartItem => {
+      const selected = selectedItems.find(sel => sel.itemId === cartItem.itemId)
+
+      if (!selected) return cartItem // not selected → keep as is
+
+      // Subtract the ordered quantity
+      const remainingQty = cartItem.quantity - selected.quantity
+      return remainingQty > 0
+        ? { itemId: cartItem.itemId, quantity: remainingQty }
+        : null // fully ordered → remove from cart
+    }).filter(Boolean)
+
+    // 4️⃣ Place order
+    await axios.post(
+      "http://localhost:8088/client/orders",
+      { items: selectedItems },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+
+    // 5️⃣ Restore remaining items in cart
+    for (const item of finalCart) {
+      await axios.post(
+        "http://localhost:8088/client/cart/update",
+        { itemId: item.itemId, quantity: item.quantity },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+    }
+
+    // 6️⃣ Update frontend state
+    setCartCountFromCart(finalCart)
+    quickOrder.value = {}
+
+    alert("Order placed successfully!")
+  } catch (err) {
+    console.error("Quick checkout failed:", err)
+    alert("Failed to place order")
+  }
+}
+
+
+
+// Handle image for worker form
+const handleImage = file => { imageFile.value = file; preview.value = URL.createObjectURL(file) }
+
+// Add new item (worker)
+const additem = async () => {
+  if(!imageFile.value) return alert("Veuillez sélectionner une image")
+
+  const formData = new FormData()
+  formData.append("name", name.value)
+  formData.append("price", price.value)
+  formData.append("rating", rating.value)
+  formData.append("itemCategory", category.value)
+  formData.append("availability", true)
+  formData.append("image", imageFile.value)
+
+  try {
+    const token = localStorage.getItem("token")
+    await axios.post("http://localhost:8088/worker/addItem", formData, {
+      headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` }
     })
-    
-    // Refresh items list
-    const res = await axios.get("http://localhost:8088/api/menu");
-    items.value = res.data;
-    
-    // Close form and reset
+
+    const res = await axios.get("http://localhost:8088/api/menu")
+    items.value = res.data
     showForm.value = false
     resetForm()
-    
-    // Success notification (optional)
-    alert('Article ajouté avec succès!')
-  } catch (err) {
+    alert("Article ajouté avec succès!")
+  } catch(err) {
     console.error(err)
   }
 }
 
-async function setAvailableFalse(item) {
-  invalidate(item);
-}
+// Menu availability (worker)
+async function setAvailableFalse(item) { invalidate(item) }
+async function setAvailableTrue(item) { validate(item) }
 
-async function setAvailableTrue(item) {
-  validate(item);
-}
+const cartMap = computed(() => {
+  const map = {}
+  cartItems.value.forEach(c => map[c.itemId] = c.quantity)
+  return map
+})
+
 
 </script>
+
+
 
 <style scoped>
 /* BOUTON ADD */
@@ -291,6 +368,7 @@ async function setAvailableTrue(item) {
 
 /* CONTAINER FORMULAIRE */
 .form-container {
+
   background: white;
   border-radius: 20px;
   width: 100%;
@@ -460,4 +538,76 @@ async function setAvailableTrue(item) {
     font-size: 14px;
   }
 }
+/* QUICK ORDER BAR */
+.quick-order-bar {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  min-width: 260px;
+  animation: slideUp 0.3s ease;
+}
+
+.quick-order-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+.quick-order-info .icon {
+  font-size: 20px;
+}
+
+/* CHECKOUT BUTTON */
+.quick-buy-btn {
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.quick-buy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(46, 204, 113, 0.35);
+}
+
+.quick-buy-btn:active {
+  transform: translateY(0);
+}
+
+/* ANIMATION */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .quick-order-bar {
+    bottom: 80px;
+    width: calc(100% - 30px);
+  }
+}
+
 </style>

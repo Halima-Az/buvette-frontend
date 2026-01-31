@@ -46,8 +46,24 @@
     <div v-if="cartItems.length > 0" class="summary">
       <p>Total: <strong>${{ totalPrice.toFixed(2) }}</strong></p>
       <button class="checkout-btn" @click="checkout">Checkout</button>
+      <button class="clear-cart-btn" @click="showBoxConfirm = true">Clear Cart</button>
     </div>
   </div>
+  <!-- LOGOUT CONFIRMATION -->
+    <div v-if="showBoxConfirm" class="confirmation-overlay">
+      <div class="confirmation-box">
+        <p>Are you sure you want to Clear the cart?</p>
+
+        <div class="actions">
+          <button class="cancel" @click="showBoxConfirm = false">
+            Cancel
+          </button>
+          <button class="confirm" @click="clearCart">
+            Clear
+          </button>
+        </div>
+      </div>
+    </div>
 
   <FooterPageMenu />
 </template>
@@ -62,6 +78,7 @@ import { setCartCountFromCart } from "@/store/cartStore";
 
 const cartItems = ref([]);
 const allSelected = ref(true);
+const showBoxConfirm = ref(false);
 
 // Watch allSelected to toggle individual item selection
 watch(allSelected, val => {
@@ -171,9 +188,33 @@ async function checkout() {
     router.push("/home");
   } catch (err) {
     console.error("Checkout failed:", err);
-    alert("Failed to place order. Please try again.");
+    
   }
 }
+
+async function clearCart() {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    await axios.post(
+      "http://localhost:8088/client/cart/clear",
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    cartItems.value = [];
+    setCartCountFromCart([]);
+    localStorage.removeItem("cart");
+    showBoxConfirm.value = false
+
+
+    console.log("Cart cleared successfully!");
+  } catch (err) {
+    console.error("Failed to clear cart:", err);
+  }
+}
+
 </script>
 
 <style scoped>
@@ -647,4 +688,73 @@ async function checkout() {
   opacity: 0.75;
 }
 
+.cart-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.clear-cart-btn {
+  background: #f87171; /* red */
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 25px #f87171;
+  transition: all 0.3s ease;
+}
+
+.clear-cart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px #f87171;
+}
+
+.confirmation-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.confirmation-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 260px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.confirmation-box p {
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.confirmation-box .actions {
+  display: flex;
+  gap: 10px;
+}
+
+.confirmation-box button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.confirmation-box .cancel {
+  background: #eee;
+}
+
+.confirmation-box .confirm {
+  background: #e74c3c;
+  color: white;
+}
 </style>

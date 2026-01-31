@@ -1,15 +1,19 @@
 <template>
-  <div class="card">
+  <div class="card" :class="{ unavailable: !item.availability }">
    
     <div class="img-wrapper">
       <!-- <img :src="item.image" class="img" /> -->
       <img :src="`http://localhost:8088/${item.image}`" alt="item.name" class="img"/>
-
+            <div v-if="!item.availability" class="unavailable-badge">
+        Unavailable
+      </div>
       <div class="rating">★ {{ item.rating }}</div>
 
       <button v-if="isClient" class="heart-btn" :class="{ active: isFav }" @click.stop="togglePreference">
         ♥
       </button>
+
+
     </div>
 
     <p class="name">{{ item.name }}</p>
@@ -49,6 +53,7 @@
       </div>
         
     </div>
+    <div v-if="!item.availability" class="unavailable-overlay"></div>
   </div>
 </template>
 
@@ -79,6 +84,7 @@ const role = localStorage.getItem("role")
 const isClient = computed(() => role == "ROLE_CLIENT")
 const isWorker = computed(() => role === "ROLE_WORKER");
 
+const isUnavailable = computed(() => !props.item.availability);
 
 
 function increase() {
@@ -100,6 +106,7 @@ function invalidateItem() {
 function validateItem() {
   emit("validate-item", props.item);
 }
+
 
 </script>
 
@@ -295,7 +302,7 @@ function validateItem() {
   text-align: center;
   color: #333;
 }
-.invalidate-btn {
+.invalidate-btn   {
   width: 140px;
   height: 34px;
   border-radius: 10px;
@@ -336,4 +343,52 @@ function validateItem() {
 .validate-btn:active {
   transform: scale(0.95);
 }
+
+
+
+.unavailable .add-btn,
+.unavailable .counter,
+.unavailable .heart-btn {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.unavailable-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.card {
+  position: relative;
+}
+
+/* Gray visual layer */
+.unavailable-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: grayscale(100%);
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+.invalidate-btn,
+.validate-btn {
+  position: relative;
+  z-index: 2;
+}
+
+
 </style>

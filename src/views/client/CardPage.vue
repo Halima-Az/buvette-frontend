@@ -480,7 +480,7 @@ async function clearCart() {
   margin: 0;
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(20px);
-  padding: 25px 30px;
+  padding: 15px 20px;
   border-radius: 10px;
   border-top: 2px solid rgba(102, 126, 234, 0.2);
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
@@ -521,8 +521,8 @@ async function clearCart() {
 
 .checkout-btn {
   flex-shrink: 0;
-  min-width: 180px;
-  padding: 16px 32px;
+  min-width: 120px;
+  padding: 16px ;
   background: #ce971f;
   border: none;
   color: white;
@@ -698,7 +698,8 @@ async function clearCart() {
   background: #f87171; /* red */
   color: white;
   border: none;
-  padding: 16px 32px;
+  min-width: 120px;
+  padding: 16px ;
   border-radius: 14px;
   font-size: 16px;
   font-weight: 700;

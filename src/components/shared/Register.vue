@@ -138,7 +138,7 @@ const { errors } = toRefs(props)
 const localError = ref({})
 
 const AddUser = () => {
-  errors.value = {}
+ 
   
   if (!user.value.agreeTerms) {
     localError.value.agreeTerms = "You must accept the terms & conditions."

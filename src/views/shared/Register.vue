@@ -25,13 +25,18 @@ const router = useRouter()
 const errors = ref({})
 
 const handleRegister = async (data) => {
+     errors.value = {}
     try {
         await axios.post('http://localhost:8088/auth/register', data)
         router.push('/login')
     } catch (err) {
-        if (err.response?.status === 400) {
+        if (err.response?.status === 400 || err.response?.status === 409) {
             errors.value = err.response.data
+            
         }
+        console.log(err)
+        
+        
     }
 }
 </script>

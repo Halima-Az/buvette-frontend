@@ -5,7 +5,7 @@
       :src="`http://localhost:8088/img/sanckuplogo.png`"
       alt="logo"
       class="logo"
-      @click="$router.push('/home')"
+      @click="goHome"
     />
 
     <!-- TITLE -->
@@ -60,7 +60,9 @@ defineProps({
 
 const router = useRouter()
 const showLogoutConfirm = ref(false)
-
+const goHome=()=>{
+role==="ROLE_CLIENT"?router.push('/home'):router.push('/serveur/home')
+}
 // ⚠️ Still not reactive by design — acceptable for now
 const role = localStorage.getItem("role")
 const isClient = computed(() => role === "ROLE_CLIENT")
@@ -80,6 +82,9 @@ function confirmLogout() {
   padding: 6px 14px;
   background: #fff8ec;
   box-shadow: 0 2px 6px rgba(138, 86, 35, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1900;
 }
 
 .logo {

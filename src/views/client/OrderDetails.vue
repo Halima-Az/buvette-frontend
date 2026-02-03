@@ -29,7 +29,7 @@
       <div class="main-layout">
         <!-- Orders List -->
         <aside class="orders-list">
-          <h3>My Orders</h3>
+          <h3>My Orders ({{ orders.length }})</h3>
           <div
             v-for="o in filteredOrders"
             :key="o.id"

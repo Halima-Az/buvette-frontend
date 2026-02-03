@@ -97,7 +97,7 @@ onMounted(async () => {
 
     categories.value = res.data.map(c => ({
       key: c,
-      label: c.charAt(0) + c.slice(1).toLowerCase(),
+      label: c==='SNACK' ? 'Fast Food' : c.charAt(0) + c.slice(1).toLowerCase(),
       image: `/categories/${c}.png`
     }));
 

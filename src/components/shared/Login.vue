@@ -21,10 +21,11 @@
 
             </div>
             <button type="submit" class="btn">Submit</button>
-            <p class="text-center mt-3">
-                You don't have account yet? <a href="/register" class="link">Sign up</a>
-            </p>
         </form>
+        <ForgetPassword @selectEmail="emitForgot" :ChangePasswordError="changePasswordError"/>
+        <p class="text-center mt-3">
+            You don't have account yet? <a href="/register" class="link">Sign up</a>
+        </p>
     </div>
 </template>
 
@@ -33,11 +34,20 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { login } from "@/stores/auth";
+import ForgetPassword from "./ForgetPassword.vue";
 const router = useRouter();
 const email = ref('');
 const password = ref('');
 const error = ref(null);
 
+defineProps({
+  changePasswordError: String
+})
+
+const emit = defineEmits(["forgot-password"])
+const emitForgot = (email) => {
+  emit("forgot-password", email)
+}
 const finalLogin = async () => {
     if (!email.value || !password.value) {
         error.value = "Tous les champs sont obligatoires !";
@@ -49,12 +59,12 @@ const finalLogin = async () => {
             email: email.value,
             password: password.value,
         });
-        login(res.data.token, res.data.role,res.data.userId);
+        login(res.data.token, res.data.role, res.data.userId);
         console.log(res.data.role)
 
         // Redirection selon rôle
         if (res.data.role === "ROLE_WORKER") {
-            
+
             router.push("/serveur/home");
         } else if (res.data.role === "ROLE_CLIENT") {
             router.push("/home");
@@ -72,6 +82,9 @@ const finalLogin = async () => {
         }
     }
 }
+
+
+
 
 </script>
 

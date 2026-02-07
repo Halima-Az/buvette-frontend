@@ -14,6 +14,7 @@ import Categorie from '@/views/client/Categories.vue'
 
 import Dashboard from '@/views/worker/Dashboard.vue'
 import OrderDetails from '@/views/client/OrderDetails.vue'
+import RestPassword from '@/views/shared/RestPassword.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,11 @@ const router = createRouter({
     { path: '/', name: 'landing', component: Hello },
     { path: '/login', name: 'login', component: Login },
     { path: '/register', name: 'register', component: Register },
+    {
+      path: '/reset-password',
+      name: 'resetPassword',
+      component: RestPassword,
+    },
 
     // Client
     { path: '/home', name: 'home', component: Menu, meta: { requiresAuth: true } },

@@ -1,5 +1,6 @@
 <template>
-  <form @submit.prevent="submit" class="password-form">
+  <form @submit.prevent="submit" class="profile-form">
+
         <!-- Close button -->
     <button
         type="button"
@@ -10,60 +11,75 @@
         ×
     </button>
 
+
     <div class="form-group">
-      <label for="oldPassword">Current Password</label>
+      <label for="email">UserName :</label>
       <div class="input-wrapper">
-        <i class="fas fa-lock"></i>
-        <input 
-          type="password" 
-          id="oldPassword"
-          v-model="oldPassword" 
-          placeholder="Enter your current password" 
+        <i class="fas fa-envelope"></i>
+        <input
+          type="text"
+          id="username"
+          v-model="localUser.username"
+          placeholder="Enter your new username"
           required
         />
       </div>
     </div>
 
     <div class="form-group">
-      <label for="newPassword">New Password</label>
+      <label for="dob">Date of Birth</label>
       <div class="input-wrapper">
-        <i class="fas fa-key"></i>
-        <input 
-          type="password" 
-          id="newPassword"
-          v-model="newPassword" 
-          placeholder="Enter your new password" 
-          required
+        <i class="fas fa-calendar-alt"></i>
+        <input
+          type="date"
+          id="dob"
+          v-model="localUser.dob"
         />
       </div>
     </div>
 
     <button type="submit" class="submit-btn">
       <i class="fas fa-check-circle"></i>
-      Update Password
+      Update Profile
     </button>
+
   </form>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-const emit= defineEmits(['changePass'])
-const oldPassword=ref('')
-const newPassword =ref('')
-function submit(){
-    emit('changePass',{
-    oldPassword:oldPassword.value,
-    newPassword:newPassword.value}
 
-    )
+<script setup>
+import { ref, watch } from 'vue'
+
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true
+  }
+})
+
+// define emits
+const emit = defineEmits(['save', 'cancel'])
+
+const localUser = ref({ ...props.user })
+
+watch(() => props.user, (u) => {
+  localUser.value = { ...u }
+})
+
+const submit = () => {
+  emit('save', {
+    username: localUser.value.username,
+    dob: localUser.value.dob
+  })
 }
 
+// optional: local function to close
 const close = () => emit('cancel')
-
 </script>
 
+
 <style scoped>
-.password-form {
+.profile-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -73,9 +89,6 @@ const close = () => emit('cancel')
   box-shadow: 0 4px 16px rgba(170, 122, 17, 0.12);
   border: 1px solid rgba(170, 122, 17, 0.08);
   max-width: 500px;
- 
-
-
 }
 
 .form-group {
@@ -129,7 +142,6 @@ const close = () => emit('cancel')
   box-shadow: 0 0 0 3px rgba(170, 122, 17, 0.1);
 }
 
-.input-wrapper input:focus + i,
 .input-wrapper:focus-within i {
   color: #d4a517;
 }
@@ -169,7 +181,7 @@ const close = () => emit('cancel')
 
 /* Responsive */
 @media (max-width: 768px) {
-  .password-form {
+  .profile-form {
     padding: 1.5rem;
   }
 
@@ -196,11 +208,10 @@ const close = () => emit('cancel')
   }
 }
 
-.password-form {
+.profile-form {
   animation: fadeIn 0.4s ease;
   position: relative;
 }
-
 
 .close-btn {
   position: absolute;

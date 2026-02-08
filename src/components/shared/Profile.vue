@@ -63,7 +63,7 @@
                 <i class="fas fa-user-circle"></i>
                 <h4>Account Information</h4>
               </div>
-              <button class="btn-edit">
+              <button class="btn-edit" @click="openEditProfile">
                 <i class="fas fa-edit"></i>
                 Edit
               </button>
@@ -140,7 +140,20 @@
           <transition name="modal-fade">
             <div v-if="is_change" class="password-overlay" @click="closeForm">
               <div class="modal-content" @click.stop>
-                <ChangePassword @changePass="data => $emit('change-password', data)" />
+                <ChangePassword 
+                @changePass="data => $emit('change-password', data)" 
+                @cancel="closeForm"/>
+              </div>
+            </div>
+          </transition>
+
+          <transition name="modal-fade">
+            <div v-if="is_edit_profile" class="password-overlay" @click="closeForm">
+              <div class="modal-content" @click.stop>
+                <EditProfile
+                  :user="user"
+                  @save="data => $emit('update-profile', data)"
+                  @cancel="closeEditProfile"                />
               </div>
             </div>
           </transition>
@@ -154,6 +167,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import ChangePassword from './ChangePassword.vue'
+import EditProfile from './EditProfile.vue'
 
 
 defineProps({
@@ -177,6 +191,17 @@ defineProps({
 const role = localStorage.getItem("role")
 const is_client = computed(() => role == "ROLE_CLIENT")
 const is_change = ref(false)
+
+const is_edit_profile = ref(false)
+
+const openEditProfile = () => {
+  is_edit_profile.value = true
+}
+
+const closeEditProfile = () => {
+  is_edit_profile.value = false
+}
+
 
 
 const change = () => {

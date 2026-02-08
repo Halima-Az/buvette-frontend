@@ -5,7 +5,8 @@
                :user="user" 
                :lastChanged="lastChanged"
                @goToMyOrders="goToMyOrders"
-               @change-password="ChangPassword" />
+               @change-password="ChangPassword"
+               @update-profile="updateProfile" />
     <FooterPageMenu/>
 
 </template>
@@ -56,6 +57,27 @@ const fetchUser = async () => {
     ? new Date(res.data.lastPasswordChange)
     : null
 }
+
+const updateProfile = async (data) => {
+  const token = localStorage.getItem("token")
+  if (!token) return
+
+  try {
+    const res = await axios.put(
+      "http://localhost:8088/user/updateprofile",
+      {
+        username: data.username,
+        dob: data.dob
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+
+    user.value = res.data.user
+  } catch (err) {
+    console.error("Profile update failed", err)
+  }
+}
+
 
 onMounted(async () => {
   await fetchUser()

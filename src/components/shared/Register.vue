@@ -51,6 +51,25 @@
     <!-- Formulaire -->
     <form @submit.prevent="AddUser">
       <div class="row g-3">
+        <div 
+          class="col-md-6"
+          v-if="user.role === 'ROLE_CLIENT'"
+        >
+          <label class="form-label">Code Massar</label>
+          <input 
+            type="text"
+            class="form-control"
+            v-model="user.codeMassar"
+            placeholder="Enter your Code Massar"
+          >
+          <div v-if="errors.codeMassar" class="text-danger">
+            {{ errors.codeMassar }}
+          </div>
+          <div v-if="localError.codeMassar" class="text-danger">
+            {{ localError.codeMassar }}
+          </div>
+        </div>
+
         <div class="col-md-6">
           <label class="form-label">First Name</label>
           <input type="text" class="form-control" v-model="user.fname">
@@ -108,11 +127,12 @@
 </template>
 
 <script setup>
-import { ref, toRefs } from 'vue'
+import { ref, toRefs, watch } from 'vue'
 
 const emit = defineEmits(['submit'])
 
 const user = ref({
+  codeMassar: '', 
   fname: '',
   lname: '',
   username: '',
@@ -138,15 +158,33 @@ const { errors } = toRefs(props)
 const localError = ref({})
 
 const AddUser = () => {
- 
-  
+  localError.value = {}
+
   if (!user.value.agreeTerms) {
     localError.value.agreeTerms = "You must accept the terms & conditions."
     return
   }
-  
+
+  if (
+    user.value.role === 'ROLE_CLIENT' &&
+    !user.value.codeMassar
+  ) {
+    localError.value.codeMassar = "Code Massar is required for clients."
+    return
+  }
+
   emit('submit', user.value)
 }
+
+watch(
+  () => user.value.role,
+  (newRole) => {
+    if (newRole === 'ROLE_WORKER') {
+      user.value.codeMassar = ''
+    }
+  }
+)
+
 </script>
 
 <style>

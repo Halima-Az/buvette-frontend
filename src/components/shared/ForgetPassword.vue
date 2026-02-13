@@ -19,22 +19,30 @@
 
         <form @submit.prevent="submitEmail" class="modal-form">
           <p class="modal-description">
-            Enter your email address to reset your password.
+            Enter your email address and you will receive a reset link.
           </p>
-          
+
           <div class="form-group">
             <label for="reset-email">Email Address</label>
             <div class="input-wrapper">
               <i class="fas fa-envelope"></i>
-              <input
-                id="reset-email"
-                type="email"
-                placeholder="your.email@example.com"
-                v-model="selectedemail"
-                required
-              />
+              <input id="reset-email" type="email" placeholder="your.email@example.com" v-model="selectedemail"
+                required />
             </div>
-            <p class="text-danger">{{ ChangePasswordError }}</p>
+            <transition name="fade">
+              <div v-if="ChangePasswordError" class="message error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                {{ ChangePasswordError }}
+              </div>
+            </transition>
+
+            <transition name="fade">
+              <div v-if="ChangePassworSucces" class="message success-message">
+                <i class="fas fa-check-circle"></i>
+                {{ ChangePassworSucces }}
+              </div>
+            </transition>
+
           </div>
 
           <div class="modal-actions">
@@ -43,7 +51,7 @@
             </button>
             <button type="submit" class="btn-confirm">
               <i class="fas fa-paper-plane"></i>
-               Reset 
+              Reset
             </button>
           </div>
         </form>
@@ -68,7 +76,8 @@ const submitEmail = () => {
 
 }
 defineProps({
-  ChangePasswordError:String
+  ChangePasswordError: String,
+  ChangePassworSucces: String
 })
 </script>
 
@@ -252,7 +261,7 @@ defineProps({
   box-shadow: 0 0 0 3px rgba(170, 122, 17, 0.1);
 }
 
-.input-wrapper input:focus ~ i,
+.input-wrapper input:focus~i,
 .input-wrapper:focus-within i {
   color: #d4a517;
 }
@@ -336,6 +345,40 @@ defineProps({
   transform: scale(0.95) translateY(20px);
 }
 
+/* Messages */
+.message {
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  margin-top:10px ;
+  animation: slideIn 0.3s ease;
+}
+
+.error-message {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.error-message i {
+  font-size: 1.1rem;
+}
+
+.success-message {
+  background: #d1fae5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.success-message i {
+  font-size: 1.1rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .modal-content {
@@ -370,6 +413,7 @@ defineProps({
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

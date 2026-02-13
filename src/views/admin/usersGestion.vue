@@ -694,9 +694,21 @@ const updateTime = () => {
 .modal-content {
     background: white;
     width: 420px;
+    height: 420px;
     border-radius: 16px;
-    padding: 24px;
     box-shadow: 0 20px 60px rgba(226, 128, 16, 0.2);
+   
+    animation: slideUp 0.3s ease;
+}
+@keyframes slideUp {
+   from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }   
 }
 
 .modal-header {
@@ -704,6 +716,10 @@ const updateTime = () => {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    border-radius: 16px 16px 0px  0;
+    background-color: #d39333;
+    padding: 20px 14px;
+    color: #000;
 }
 
 .modal-close {
@@ -711,10 +727,25 @@ const updateTime = () => {
     background: none;
     cursor: pointer;
     font-size: 16px;
+    transition: all 0.2s ease;
+}
+.modal-close:hover{
+    transform: rotate(90deg) scale(1.5);
+
+}
+.modal-body{
+    padding: 28px;
+    margin: 10px;
+    max-height: calc(85vh - 100px);
+    overflow-y: auto;
+    /* Style de la scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgb(83, 82, 80) #f1f5f9;
 }
 
 .form-group {
     margin-bottom: 16px;
+   
 }
 
 .form-group label {

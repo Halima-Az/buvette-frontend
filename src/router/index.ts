@@ -15,6 +15,7 @@ import Categorie from '@/views/client/Categories.vue'
 import Dashboard from '@/views/worker/Dashboard.vue'
 import OrderDetails from '@/views/client/OrderDetails.vue'
 import RestPassword from '@/views/shared/RestPassword.vue'
+import VerifyEmail from '@/views/shared/VerifyEmail.vue'
 import AdminDashboard from '@/views/admin/adminDashboard.vue'
 import UsersGestion from '@/views/admin/usersGestion.vue'
 import Analitics from '@/views/admin/analitics.vue'
@@ -31,6 +32,10 @@ const router = createRouter({
       path: '/reset-password',
       name: 'resetPassword',
       component: RestPassword,
+    },
+    {
+      path:'/verify',
+      component:VerifyEmail
     },
 
     // Client

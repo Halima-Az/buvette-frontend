@@ -16,6 +16,10 @@ import Dashboard from '@/views/worker/Dashboard.vue'
 import OrderDetails from '@/views/client/OrderDetails.vue'
 import RestPassword from '@/views/shared/RestPassword.vue'
 import VerifyEmail from '@/views/shared/VerifyEmail.vue'
+import AdminDashboard from '@/views/admin/adminDashboard.vue'
+import UsersGestion from '@/views/admin/usersGestion.vue'
+import Analitics from '@/views/admin/analitics.vue'
+import WorkerRequests from '@/views/admin/workerRequests.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +67,27 @@ const router = createRouter({
       name: 'serverHome',
       component: Dashboard,
       meta: { requiresAuth: true, role: 'ROLE_WORKER' },
+    },
+    //admin
+    {
+      path:'/adminhome',
+      name:'AdminDashboard',
+      component:AdminDashboard,
+    },
+    {
+      path:'/admin/usersGestion',
+      name: 'usersGestion',
+      component : UsersGestion
+    },
+    {
+      path:'/admin/analytics',
+      name: 'analytics',
+      component : Analitics
+    },
+    {
+      path:'/admin/workerRequests',
+      name: 'workerRequests',
+      component : WorkerRequests
     },
   ],
 })

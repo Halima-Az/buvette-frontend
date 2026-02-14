@@ -4,14 +4,13 @@
       <div class="register-content">
         <!-- Left Side - Illustration -->
         <div class="register-illustration-section">
-          <IllustrationPanel 
-            subtitle="Join SnackUp today and enjoy fast ordering, favorites and exclusive campus deals"
-          />
+          <IllustrationPanel
+            subtitle="Join SnackUp today and enjoy fast ordering, favorites and exclusive campus deals" />
         </div>
 
         <!-- Right Side - Form -->
         <div class="register-form-section">
-          <Register :errors="errors" @submit="handleRegister" :sendSuccess="sendSuccess"/>
+          <Register :errors="errors" @submit="handleRegister" :sendSuccess="sendSuccess" />
         </div>
       </div>
     </div>
@@ -27,21 +26,38 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const errors = ref({})
-const sendSuccess=ref('')
+const sendSuccess = ref('')
 const handleRegister = async (data) => {
-     errors.value = {}
-    try {
-        await axios.post('http://localhost:8088/auth/register', data)
-        sendSuccess.value="Account created successfully. Please check your email to verify your account"
-    } catch (err) {
-        if (err.response?.status === 400 || err.response?.status === 409) {
-            errors.value = err.response.data
-            
-        }
-  
-        
-        
+  errors.value = {}
+  sendSuccess.value = ""
+
+  try {
+    let url = ""
+
+    if (data.role === "ROLE_CLIENT") {
+      url = "http://localhost:8088/auth/registerAsClient"
+    } else if (data.role === "ROLE_WORKER") {
+      url = "http://localhost:8088/auth/registerAsWorker"
+    } else {
+      throw new Error("Invalid role selected")
     }
+
+    await axios.post(url, data)
+
+    sendSuccess.value =
+      data.role === "ROLE_CLIENT"
+        ? "Account created successfully. Please check your email to verify your account."
+        : "Request created successfully. Please check your email. You will receive a response soon."
+
+  } catch (err) {
+    if (err.response?.status === 400 || err.response?.status === 409) {
+      errors.value = err.response.data
+    } else {
+      errors.value = {
+        general: "Something went wrong. Please try again later."
+      }
+    }
+  }
 }
 </script>
 <style scoped>
@@ -81,7 +97,7 @@ const handleRegister = async (data) => {
   background: #ffffff;
   border-radius: 28px;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.08),
     0 8px 24px rgba(170, 122, 17, 0.06);
   border: 1px solid rgba(170, 122, 17, 0.08);
@@ -150,6 +166,7 @@ const handleRegister = async (data) => {
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);

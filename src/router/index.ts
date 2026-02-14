@@ -20,6 +20,7 @@ import AdminDashboard from '@/views/admin/adminDashboard.vue'
 import UsersGestion from '@/views/admin/usersGestion.vue'
 import Analitics from '@/views/admin/analitics.vue'
 import WorkerRequests from '@/views/admin/workerRequests.vue'
+import AllWorkers from '@/views/admin/AllWorkers.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -87,7 +88,18 @@ const router = createRouter({
     {
       path:'/admin/workerRequests',
       name: 'workerRequests',
-      component : WorkerRequests
+      component : WorkerRequests,
+      meta:{
+        requiresAuth: true, role: 'ROLE_ADMIN' 
+      }
+    },
+     {
+      path:'/admin/allWorkers',
+      name: 'allworkers',
+      component : AllWorkers,
+      meta:{
+        requiresAuth: true, role: 'ROLE_ADMIN' 
+      }
     },
   ],
 })

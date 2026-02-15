@@ -110,6 +110,8 @@ const finalLogin = async () => {
             router.push("/serveur/home");
         } else if (res.data.role === "ROLE_CLIENT") {
             router.push("/home");
+        } else if (res.data.role === "ROLE_ADMIN") {
+            router.push("/adminhome");
         } else {
             router.push("/"); // fallback
         }
@@ -117,24 +119,22 @@ const finalLogin = async () => {
     } catch (err) {
         if (err.response) {
 
-            if (err.response.status === 401) {
-                error.value = "Mot de passe incorrect.";
+            if (err.response.status === 401 || err.response.status === 404) {
+                error.value = "Email or passord incorrects.";
             }
 
             else if (err.response.status === 403) {
-                error.value = "Veuillez vérifier votre email avant de vous connecter.";
+                error.value = "Please verify your email befor logging in.";
             }
-
-            else if (err.response.status === 404) {
-                error.value = "Email introuvable.";
+             else if (err.response.status === 400) {
+                error.value = "Your account is disabled !";
             }
-
             else {
-                error.value = "Erreur serveur.";
+                error.value = "Something went wrong. Please try again later..";
             }
 
         } else {
-            error.value = "Erreur de connexion au backend.";
+            error.value = "Something went wrong. Please try again later.";
         }
 
     }

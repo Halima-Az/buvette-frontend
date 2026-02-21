@@ -110,6 +110,8 @@ const finalLogin = async () => {
             router.push("/serveur/home");
         } else if (res.data.role === "ROLE_CLIENT") {
             router.push("/home");
+        } else if (res.data.role === "ROLE_ADMIN") {
+            router.push("/adminhome");
         } else {
             router.push("/"); // fallback
         }
